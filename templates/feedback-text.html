@@ -1,0 +1,52 @@
+<div ng-init="init()" ng-cloak class="container">
+
+
+    <div class="row restaurant-top logo-container">
+        <img src="./img/servi-100.png" class="logo">
+    </div>
+
+    <div class="row color-row">
+        <div class="col-xs-12">
+            <div class="row spacer waiting-for-confirmation"  >
+                <div class="row spacer">
+                    <div class="col-xs-5 waiter-photo-small">
+                        <!--img src="https://ser.vi/img/{{restaurant.waiter.userpic}}" class="rounded-img"-->
+                    </div>
+                    <div class="col-xs-7">
+                        <p class="rating-answered">You rated {{restaurant.waiter.name}}: </p>
+                        <uib-rating ng-model="waiterRating" max="5" read-only="true" class="medium-stars" ></uib-rating>
+                    </div>
+                </div>
+                <div class="row small-spacer">
+                    <div class="col-xs-5" >
+                    </div>
+                    <div class="col-xs-7">
+                        <p class="rating-answered">You gave ser.vi </p>
+                        <uib-rating ng-model="serviRating" max="5" read-only="true" class="medium-stars" ></uib-rating>
+                    </div>
+                </div>
+
+                <div class="row spacer">
+                    <div class="col-xs-12 col-centered ">
+                        <p class="rating-question">Give us feedback on ser.vi</p>
+                        <textarea type="text" class="form-control" rows="4" ng-model="textFeedback" ng-change="onChange()"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="row spacer">
+                    <div class="col-xs-12" ng-if="action=='skip' ">
+                        <button class="btn btn-default btn-block" type="submit" ng-click="done()">Skip feedback</button>
+                    </div>
+                    <div class="col-xs-12" ng-if="action!='skip' ">
+                        <button class="btn btn-success btn-block" type="submit" ng-click="done()">Submit feedback</button>
+                    </div>
+                </div>
+                <div class="row spacer"></div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>

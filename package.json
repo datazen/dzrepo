@@ -1,0 +1,26 @@
+{
+  "name": "servi",
+  "version": "1.0.0",
+  "description": "Servi customer facing web app",
+  "main": "servi.html",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewfrolov/customer_web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andrewfrolov/customer_web/issues"
+  },
+  "homepage": "https://github.com/andrewfrolov/customer_web#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}

@@ -1,0 +1,92 @@
+
+<div ng-init="init()" ng-cloak class="container">
+
+    <div class="row restaurant-top logo-container" >
+        <img src="./img/servi-100.png" class="logo">
+    </div>
+
+    <div class="row color-row">
+        <div class="col-xs-12">
+            <!--- waiting -->
+            <div class="row spacer waiting-for-confirmation" ng-show="requestStatus() == 'waiting'"  >
+                <div class="row spacer">
+
+                    <div class="col-xs-12 calling-info blue" ng-if="activeRequest.callType=='call'"  >Calling {{restaurant.waiter.name}}</div>
+                    <div class="col-xs-12 calling-info blue" ng-if="activeRequest.callType=='refill'">Requesting refills</div>
+                    <div class="col-xs-12 calling-info blue" ng-if="activeRequest.callType=='check'" >Requesting check</div>
+
+                    <div class="row spacer">
+                        <div class="col-xs-12 calling-status blue">awaiting confirmation</div>
+                    </div>
+                </div>
+                <div class="row spacer" >
+                    <div class="col-xs-12 col-centered">
+                        <div class="row waiter-photo" >
+                            <img src="https://home.ser.vi/app-assets/restaurant/{{restaurant.waiter.userpic}}" class="rounded-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="row big-spacer" ng-if="activeRequest.callType=='check'">
+                    <div class="col-xs-8 col-centered">
+                        <p ng-if="activeRequest.paymentMethod == '1'">{{restaurant.waiter.name}} will be with you shortly with the bill.</p>
+                        <p ng-if="activeRequest.paymentMethod == '2' || activeRequest.paymentMethod == '3'">
+                            Please go to the counter with your
+                            <span ng-if="activeRequest.paymentMethod == '2'">PIN</span>
+                            <span ng-if="activeRequest.paymentMethod == '3'">Credit</span>
+                            card to pay.
+                        </p>
+                    </div>
+                </div>
+                <div class="row big-spacer">
+                    <div class="col-xs-12 logo-container">
+                        <img src="./img/balls.gif" class="img-centered-native-width">
+                    </div>
+                </div>
+                <div class="row big-spacer"></div>
+                <div class="row spacer" >
+                    <div class="col-xs-12 col-centered">
+                        <button class="btn btn-default btn-block" type="submit" ng-click="cancelRequest()" ng-if="false">Cancel the request</button>
+                        <button class="btn btn-default btn-block" type="submit" ng-click="close()">Close this notice</button>
+                    </div>
+                </div>
+
+                <div class="row spacer" >
+                </div>
+            </div>
+
+            <!-- confirmed -->
+            <div class="row spacer confirmation-received" ng-show="requestStatus() == 'confirmed'"  >
+                <div class="row spacer">
+                    <div class="col-xs-12 calling-info white">Message received!</div>
+                    <div class="row spacer">
+                        <div class="col-xs-12 calling-status white">{{restaurant.waiter.name}} will be with you shortly</div>
+                    </div>
+                </div>
+                <div class="row spacer" >
+                    <div class="col-xs-12 col-centered">
+                        <div class="row waiter-photo" >
+                            <img src="https://home.ser.vi/app-assets/restaurant/{{restaurant.waiter.userpic}}" class="rounded-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="row big-spacer ">
+                    <div class="col-xs-12 col-centered">
+                        <button class="btn btn-lg btn-close-notification btn-block" type="submit" ng-click="close()">Click here to close this notice</button>
+                        <div class="col-xs-12 autoclose-message" ng-show="secondsLeft" >will auto close in {{secondsLeft}} seconds</div>
+
+                    </div>
+                </div>
+                <div class="row big-spacer"></div>
+                <div class="row spacer" >
+                </div>
+                <div class="row spacer" >
+                </div>
+            </div>
+            <!-- confirmed -->
+
+
+        </div>
+    </div>
+
+
+</div>

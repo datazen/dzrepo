@@ -1,0 +1,101 @@
+<div ng-init="init()" ng-cloak class="container">
+    <script type="text/ng-template" id="refillModal.html">
+        <div class="modal-header"></div>
+        <div class="modal-body">
+            <p>Quickly request a round of refills for everyone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="order()">Order</button>
+            <button type="button" class="btn btn-default" ng-click="dismiss()">Cancel</button>
+        </div>
+    </script>
+
+    <div class="row restaurant-top logo-container">
+        <img src="./img/servi-100.png" class="logo">
+        <p>experience more</p>
+    </div>
+
+    <div class="row small-spacer color-row">
+        <div class="col-xs-12">
+            <div class="row spacer no-margin-bottom">
+                <div class="col-xs-3">
+                    <div class="row small-spacer restaurant-logo-container">
+                        <!-- TODO: replace static image with actual image from customer data via web service  -->
+                        <img src="https://home.ser.vi/app-assets/restaurant/blues_bar/blue-bar-logo-200.jpg" class="restaurant-logo ">
+                    </div>
+                </div>
+                <div class="col-xs-4 restaurant-table-container">
+                    <div class="row"><p>Table: <strong>{{restaurant.table.tableNumber}}</strong> </p></div>
+                    <div class="row">  
+                        <!-- TODO: add changeTable function -->
+                        <button class="btn btn-xs btn-block btn-default" style="padding:2px;" type="submit" ng-click="changeTable()">Change</button>
+                    </div>
+                </div>
+                <div class="col-xs-5">
+                    <div class="row">
+                        <div class="float-right waiter-photo-container">
+                            <div class="waiter-photo">
+                                <img src="https://home.ser.vi/app-assets/restaurant/{{restaurant.waiter.userpic}}" class="rounded-img">
+                                <span class="waiter-name"><strong>{{restaurant.waiter.name}}</strong></p>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div> 
+
+            <div class="row spacer">
+                <div class="col-xs-12">
+                    <div class="image-strip">
+                        <div class="image-strip__container">
+                            <div class="image-strip__item"
+                                 ng-repeat="category in categories"
+                                 ng-click="showFeaturedProductsScreen(category.name)"
+                            >
+                                <img src="img/dummy/{{category.name | lowercase}}.png" />
+                                <div class="image-strip__title">
+                                    {{category.name}}
+                                </div>
+                                <div class="image-strip__description">
+                                    {{category.description}}
+                                </div>
+                            </div>
+                      </div>
+                    </div>                                      
+                </div>
+            </div>
+
+            <div ng-show="lastNotification" class="row message-row">
+                <div class="col-xs-12 col-centered ">
+                    <p ng-if="lastNotification"><strong>{{lastNotification.friendlyCallType}}</strong>. <i class="status-message">{{lastNotification.status}}</i></p>
+                </div>
+            </div>
+
+            <div class="row spacer" ng-if="restaurant.buttonEnabled('call')">
+                <div class="col-xs-12">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="callWaiter()">
+                    <div class="col-xs-2 margin-right"><span class="glyphicon glyphicon-bell align-middle" aria-hidden="true"></span></div>                
+                    <div class="col-xs-10 col-centered">{{restaurant.captionForButton('call','Request your Server')}}</div></button>
+                </div>
+            </div>
+
+            <div class="row small-spacer" ng-if="restaurant.buttonEnabled('check')">
+                <div class="col-xs-12">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="showRequestBillScreen()">
+                    <div class="col-xs-2 margin-right"><span class="glyphicon glyphicon-file align-middle" aria-hidden="true"></span></div>
+                    <div class="col-xs-10 col-centered">{{restaurant.captionForButton('check','Request the Bill')}}</div></button>
+                </div>
+            </div>
+
+            <div class="row small-spacer">
+                <div class="col-xs-12">
+                    <!-- TODO: add callManager function -->
+                    <button class="btn btn-lg btn-block" style="backround-color:#e0e0d2" type="submit" ng-click="callManager()">
+                    <div class="col-xs-2 margin-right"><span class="glyphicon glyphicon-info-sign align-middle" aria-hidden="true"></span></div>
+                    <div class="col-xs-10 col-centered">Request the Manager</div></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,112 @@
+
+<div ng-init="init()" ng-cloak class="container page-wrap">
+
+    <div class="row login-top logo-container">
+        <img src="./img/servi-100.png" class="logo logo__login--table">
+    </div>
+
+    <div class="row login-bottom">
+        <form class="form-signin" autocomplete="off">
+            <div class="row">
+                <div class="col-xs-10 col-centered">
+                    <h3 class="centered-text">{{restaurant.restaurant.name}}</h3>
+                </div>
+            </div>
+            <div class="row spacer">
+                <div class="col-xs-5 col-centered">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="tableToken">Table number: </label>
+                            <input type="text" ng-model="tableToken" class="form-control big-input" placeholder="" id="tableToken">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row spacer">
+                <div class="col-xs-10 col-centered">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="loginToTable()" ng-disabled="loginInProgress">
+                        Take Table <span class="glyphicon glyphicon-chevron-right float-right"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div ng-if="restaurant.restaurant.map.url" class="row">
+                <div class="row spacer">
+                    <div class="col-xs-10 col-centered">
+                        <button ng-click="openMap()"
+                                class="btn btn-lg btn-block" type="submit">
+                            <span class="glyphicon glyphicon-question-sign"></span> View Table Map
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row spacer" ng-if="error" >
+                <div class="col-xs-10 col-centered">
+                    <div class="error-message centered-text"><p>{{error}}</p></div>
+                </div>
+            </div>
+
+
+            <div class="row spacer">
+                <div class="col-xs-9 col-centered">
+
+                    <div ng-if="restaurant.restaurant.mode == 'SelfSeating' ">
+                        <div class="restaurant-mode-title restaurant-mode-self-seating">
+                            <i class="fa fa-check-circle " aria-hidden="true"></i> Self Seating
+                        </div>
+                        <div class="restaurant-mode-text"><p>Please seat yourself, take any table you like.</p></div>
+                    </div>
+
+                    <div ng-if="restaurant.restaurant.mode == 'Host' ">
+                        <div class="restaurant-mode-title restaurant-mode-host">
+                            <i class="fa fa-user " aria-hidden="true"></i> Host Seating
+                        </div>
+                        <div class="restaurant-mode-text"><p>Please see the host or hostess to be seated.</p></div>
+                    </div>
+
+                    <div ng-if="restaurant.restaurant.mode == 'WaitList' ">
+                        <div class="restaurant-mode-title restaurant-mode-waitlist">
+                            <i class="fa fa-clock-o " aria-hidden="true"></i> Waiting List
+                        </div>
+                        <div class="restaurant-mode-text"><p>Please see the host to join waiting list.</p></div>
+                    </div>
+
+                    <div ng-if="restaurant.restaurant.mode == 'Booked' ">
+                        <div class="restaurant-mode-title restaurant-mode-booked">
+                            <i class="fa fa-hand-paper-o " aria-hidden="true"></i> Fully Booked
+                        </div>
+                        <div class="restaurant-mode-text"><p>We are not taking walkins at the moment.</p></div>
+                        <div class="restaurant-mode-text"><p>You can visit the host to make a reservation or return at another time.</p></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="row spacer login-footer" ng-if="restaurant.restaurant.mode != 'Off' ">
+    <hr>
+    <div class="col-xs-10 col-centered">
+        Enter your table number when seated to use ser.vi during your visit to view the menu, call the server and request the check when your done.
+    </div>
+</div>
+
+<script type="text/ng-template" id="mapModal.html">
+    <div class="map-modal-container">
+        <div class="modal-header map-modal__header">
+            <h3 class="modal-title">Map</h3>
+            <a ng-click="$event.preventDefault(); close()"
+                  class="close-icon glyphicon glyphicon-remove-sign"></a>
+        </div>
+        <div class="modal-body map-modal__map">
+        <!--
+            <img class="table-map" src="{{restaurant.restaurant.map.url}}">
+        -->
+            <img class="table-map map-modal__map-image"  style="height: {{ map.height }}px; width: auto; " src="{{ map.url }}">
+        </div>
+    </div>
+</script>

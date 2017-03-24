@@ -1,0 +1,547 @@
+.small-spacer {
+    margin-top: 10px;
+}
+.spacer {
+    margin-top: 20px;
+}
+.medium-spacer {
+    margin-top: 40px;
+}
+
+.big-spacer {
+    margin-top: 60px;
+}
+
+.clear {
+    clear: both;
+}
+
+.logo-container {
+    position: relative;
+    text-align: center;
+}
+
+.logo {
+    width: 110px;
+    margin-top: 18px;
+}
+
+.img-centered-native-width {
+   overflow: auto;
+   margin: auto;
+   position: absolute;
+   top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+
+.login-top {
+    background-color: #FFFFFF;
+    height: 70px;
+}
+
+.float-right {
+    float:right;
+    display: block;
+}
+
+.error-message {
+    color: red;
+}
+
+.big-input {
+     height: 40px;
+     font-size: 20px;
+}
+.centered-text {
+    text-align:center;
+}
+
+
+body {
+    background-color: #FAFAFA;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.color-row {
+    background-color: #FAFAFA
+}
+
+.container {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.restaurant-top {
+    background-color: #FFFFFF;
+    height: 60px;
+}
+
+.restaurant-name {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.waiter-photo {
+    text-align: center;
+}
+.waiter-photo img {
+    width: 50px;
+}
+.rounded-img {
+    border-radius: 100px;
+}
+
+.message-row {
+    height: 50px;
+    line-height: 50px;
+ }
+
+ .status-message {
+     font-size: 12px;
+ }
+
+.btn-circle {
+    padding-left: 0;
+    padding-right: 0;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+
+div.cancel-container {
+    width: -webkit-max-content;
+    width: -moz-max-content;
+    width: max-content;
+    margin: 15px auto;
+}
+
+label.cancel, i.cancel {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    border: 0px;
+    display: table;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+    background: rose;
+    top: 0px !important;
+}
+
+i.cancel {
+    padding: 18px;
+}
+
+
+.blue {
+    color: #295ac9;
+}
+.white {
+    color: #FFFFFF;
+}
+.waiting-for-confirmation {
+    background-color: #FFFFFF;
+}
+.confirmation-received {
+    background-color: #029730;
+}
+.calling-info {
+    text-align:center;
+    font-size: 25px;
+    font-weight: bold;
+}
+.calling-status {
+    text-align:center;
+    font-size: 14px;
+}
+.autoclose-message {
+    text-align:center;
+    font-size: 12px;
+    color: #FCFCFC
+}
+
+.btn-white {
+    color: black;
+    background-color: white;
+    border-color: #FCFCFC;
+    font-size: 16px;
+}
+
+.btn-close-notification {
+    color: #FFFFFF;
+    background-color: #029730;
+    border-color: #FFFFFF;
+
+}
+
+.rating-question {
+    font-size: 20px;
+    font-weight: bold;;
+}
+
+.big-stars {
+    outline: none !important;
+    font-size: 35px;
+}
+.medium-stars {
+    outline: none !important;
+    font-size: 20px;
+}
+
+.glyphicon-star, .glyphicon-star-empty {
+  color:gold;
+}
+.rating-answered {
+    font-size: 16px;
+    font-weight: bold;;
+}
+
+.waiter-photo-small {
+    width: 70px;
+}
+
+.rounded-img-small {
+    height: 70px;
+    width: 70px;
+    border-radius: 70px;
+}
+
+.table-map {
+    width: 100%;
+}
+
+.fixedElement {
+    background-color: #c0c0c0;
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index:100;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #FF6761;
+    border-color: #7F5857;
+}
+
+.close-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 24px;
+    color: #E8534D;
+}
+.close-icon:active {
+    color: #9C2824;
+}
+
+.map-modal__header {
+    text-align: center;
+}
+
+.map-modal__map {
+    overflow-x: scroll;
+}
+
+.restaurant-mode-title {
+     font-size: 18px;
+}
+
+.restaurant-mode-text {
+     font-size: 18px;
+}
+
+.restaurant-mode-self-seating {
+    color: #009933;
+}
+
+.restaurant-mode-host {
+    color: #e6b800;
+}
+.restaurant-mode-waitlist {
+    color: #cc7a00;
+}
+
+.restaurant-mode-booked {
+    color: #cc3300;
+}
+
+.login-footer {
+    position: absolute;
+    margin-top: 500px
+    background: orange;
+    font-size: 15px;
+    padding-bottom: 20px;
+}
+
+.autocompleteRestaurantResult__image,
+.autocompleteRestaurantResult__body {
+    float: left;
+}
+
+.autocompleteRestaurantResult__body {
+    max-width: 150px;
+    white-space: normal;
+}
+
+.autocompleteRestaurantResult__image {
+    background-color: #fff;
+    margin: 5px 20px 5px 0;
+    width: 60px;
+    height: 60px;
+    padding: 5px;
+}
+.autocompleteRestaurantResult__image img {
+    /*-webkit-clip-path: circle(45% at 50% 50%);*/
+    /*clip-path: circle(45% at 50% 50%);*/
+    width: 100%;
+    height: 100%;
+}
+
+
+.autocompleteRestaurantResult__title {
+    font-size: 18px;
+    font-weight: bold;
+
+    margin-bottom: 5px;
+}
+
+.autocompleteRestaurantResult__details {
+    font-size: 11px;
+    line-height: 11px;
+}
+
+.autocompleteRestaurantResult__details__address {
+    margin-bottom: 10px;
+}
+
+.autocompleteRestaurantResult__details__distance img {
+    width: 11px;
+    height: 11px;
+    vertical-align: middle;
+}
+
+.bill__payment-method .list-group-item.active {
+    color: #fff;
+    background-color: #666;
+    border-color: #666;
+}
+
+.bill__tip-amount-container.col-xs-3 {
+    width: 20%;
+}
+
+.bill__tip-amount {
+    font-size: 21px;
+    margin-left: -7px;
+}
+.bill__tip-plus, .bill__tip-minus {
+    background: #FAFAFA;
+    border: solid 1px #337ab7;
+    color: #337ab7;
+}
+.bill__tip-plus:focus, .bill__tip-minus:focus {
+    outline: 0;
+}
+.bill__tip-plus:hover, .bill__tip-minus:hover {
+    color: #337ab7;
+}
+.bill__tip-disabled {
+    border: solid 1px #666;
+    color: #666;
+}
+.bill__tip-disabled:hover {
+    color: #666;
+}
+
+/* DZ added */
+.restaurant-logo-container {
+    position: relative;
+    padding-top:30px;
+}
+
+.restaurant-logo {
+    position:absolute;
+    top:0;
+    bottom:0;
+    margin:auto;
+    width: 60px;
+    height: 60px;
+}
+
+.restaurant-table-container {
+    padding-right:3px;
+}
+
+.waiter-photo-container {
+    vertical-align:top; 
+    display:inline-block; 
+    text-align:center;
+    margin-top:-10px;
+    height:;
+}
+
+.waiter-name {
+    display: block;
+}
+
+.restaurant-name-login {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.no-margin-bottom {
+    margin-bottom:0;
+}
+
+.margin-bottom {
+    margin-bottom:20px;
+}
+
+.small-margin-bottom {
+    margin-bottom:10px;
+}
+
+.margin-right {
+    margin-right:10px;
+}
+
+.small-margin-right {
+    margin-right:4px;
+}
+
+.large-margin-right {
+    margin-right:20px;
+}
+
+.align-middle {
+    vertical-align:middle;
+}
+
+.hr-solid {
+    border-top: 1px solid #8c8b8b;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.no-padding-left {
+    padding-left:0;
+}
+
+.no-padding-right {
+    padding-right:0;
+}
+
+.small-padding-top {
+    padding-top:10px;
+}
+
+.small-padding-bottom {
+    padding-bottom:10px;
+}
+
+.image-strip {
+    display: block;
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+}
+
+.image-strip__container {
+    overflow-y: hidden;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.image-strip__container img {
+    width: 150px;
+    max-width:150px;
+    margin: 0 auto;
+    display: block;
+}
+
+.image-strip__item {
+    border: 1px solid gray;
+    display: inline-block;
+    overflow: hidden;
+    height: 230px;
+    width: 162px;
+    padding: 5px;
+    margin-right: 5px;
+    white-space: normal;
+
+    line-height: 1em;
+}
+
+.image-strip__title {
+    margin-top: 3px;
+    font-weight: bold;
+}
+
+.image-strip__container .image-strip__description {
+    font-size: 0.8em;
+    margin-top: 3px;
+}
+
+.featured-products-title-container {
+    font-size:1.5em;
+    text-align: center;
+}
+
+.featured-products-listing-name {
+    font-weight: bold;
+}
+
+.featured-products-listing-blurb {
+    font-size: .7em;
+}
+
+.back-chevron {
+    margin-top:3px;
+}
+
+.large-pills {
+    padding:10px 60px;
+}
+
+.pill-fix {
+    padding-left:57px;
+    padding-right:57px;
+}
+
+.large-glyphicon {
+    font-size:40px;
+}
+
+.sticky-top {
+    position: fixed;
+    top: 0;
+    z-index:2;
+}
+
+.sticky-bottom {
+    position: fixed;
+    bottom: 0;
+    z-index:2;
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+/* DZ added EOF */

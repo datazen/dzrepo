@@ -1,0 +1,61 @@
+<div ng-init="init()" ng-cloak class="container">
+    <div class="col-xs-12">
+        <div class="row restaurant-top logo-container">
+            <img src="./img/servi-100.png" class="logo">
+        </div>
+        <div class="row">
+            <h2 class="text-center">Request bill</small>
+        </div>
+
+        <div class="row color-row text-center">
+            <!--<div class="col-xs-12 col-centered2">-->
+                <!--<div class="row waiter-photo">-->
+                    <!--<img src="https://home.ser.vi/app-assets/restaurant/{{restaurant.waiter.userpic}}" class="rounded-img">-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="row spacer"></div>
+
+            <div class="row bill__payment-method">
+                <h4>How would you like to pay?</h4>
+                <ul class="list-group selectable-list" ng-click="selectPaymentMethod($event)">
+                    <li class="list-group-item" ng-class="{'active': isPaymentButtonActive(1)}" data-value="1">Cash</li>
+                    <li class="list-group-item" ng-class="{'active': isPaymentButtonActive(2)}" data-value="2">PIN</li>
+                    <li class="list-group-item" ng-class="{'active': isPaymentButtonActive(3)}" data-value="3">Credit Card</li>
+                </ul>
+            </div>
+
+            <div class="row spacer" ng-show="step == 2 && hasTip()">
+                <h4>Add a tip</h4>
+                <div class="row">For your convenience you can tell {{restaurant.waiter.name}} to add your tip to the bill</div>
+                <div class="row spacer">
+                    <div class="col-xs-5">
+                        <button type="button" class="btn btn-number pull-right bill__tip-minus"
+                                ng-class="{'bill__tip-disabled': tip <= tipLimits.min}"
+                                ng-disabled="tip <= tipLimits.min"
+                                ng-click="changeTipBy(-1)">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </button>
+                    </div>
+                    <div class="col-xs-3 bill__tip-amount-container">
+                        <span class="bill__tip-amount">&euro; {{tip}}</span>
+                    </div>
+                    <div class="col-xs-4">
+                        <button type="button" class="btn btn-number pull-left bill__tip-plus"
+                                ng-class="{'bill__tip-disabled': tip >= tipLimits.max}"
+                                ng-disabled="tip >= tipLimits.max"
+                                ng-click="changeTipBy(1)">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row big-spacer" ng-show="step == 2">
+                <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="submitBillRequest()">Request bill</button>
+                <button type="button" class="btn btn-default btn-lg btn-block" ng-click="cancelBillRequest()">Cancel and close</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

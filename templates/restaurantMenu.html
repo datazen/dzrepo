@@ -1,0 +1,10 @@
+
+<div ng-init="init()" ng-cloak class="container">
+    <div class="modal-header ">
+        <button type="button" class="btn btn-small btn-primary" ng-click="back()">Back</button>
+    </div>
+    <div ng-if="menuUrl!=null">
+    <img src="https://s3.amazonaws.com/serviworldwide/restaurant/{{menuUrl}}" frameborder="0"
+        style="overflow: hidden;  width: 100%; position: absolute;"  width="100%" >
+    </div>
+</div>

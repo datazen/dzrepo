@@ -1,0 +1,101 @@
+<div ng-init="init()" ng-cloak class="container">
+    <script type="text/ng-template" id="refillModal.html">
+        <div class="modal-header"></div>
+        <div class="modal-body">
+            <p>Quickly request a round of refills for everyone</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="order()">Order</button>
+            <button type="button" class="btn btn-default" ng-click="dismiss()">Cancel</button>
+        </div>
+    </script>
+
+    <div class="row restaurant-top logo-container">
+        <img src="./img/servi-100.png" class="logo">
+        <p>experience more</p>
+    </div>
+
+    <div class="row small-spacer color-row">
+        <div class="col-xs-12">
+            <div class="row small-spacer">
+                <div class="col-xs-8">
+                    <div class="table-info-container">                
+                        <div class="table-info-thumb"><img class="restaurant-logo" src="https://home.ser.vi/app-assets/restaurant/blues_bar/blue-bar-logo-200.jpg" /></div>
+                        <div class="table-info-text">
+                            <p class="xsmall-margin-bottom">Table: <strong>{{restaurant.table.tableNumber}}</strong></p>
+                            <button class="btn btn-xs btn-block btn-default" style="padding:2px;" type="submit" ng-click="changeTable()">Change</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="row">
+                        <div class="float-right waiter-photo-container">
+                            <div class="waiter-photo">
+                                <img src="https://home.ser.vi/app-assets/restaurant/{{restaurant.waiter.userpic}}" class="rounded-img">
+                                <span class="waiter-name">{{restaurant.waiter.name}}</p>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div> 
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- TODO: replace static data with web service products category data -->
+                    <div id="image-strip-container">
+                      <div id="image-strip">
+                        <div ng-click="showFeaturedProductsScreen('cocktails')">
+                          <img src="img/dummy/cocktails.png">
+                          <p><strong>Cocktails</strong><br /><small>Click to view our featured<br />house cocktails</small></p>
+                        </div>
+                        <div ng-click="showFeaturedProductsScreen('beers')">
+                          <img src="img/dummy/beer.png">
+                          <p><strong>Beer</strong><br /><small>Click to view our featured<br />craft beers</small></p>
+                        </div>
+                        <div ng-click="showFeaturedProductsScreen('wines')">
+                          <img src="img/dummy/wine.png">
+                          <p><strong>Wine</strong><br /><small>Click to view our featured<br />house wines</small></p>
+                        </div>
+                        <div ng-click="showFeaturedProductsScreen('beverages')">
+                          <img src="img/dummy/beverages.png">
+                          <p><strong>Beverages</strong><br /><small>Click to view our featured<br />cold beverages</small></p>
+                        </div>                        
+                      </div>
+                    </div>                                      
+                </div>
+            </div>
+
+            <div ng-show="lastNotification" class="row message-row">
+                <div class="col-xs-12 col-centered ">
+                    <p ng-if="lastNotification"><strong>{{lastNotification.friendlyCallType}}</strong>. <i class="status-message">{{lastNotification.status}}</i></p>
+                </div>
+            </div>
+
+            <div class="row small-spacer xsmall-padding-top" ng-if="restaurant.buttonEnabled('call')">
+                <div class="col-xs-12">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="callWaiter()">
+                    <div class="col-xs-2 margin-right"><i class="fa fa-bell align-middle" aria-hidden="true"></i></div>
+                    <div class="col-xs-10 col-centered">{{restaurant.captionForButton('call','Request your Server')}}</div></button>
+                </div>
+            </div>
+
+            <div class="row small-spacer xsmall-padding-top" ng-if="restaurant.buttonEnabled('check')">
+                <div class="col-xs-12">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="showRequestBillScreen()">
+                    <div class="col-xs-2 margin-right"><i class="fa fa-sticky-note align-middle" aria-hidden="true"></i></div>
+                    <div class="col-xs-10 col-centered">{{restaurant.captionForButton('check','Request the Bill')}}</div></button>
+                </div>
+            </div>
+
+            <div class="row small-spacer xsmall-padding-top" ng-if="restaurant.buttonEnabled('check')">
+                <div class="col-xs-12">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="logout()">
+                    <div class="col-xs-2 margin-right"><i class="fa fa-sign-out align-middle" aria-hidden="true"></i></div>
+                    <div class="col-xs-10 col-centered">End your Visit</div></button>
+                </div>
+            </div>            
+
+        </div>
+    </div>
+
+</div>

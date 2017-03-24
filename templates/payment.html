@@ -1,0 +1,10 @@
+<div ng-if="message">{{message}}</div>
+
+<div>Amount: <input id="amount" placeholder="Amount" ng-model="payment.amount" ></div>
+<div>Card number: <input id="card_number" placeholder="Card number" ng-model="payment.card.number" ></div>
+<div>Expriration:
+      <input id="expiration_day" placeholder="MM/DD" ng-model="payment.card.exp_month">
+     <input id="expiration_month" placeholder="MM/DD"  ng-model="payment.card.exp_year">
+ </div>
+<div>CVC: <input id="cvc" placeholder="CVC" ng-model="payment.card.cvc"></div>
+<div><button type="button" ng-click="pay()">Pay</button></div>

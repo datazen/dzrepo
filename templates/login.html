@@ -1,0 +1,64 @@
+<div ng-init="init()" ng-cloak class="container">
+
+    <div class="row login-top logo-container">
+        <img src="./img/servi-100.png" class="logo logo__login--restaurant">
+    </div>
+
+    <div class="row login-bottom">
+        <form class="form-signin">
+                <div class="row spacer">
+                    <div class="col-xs-10 col-centered">
+                        <input type="text"
+                               ng-model="name"
+                               placeholder="Enter restaurant name here"
+                               uib-typeahead="name for restaurantName in searchRestaurantByName($viewValue)"
+                               typeahead-on-select="selectRestaurant($item, $model, $label)"
+                               typeahead-template-url="autocompleteRestaurantResult.html"
+                               class="form-control"
+                        >
+                    </div>
+                </div>
+                <div class="row spacer">
+                    <div class="col-xs-10 col-centered">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="loginToRestaurantByName(name)" ng-disabled="loginInProgress">
+                            Enter <span class="glyphicon glyphicon-chevron-right float-right"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row spacer" ng-if="error" >
+                    <div class="col-xs-10 col-centered">
+                        <div class="error-message"><p>{{error}}</p></div>
+                    </div>
+                </div>
+                <a id="below-button"></a>
+        </form>
+    </div>
+
+
+</div>
+
+
+<script type="text/ng-template" id="autocompleteRestaurantResult.html">
+    <a class="autocompleteRestaurantResult">
+        <div class="autocompleteRestaurantResult__image">
+            <img src="img/restaurant_logos/restaurant_{{match.model.restaurantId}}.png" ng-if="match.model.hasLogo" />
+            <img src="img/restaurant_logos/restaurant_nologo.png" ng-if="!match.model.hasLogo" />
+        </div>
+
+        <div class="autocompleteRestaurantResult__body">
+            <div class="autocompleteRestaurantResult__title">{{match.model.restaurantName}}</div>
+            <div class="autocompleteRestaurantResult__details">
+                <div class="autocompleteRestaurantResult__details__address">
+                    {{match.model.address}}
+                </div>
+                <!--div class="autocompleteRestaurantResult__details__distance">
+                    <img src="img/icon_location-32.png" />
+                    0.5km
+                </div-->
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+
+    </a>
+</script>

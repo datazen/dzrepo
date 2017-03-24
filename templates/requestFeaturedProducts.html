@@ -1,0 +1,66 @@
+<div ng-init="init()" ng-cloak class="container">
+    <script type="text/ng-template" id="orderProductsModal.html">
+        <div class="modal-header"></div>
+        <div class="modal-body">
+            <p class="centered-text"><span class="large-glyphicon glyphicon glyphicon-bell"></span></p>
+            <p class="centered-text small-padding-bottom">How many {{category}} will you be ordering?</p>
+            <p class="centered-text"><button type="button" class="btn btn-primary large-pills" ng-click="order('1')">1</button></p>
+            <p class="centered-text"><button type="button" class="btn btn-primary large-pills" ng-click="order('2')">2</button></p>
+            <p class="centered-text"><button type="button" class="btn btn-primary large-pills pill-fix" ng-click="order('3')">3+</button></p>
+        </div>
+        <div class="modal-footer">
+            <div><button type="button" class="btn btn-default" ng-click="dismiss()">Cancel</button></div>
+        </div>
+    </script>
+
+<style>
+
+</style>
+    <div class="sticky-top bg-white col-xs-12">
+        <div class="row restaurant-top logo-container">
+            <img src="./img/servi-100.png" class="logo">
+        </div>      
+        <div class="featured-products-title-container bg-white">
+                <div class="hr-solid small-padding-bottom"></div>
+                <span ng-click="goBack()" class="back-chevron glyphicon glyphicon-menu-left pull-left align-middle"></span>
+                <div class="heading-title col-centered margin-right small-margin-bottom">{{title}}</div>
+                <div class="hr-solid small-padding-bottom"></div>
+        </div>    
+    </div>
+
+    <div class="row color-row" style="margin-top:120px; margin-bottom:90px;">
+        <div class="col-xs-12">
+            <div class="keep-scroll" ng-repeat="product in products" index="product.id">
+
+                <div class="align-middle small-spacer">
+                    <div class="col-xs-3 no-padding-right no-padding-left">
+                        <img src="img/dummy/{{product.image}}" class="img-responsive align-middle">
+                    </div>
+                    <div class="col-xs-9 small-padding-top">
+                      <div class="featured-products-listing-name">{{product.name.toUpperCase()}}</div>
+                      <div class="featured-products-listing-blurb">{{product.blurb.toUpperCase()}}</div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="sticky-bottom bg-white col-xs-12">
+        <div class="row spacer">
+            <div class="col-xs-12">
+                <div class="hr-solid"></div>
+            </div>
+        </div>
+
+        <div class="row spacer margin-bottom">
+            <div class="col-xs-12">
+                <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="openOrderProductsModal()">
+                <div class="col-xs-2 margin-right"><span class="glyphicon glyphicon-bell align-middle" aria-hidden="true"></span></div>                
+                <div class="col-xs-10 col-centered">Request a {{category.slice(0, -1) | capitalize}}</div></button>
+            </div>
+        </div>
+    </div>
+
+</div>

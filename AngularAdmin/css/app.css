@@ -1,0 +1,223 @@
+/*
+ * Base structure
+ */
+
+body {
+  padding-top: 50px;
+}
+
+a { 
+  cursor: pointer; 
+}
+
+/*
+ * Header
+ */
+
+.navbar-fixed-top {
+  border: 0;
+}
+.nav, .pagination, .carousel, .panel-title a { 
+  cursor: pointer; 
+}
+.nav-title { 
+  color:white; text-decoration:underline; 
+}
+
+.header-avatar {
+  cursor: pointer;
+  margin: 6px;  
+}
+.header-avatar_img-container {
+  text-align: right;
+}
+.img-circle {
+    border: 1px solid #e6e9ed;
+}
+.img-circle.header-avatar_img {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid rgba(52, 73, 94, 0.44);
+    position: inherit;
+    width: 29%;
+    z-index: 1000;
+}
+
+/*
+ * SideBar 
+ */
+
+.sidebar {
+  display: none; /* Hide for mobile, show later */
+}
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #222222;
+    border-top: 1px solid #575757;
+    border-right: 1px solid #eee;
+  }
+}
+.sidebar-nav > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.sidebar-nav > .active > a,
+.sidebar-nav > .active > a:hover,
+.sidebar-nav > .active > a:focus {
+  color: #fff;
+  background-color: #337ab7;
+}
+.sidebar-title {
+  margin:0 0 20px -4px;
+}
+.sidebar-title__name {
+  color: white;
+  margin-top: 0;
+}
+.sidebar-title__button {
+  cursor: pointer; 
+  position: absolute; 
+  right: -12px; 
+  top: -8px;
+}
+.sidebar-title__button-glyph {
+  font-size: 1.5em;
+  margin-top: 4px;
+}
+.sidebar__main-menu,
+.sidebar__settings-menu {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;  
+}
+.sidebar-menu_button {
+  height: 44px !important;
+  text-align: left;
+  width: 100% !important;
+}
+.sidebar__menu_dropdown > button > span {
+  padding-left: 6px;
+}
+.sidebar__main-menu_button {}
+.sidebar__main-menu_button_list {
+  padding-left:0 !important;
+  background-color: #000;
+}
+.sidebar__main-menu_button_list li {
+  height:44px !important;
+  padding-top:10px;  
+}
+.sidebar__main-menu_button_list li > a {
+  margin-left:20px;
+  text-decoration:none;  
+  vertical-align: middle;
+  color: white;
+}
+.sidebar__main-menu_button_list li:hover,
+.sidebar__main-menu_button_list li:focus {
+  background-color: #333; 
+}
+.sidebar__main-menu_button_list li:active,
+.sidebar__main-menu_button_list.active {
+  color: white;
+  background-color: #337ab7 !important;
+  border-color: #337ab7 !important;
+  outline: 0 !important;  
+}
+.selected {
+  background-color: #337ab7 !important;
+}
+
+/* 
+ * Flash alerts
+ */
+
+.default{
+  opacity: 1;
+}
+
+.fade{
+  -webkit-transition: opacity 2s; /* For Safari 3.1 to 6.0 */
+  transition: opacity 2s;
+  opacity: 0;
+}
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+.list__add-button {
+  position:fixed;
+  top: 85px;
+  right: 28px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+  .list__add-button {
+    right: 50px;
+  }  
+}
+
+
+/* Tables */
+.action { 
+  text-align: right; 
+}
+.action-details { 
+  float:right; 
+}
+
+/*
+ * Custom Bootstrap
+ */
+
+.btn {
+  outline: 0 !important;
+}
+
+.btn-black {
+  color: #9d9d9d;
+  background-color: #222222;
+  border-color: #222222;
+}
+.btn-black:hover,
+.btn-black:focus {
+  color: white;
+  background-color: #666;
+  border-color: #222222;
+}
+.btn-black:active,
+.btn-black.active {
+  color: white;
+  background-color: #337ab7;
+  border-color: #337ab7;
+}
+.btn-black.disabled:hover,
+.btn-black.disabled:focus,
+.btn-black.disabled:active,
+.btn-black.disabled.active,
+.btn-black[disabled]:hover,
+.btn-black[disabled]:focus,
+.btn-black[disabled]:active,
+.btn-black[disabled].active,
+fieldset[disabled] .btn-black:hover,
+fieldset[disabled] .btn-black:focus,
+fieldset[disabled] .btn-black:active,
+fieldset[disabled] .btn-black.active {
+  background-color: #222222;
+  border-color: #222222;
+} 

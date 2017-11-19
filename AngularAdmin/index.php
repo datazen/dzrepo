@@ -39,7 +39,6 @@
     <script src="js/controllers/common.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/dashboard.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/login.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
-    <script src="js/controllers/register.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/profile.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/users.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 

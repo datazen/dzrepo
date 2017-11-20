@@ -14,7 +14,7 @@ class Users {
 	    }
 	}
 
-    public static function getAllLevels() {
+    public static function getAllAccessLevels() {
 	    $sql = "select * FROM accessLevels ORDER BY id";
 	    try {
 		    $db = Database::getConnection();

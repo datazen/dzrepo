@@ -31,8 +31,8 @@
                 };
         }]);        
 
-    UsersController.$inject = ['UserService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout'];
-    function UsersController(UserService, $rootScope, FlashService, $scope, $location, $timeout) {
+    UsersController.$inject = ['UserService', 'AccessService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout'];
+    function UsersController(UserService, AccessService, $rootScope, FlashService, $scope, $location, $timeout) {
         var vm = this;
 
         vm.user = null;
@@ -83,7 +83,7 @@
         }
 
         function loadAllAccessLevels() {
-            UserService.GetAllAccessLevels()
+            AccessService.GetAllAccessLevels()
                 .then(function (levels) {
                     vm.levels = levels;
                 });

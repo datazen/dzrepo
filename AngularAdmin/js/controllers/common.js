@@ -21,7 +21,9 @@
             ($rootScope.isCurrentPath.indexOf('addUser')>-1) ||
             ($rootScope.isCurrentPath.indexOf('editUser')>-1) ||
             ($rootScope.isCurrentPath.indexOf('profile')>-1) ||
-            ($rootScope.isCurrentPath.indexOf('settings')>-1)) {
+            ($rootScope.isCurrentPath.indexOf('accessLevels')>-1) ||
+            ($rootScope.isCurrentPath.indexOf('editAccessLevel')>-1) ||
+            ($rootScope.isCurrentPath.indexOf('pageAccess')>-1)) {
         } else {
             $scope.menuToggle = true;
         }

@@ -35,12 +35,14 @@
     <script src="js/services/flash.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/services/user.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/services/upload.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="js/services/access.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
     <script src="js/controllers/common.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/dashboard.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/login.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/profile.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/users.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="js/controllers/accessLevels.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
     <?php
     if (file_exists('js/general.js.php')) include 'js/general.js.php';

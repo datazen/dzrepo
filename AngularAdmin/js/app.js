@@ -55,6 +55,18 @@
                 controllerAs: 'vm'
             }) 
 
+            .when('/accessLevels', {
+                controller: 'AccessLevelsController',
+                templateUrl: 'pages/accessLevels.php',
+                controllerAs: 'vm'
+            })   
+
+            .when('/editAccessLevel/', {
+                controller: 'AccessLevelsController',
+                templateUrl: 'pages/editAccessLevel.php',
+                controllerAs: 'vm'
+            })                       
+
 
             .when('/page-1', {
                 controller: 'HomeController',

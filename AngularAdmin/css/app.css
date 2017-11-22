@@ -172,13 +172,30 @@ a {
   }  
 }
 
+/*
+ * Tables 
+ */
 
-/* Tables */
 .action { 
   text-align: right; 
 }
 .action-details { 
   float:right; 
+}
+
+/*
+ * Modals
+ */
+
+.modal-backdrop {
+   opacity: 0.8 !important;
+}
+.modal {
+   top: 5% !important;
+   opacity: 1 !important;
+}
+.modal-title {
+  margin: 10px 0 20px 20px;
 }
 
 /*

@@ -43,6 +43,7 @@
     <script src="js/controllers/profile.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/users.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/accessLevels.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="js/controllers/pageAccess.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
     <?php
     if (file_exists('js/general.js.php')) include 'js/general.js.php';

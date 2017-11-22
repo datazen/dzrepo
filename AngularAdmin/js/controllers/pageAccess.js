@@ -3,19 +3,34 @@
 
     angular
         .module('app')
-        .controller('AccessLevelsController', AccessLevelsController);
+        .controller('PageAccessController', PageAccessController)
+        .filter('startFrom', function() {
+                    return function(input, start) {
+                        start = +start; //parse to int
+                        return input.slice(start);
+                    }
+                });           
 
-    AccessLevelsController.$inject = ['UserService', 'AccessService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout', '$uibModal', '$log'];
-    function AccessLevelsController(UserService, AccessService, $rootScope, FlashService, $scope, $location, $timeout, $uibModal, $log) {
+    PageAccessController.$inject = ['UserService', 'AccessService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout', '$uibModal', '$log', '$route'];
+    function PageAccessController(UserService, AccessService, $rootScope, FlashService, $scope, $location, $timeout, $uibModal, $log, $route) {
         var vm = this;
 
         vm.user = null;
+        vm.pages = [];
+        vm.page = null;
         vm.accessLevels = [];
-        vm.accessLevel = null;
-        vm.updateAccessLevel = updateAccessLevel;
+        vm.updatePage = updatePage;
         vm.showForm = showForm;
 
+        vm.routes = $route.routes;
+
         initController();
+
+        $scope.currentPage = 0;
+        $scope.pageSize = 10;
+        $scope.numberOfPages=function() {
+            return Math.ceil($scope.vm.pages.length/$scope.pageSize);                
+        }      
 
         $scope.go = function ( path ) {
           $location.path( path );
@@ -23,7 +38,8 @@
 
         function initController() {
             loadCurrentUser();
-            loadAllAccessLevels();           
+            loadAllPages(); 
+            loadAllAccessLevels();          
         }
 
         function loadCurrentUser() {
@@ -38,24 +54,30 @@
                 .then(function (levels) {
                     vm.accessLevels = levels;
                 });
+        }         
+
+        function loadAllPages() {
+            AccessService.GetAllPages(vm.routes)
+                .then(function (pages) {
+                    vm.pages = pages;
+                });
         } 
 
-        function loadAccessLevel(id) {
-            AccessService.GetAccessLevelById(id)
-                .then(function (level) {
-                    vm.accessLevel = level;
+        function loadPage(id) {
+            AccessService.GetPageById(id)
+                .then(function (page) {
+                    vm.page = page;
                 });
         }               
 
-        function updateAccessLevel() {
+        function updatePage() {
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;              
-            AccessService.UpdateAccessLevel(vm.accessLevel)
+            AccessService.UpdatePage(vm.page)
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
-                        FlashService.Success('Update access level successful', true);
-                       // $location.path('/editEmployee');
+                        FlashService.Success('Update page access successful', true);
                     } else {
                         FlashService.Error(response.msg);
                         vm.dataLoading = false;
@@ -71,21 +93,21 @@
             $scope.message = "Show form button clicked";
             console.log($scope.message);
 
-            loadAccessLevel(id);
+            loadPage(id);
 
-            $timeout(function(){  
+         //   $timeout(function(){  
                 var modalInstance = $uibModal.open({
-                    templateUrl: 'access-modal-form.html',
+                    templateUrl: 'page-modal-form.html',
                     controller: modalInstanceCtrl,
                     scope: $scope,
                     animation: false,
                     resolve: {
                         accessForm: function () {
-                            return $scope.accessForm;
+                            return $scope.pageAccess;
                         }
                     }
                 });
-            }, 500);            
+          //  }, 500);
 
             modalInstance.result.then(function (selectedItem) {
                 $scope.selected = selectedItem;
@@ -97,14 +119,14 @@
         function modalInstanceCtrl($scope, $uibModalInstance, accessForm) {
             $scope.form = {}
             $scope.submitForm = function () {
-                if ($scope.form.accessForm.$valid) {
-                    console.log('Access levels form is in scope');
+                if ($scope.form.pageAccess.$valid) {
+                    console.log('Page access form is in scope');
                     $uibModalInstance.close('closed');
 
-                    updateAccessLevel();
-                    loadAllAccessLevels();
+                    updatePage();
+                    loadAllPages();
                 } else {
-                    console.log('Access levels form is NOT in scope');
+                    console.log('Page access form is NOT in scope');
                 }
             };
 

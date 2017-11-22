@@ -41,6 +41,11 @@ $app->get('/accessLevels', function () { echo Access::getAllAccessLevels(); });
 $app->get('/getAccessLevelById/{id}', function (Request $request, Response $response) { echo Access::getAccessLevelById($request); });
 $app->post('/updateAccessLevel/{id}', function (Request $request, Response $response) { echo Access::updateAccessLevel($request); });
 
+$app->post('/getAllPages', function (Request $request, Response $response) { echo Access::getAllPages($request); });
+//$app->get('/getAllPages', function () { echo Access::getAllPages(); });
+$app->get('/getPageById/{id}', function (Request $request, Response $response) { echo Access::getPageById($request); });
+$app->post('/updatePage/{id}', function (Request $request, Response $response) { echo Access::updatePage($request); });
+
 // Login
 $app->post('/login', function (Request $request, Response $response) { echo Users::processLogin($request); });
 

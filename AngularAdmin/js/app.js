@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'ngCookies', 'ngAnimate', 'ngSanitize', 'ngTouch', 'ngMessages', 'ui.bootstrap', 'ui.bootstrap'])
+        .module('app', ['ngRoute', 'ngCookies', 'ngAnimate', 'ngSanitize', 'ngTouch', 'ngMessages', 'ui.bootstrap'])
         .config(config)
         .run(run);
 
@@ -24,12 +24,6 @@
                 templateUrl: 'pages/login.php',
                 controllerAs: 'vm'
             })
-
-            .when('/register', {
-                controller: 'RegisterController',
-                templateUrl: 'pages/register.php',
-                controllerAs: 'vm'
-            }) 
 
             .when('/profile', {
                 controller: 'ProfileController',
@@ -61,9 +55,9 @@
                 controllerAs: 'vm'
             })   
 
-            .when('/editAccessLevel/', {
-                controller: 'AccessLevelsController',
-                templateUrl: 'pages/editAccessLevel.php',
+            .when('/pageAccess', {
+                controller: 'PageAccessController',
+                templateUrl: 'pages/pageAccess.php',
                 controllerAs: 'vm'
             })                       
 

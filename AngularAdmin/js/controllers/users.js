@@ -29,7 +29,13 @@
                         });
                     }
                 };
-        }]);        
+        }])
+        .filter('startFrom', function() {
+            return function(input, start) {
+                start = +start; //parse to int
+                return input.slice(start);
+            }
+        });   
 
     UsersController.$inject = ['UserService', 'AccessService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout'];
     function UsersController(UserService, AccessService, $rootScope, FlashService, $scope, $location, $timeout) {
@@ -58,6 +64,16 @@
                 if (userId) loadUserRecord(userId);
             }            
         }
+
+        $scope.currentPage = 0;
+        $scope.pageSize = 10;
+        $scope.numberOfPages=function() {
+            return Math.ceil($scope.vm.pages.length/$scope.pageSize);                
+        }    
+
+        $scope.go = function ( path ) {
+          $location.path( path );
+        }; 
 
         function loadCurrentUser() {
             UserService.GetByUsername($rootScope.globals.currentUser.username)
@@ -95,11 +111,7 @@
                     vm.userRecord = user;
                 });
         }
-
-        $scope.go = function ( path ) {
-          $location.path( path );
-        };        
-
+       
         function editUserRecord(id) {
             $location.path('/editUser/').search({id: id});                        
         }

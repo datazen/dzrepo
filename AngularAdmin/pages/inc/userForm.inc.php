@@ -13,7 +13,7 @@
 			<div class="form-group" ng-class="{ 'has-error': form.accessLevel.$dirty && form.accessLevel.$error.required }">
 				<label class="control-label" for="accessLevel">Access Level</label>
                 <select  name="accessLevel" id="accessLevel" class="form-control" ng-model="vm.userRecord.accessLevel">
-                    <option ng-repeat="level in vm.levels" value="{{level.id}}">{{level.level}} - {{level.name}}</option>
+                    <option ng-repeat="level in vm.levels" value="{{level.level}}">{{level.level}} - {{level.name}}</option>
                 </select>
 				<span ng-show="form.accessLevel.$dirty && form.accessLevel.$error.required" class="help-block">Access level is required</span>
 			</div>		    

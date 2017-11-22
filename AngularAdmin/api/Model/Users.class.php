@@ -193,16 +193,17 @@ class Users {
 
 	public static function updateUser($request) {
         $now = new DateTime();
-        $postData = $request->getParsedBody();        
+        $postData = $request->getParsedBody();  
         $user = array();
         $user['username'] = (isset($postData['username'])) ? $postData['username'] : null;
         $user['password'] = (isset($postData['password'])) ? $postData['password'] : null;
         $user['firstName'] = (isset($postData['firstName'])) ? $postData['firstName'] : null;
         $user['lastName'] = (isset($postData['lastName'])) ? $postData['lastName'] : null;
+        $user['accessLevel'] = (isset($postData['accessLevel'])) ? $postData['accessLevel'] : null;
         $user['avatar'] = (isset($filename)) ? $filename : 'na.png';
         $user['lastModified'] = $now->format('Y-m-d H:i:s');
 
-		$sql = "UPDATE users SET password = :password, firstName = :firstName, lastName = :lastName, lastModified = :lastModified WHERE username = :username";
+		$sql = "UPDATE users SET password = :password, firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE username = :username";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
@@ -210,6 +211,7 @@ class Users {
 			$stmt->bindvalue(":password", $user['password']);
 			$stmt->bindvalue(":firstName", $user['firstName']);
 			$stmt->bindvalue(":lastName", $user['lastName']);
+			$stmt->bindvalue(":accessLevel", $user['accessLevel']);
 			$stmt->bindvalue(":lastModified", $user['lastModified']);
 			$stmt->execute();
 			$db = null;

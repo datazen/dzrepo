@@ -47,9 +47,7 @@
         vm.levels = [];
         vm.addUser = addUser;
         vm.updateUser = updateUser;
-    //    vm.editUser = editUser;
         vm.deleteUser = deleteUser;
-
         vm.editUserRecord = editUserRecord;
 
         initController();
@@ -127,8 +125,8 @@
                         loadAllUsers();
                     } else {
                         FlashService.Error(response.msg);
-                        vm.dataLoading = false;
                     }
+                    vm.dataLoading = false;
                     $timeout(function(){ $scope.startFade = true;
                         $timeout(function(){ $scope.hidethis = true; }, 200);
                     }, 2000);                      
@@ -146,8 +144,8 @@
                         $timeout(function(){ FlashService.Success('Add user successful', true); }, 500);
                     } else {
                         FlashService.Error(response.msg);
-                        vm.dataLoading = false;
                     }                     
+                    vm.dataLoading = false;
                 });
         }    
 
@@ -159,11 +157,10 @@
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         FlashService.Success('Update user successful', true);
-                       // $location.path('/editEmployee');
                     } else {
                         FlashService.Error(response.msg);
-                        vm.dataLoading = false;
                     }
+                    vm.dataLoading = false;
                     $timeout(function(){ $scope.startFade = true;
                         $timeout(function(){ $scope.hidethis = true; }, 200);
                     }, 2000);                     

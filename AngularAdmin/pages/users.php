@@ -16,7 +16,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
 				<th>Last Name</th>
 				<th class="action">Action</th>
 			</tr>
-			<tr ng-repeat="user in vm.allUsers">
+			<tr ng-repeat="user in vm.allUsers | startFrom:currentPage*pageSize | limitTo:pageSize">
         <td>{{user.id}}</td>
         <td>{{user.firstName}}</td>
         <td>{{user.lastName}}</td>
@@ -30,6 +30,10 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
         </td>
       </tr>
     </table>
-
+    <div class="align-right margin-right" ng-hide="vm.allUsers.length <= pageSize">
+        <button class="btn btn-primary btn-sm" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1"><span class="glyphicon glyphicon-chevron-left small-margin-right" aria-hidden="true"></span>Prev</button>
+        <span>{{currentPage+1}}/{{numberOfPages()}}</span>
+        <button class="btn btn-primary btn-sm" ng-disabled="currentPage >= vm.pages.length/pageSize - 1" ng-click="currentPage=currentPage+1">Next<span class="glyphicon glyphicon-chevron-right small-margin-left" aria-hidden="true"></span></button>
+    </div>
 	</div>
 </div>

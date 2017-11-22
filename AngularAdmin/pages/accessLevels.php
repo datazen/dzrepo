@@ -2,18 +2,6 @@
 if (file_exists('../inc/header.inc.php')) include '../inc/header.inc.php';
 if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
 ?> 
-<style>
-.modal-backdrop {
-   opacity: 0.8 !important;
-}
-.modal {
-   top: 5% !important;
-   opacity: 1 !important;
-}
-.modal-title {
-  margin: 10px 0 20px 20px;
-}
-</style>
 <div class="list col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main relative">
 	<h2 class="no-margin-top margin-bottom">Access Levels</h2>
 	<div class="col-sm-12 no-padding-left no-padding-right small-margin-top">
@@ -25,12 +13,12 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
 				<th class="action">Action</th>
 			</tr>
 			<tr ng-repeat="level in vm.accessLevels">
-        <td>{{level.level}}<span class="margin-left" ng-if="level.level == 1">(lowest)</span><span class="margin-left" ng-if="level.level == 5">(highest)</span></td>
+        <td>{{level.level}}<span class="margin-left" ng-if="level.level == 0">(lowest)</span><span class="margin-left" ng-if="level.level == 5">(highest)</span></td>
         <td>{{level.name}}</td>
         <td class="action">
 
 
-            <button ng-click="vm.showForm(level.id);" type="button" class="btn btn-default" aria-label="Edit"> 
+            <button ng-click="vm.showForm(level.id);" type="button" class="btn btn-default" ng-disabled="level.level == 0" aria-label="Edit"> 
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>               
 
@@ -39,7 +27,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
     </table>
 	</div>
   <!-- modal form -->
-  <script type="text/ng-template" id="modal-form.html">
+  <script type="text/ng-template" id="access-modal-form.html">
       <div class="modal-title">
         <h3>Edit Access Level</h3>
       </div>

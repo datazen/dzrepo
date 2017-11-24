@@ -10,6 +10,7 @@
         var service = {};
 
         service.GetAll = GetAll;
+        service.GetAllAccessLevels = GetAllAccessLevels;
         service.GetById = GetById;
         service.GetByUsername = GetByUsername;
         service.Create = Create;
@@ -20,6 +21,10 @@
 
         function GetAll() {
             return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+        }
+
+        function GetAllAccessLevels() {
+            return $http.get('/api/levels').then(handleSuccess, handleError('Error getting all access levels'));
         }
 
         function GetById(id) {

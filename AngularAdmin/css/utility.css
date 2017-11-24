@@ -22,8 +22,26 @@
 .with-mid-padding		{ padding: 10px !important; }
 .with-small-padding		{ padding: 5px !important; }
 .no-padding				{ padding: 0 !important; }
-.no-padding-left		{ padding-left: 0 !important; }
+.large-padding-top		{ padding-top: 30px !important; }
+.padding-top				{ padding-top: 16px !important; }
+.mid-padding-top			{ padding-top: 8px !important; }
+.small-padding-top		{ padding-top: 4px !important; }
+.no-padding-top			{ padding-top: 0 !important; }
+.large-padding-right		{ padding-right: 30px !important; }
+.padding-right			{ padding-right: 16px !important; }
+.mid-padding-right		{ padding-right: 8px !important; }
+.small-padding-right		{ padding-right: 4px !important; }
 .no-padding-right		{ padding-right: 0 !important; }
+.large-padding-left		{ padding-left: 30px !important; }
+.padding-left			{ padding-left: 16px !important; }
+.mid-padding-left		{ padding-left: 8px !important; }
+.small-padding-left		{ padding-left: 4px !important; }
+.no-padding-left			{ padding-left: 0 !important; }
+.large-padding-bottom	{ padding-bottom: 30px !important; }
+.padding-bottom			{ padding-bottom: 16px !important; }
+.mid-padding-bottom		{ padding-bottom: 8px !important; }
+.small-padding-bottom	{ padding-bottom: 4px !important; }
+.no-padding-bottom		{ padding-bottom: 0 !important; }
 
 /* Margins */
 .large-margin-top		{ margin-top: 30px !important; }
@@ -67,16 +85,18 @@
 
 /* Absolute positioning */
 .relative				{ position: relative; }
-.absolute-left {
-	position: absolute;
-	top: 0;
-    left: 0;	
-}
+.absolute-left,
 .absolute-right {
 	position: absolute;
-	top: 0;
-    right: 0;
-}
+	top: 50%;
+	margin-top: -8px;
+	}
+	.absolute-left {
+		left: 0;
+	}
+	.absolute-right {
+		right: 0;
+	}
 
 /* This class disables mouse events on compatible browsers, a polyfill is provded in setup.js for others */
 .no-pointer-events		{ pointer-events: none; }

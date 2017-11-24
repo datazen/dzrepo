@@ -59,7 +59,13 @@
                 controller: 'PageAccessController',
                 templateUrl: 'pages/pageAccess.php',
                 controllerAs: 'vm'
-            })                       
+            })      
+
+            .when('/configuration/:id', {
+                controller: 'ConfigurationController',
+                templateUrl: 'pages/configuration.php',
+                controllerAs: 'vm'
+            })  
 
 
             .when('/page-1', {
@@ -90,7 +96,7 @@
     }
 
     run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
-    function run($rootScope, $location, $cookieStore, $http) {
+    function run($rootScope, $location, $cookieStore, $http) {       
         // keep user logged in after page refresh
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {
@@ -99,7 +105,8 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+//alert($location.path());             
+            var restrictedPage = $.inArray($location.path(), ['/login']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

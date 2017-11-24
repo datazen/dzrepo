@@ -73,19 +73,17 @@
 
             loadAccessLevel(id);
 
-            $timeout(function(){  
-                var modalInstance = $uibModal.open({
-                    templateUrl: 'access-modal-form.html',
-                    controller: modalInstanceCtrl,
-                    scope: $scope,
-                    animation: false,
-                    resolve: {
-                        accessForm: function () {
-                            return $scope.accessForm;
-                        }
+            var modalInstance = $uibModal.open({
+                templateUrl: 'access-modal-form.html',
+                controller: modalInstanceCtrl,
+                scope: $scope,
+                animation: false,
+                resolve: {
+                    accessForm: function () {
+                        return $scope.accessForm;
                     }
-                });
-            }, 500);            
+                }
+            });
 
             modalInstance.result.then(function (selectedItem) {
                 $scope.selected = selectedItem;

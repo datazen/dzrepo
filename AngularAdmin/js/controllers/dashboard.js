@@ -5,19 +5,22 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope'];
-    function HomeController(UserService, $rootScope) {
+    HomeController.$inject = ['UserService', '$rootScope', '$location'];
+    function HomeController(UserService, $rootScope, $location) {
         var vm = this;
 
         vm.user = null;
         vm.allUsers = [];
         vm.deleteUser = deleteUser;
 
+        // clear any url parameters
+        if ($location.search()) $location.url($location.path());
+
         initController();
 
         function initController() {
             loadCurrentUser();
-            loadAllUsers();
+            loadAllUsers(); 
         }
 
         function loadCurrentUser() {

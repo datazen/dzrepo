@@ -38,7 +38,7 @@
             $rootScope.flash = {
                 message: message,
                 type: 'success',
-                keepAfterLocationChange: keepAfterLocationChange
+                //keepAfterLocationChange: keepAfterLocationChange
             };
         }
 

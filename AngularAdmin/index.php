@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Secure Payroll</title>
+    <title>Angular Admin</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" />
     <link rel="stylesheet" href="css/app.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
     <link rel="stylesheet" href="css/utility.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
@@ -36,14 +36,16 @@
     <script src="js/services/user.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/services/upload.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/services/access.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="js/services/configuration.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
-    <script src="js/controllers/common.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="js/controllers/sidebar.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/dashboard.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/login.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/profile.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/users.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/accessLevels.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="js/controllers/pageAccess.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="js/controllers/configuration.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
     <?php
     if (file_exists('js/general.js.php')) include 'js/general.js.php';

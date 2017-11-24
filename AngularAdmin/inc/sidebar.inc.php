@@ -1,7 +1,7 @@
 <div class="sidebar col-sm-3 col-md-2" ng-controller="SidebarCtrl">
 
   <div class="sidebar-title relative">
-    <h4 class="sidebar-title__name"><span ng-show="menuToggle" ng-hide="!menuToggle">My Company</span><span ng-show="!menuToggle" ng-hide="menuToggle">Configuration</span></h4>
+    <h4 class="sidebar-title__name"><span ng-show="menuToggle" ng-hide="!menuToggle">My Company</span><span ng-show="!menuToggle" ng-hide="menuToggle">Settings</span></h4>
     <button ng-click="menuToggle = !menuToggle" class="sidebar-title__button btn btn-xs" ng-class="menuToggle ? 'btn-success' : 'btn-primary'">
       <span class="sidebar-title__button-glyph glyphicon" ng-class="menuToggle ? 'glyphicon-cog' : 'glyphicon-home'" aria-hidden="true"></span>
     </button>
@@ -24,17 +24,29 @@
 
   <ul class="sidebar__settings-menu nav sidebar-nav" ng-show="!menuToggle">
     <li class="sidebar__menu_dropdown">
-      <button type="button" style="{{(isCurrentPath.indexOf('users')>-1 || isCurrentPath.indexOf('User')>-1) ? 'color:white; background-color:#449d44;' : '' }}" class="sidebar-menu_button btn btn-black" ng-click="go('/users')"><span class="glyphicon glyphicon-th-list small-margin-right" aria-hidden="true"></span> Users <span class="sr-only">(current)</span></button>
       <button type="button" style="{{isCurrentPath.indexOf('profile')>-1 ? 'color:white; background-color:#449d44;' : '' }}" class="sidebar-menu_button btn btn-black" ng-click="go('/profile')"><span class="glyphicon glyphicon-user small-margin-right" aria-hidden="true"></span> My Profile <span class="sr-only">(current)</span></button>
-      <button type="button" style="{{isCurrentPath.indexOf('settings')>-1 ? 'color:white; background-color:#449d44;' : '' }}" class="sidebar-menu_button btn btn-black" ng-click="isCollapsedConfig = !isCollapsedConfig"><span class="glyphicon glyphicon-wrench small-margin-right" aria-hidden="true"></span> Settings <span ng-class="isCollapsedConfig ? 'glyphicon-menu-right' : 'glyphicon-menu-down'" class="glyphicon pull-right small-margin-top"></span></button>
-      <div uib-collapse="{{(isCurrentPath.indexOf('accessLevels')>-1 || isCurrentPath.indexOf('editAccessLevel')>-1 || isCurrentPath.indexOf('pageAccess')>-1) ? '' : 'isCollapsedConfig' }}" >
+      <button type="button" style="{{(isCurrentPath.indexOf('users')>-1 || isCurrentPath.indexOf('User')>-1) ? 'color:white; background-color:#449d44;' : '' }}" class="sidebar-menu_button btn btn-black" ng-click="go('/users')"><span class="glyphicon glyphicon-th-list small-margin-right" aria-hidden="true"></span> Users <span class="sr-only">(current)</span></button>
+
+      <button type="button" style="{{isCurrentPath.indexOf('settings')>-1 ? 'color:white; background-color:#449d44;' : '' }}" class="sidebar-menu_button btn btn-black" ng-click="isCollapsedAccess = !isCollapsedAccess"><span class="glyphicon glyphicon-lock small-margin-right" aria-hidden="true"></span> Access <span ng-class="(isCollapsedAccess == true) ? 'glyphicon-menu-right' : 'glyphicon-menu-down'" class="glyphicon pull-right small-margin-top"></span></button>
+      <div uib-collapse="{{(isCurrentPath.indexOf('accessLevels')>-1 || isCurrentPath.indexOf('editAccessLevel')>-1 || isCurrentPath.indexOf('pageAccess')>-1) ? '' : 'isCollapsedAccess' }}" >
         <ul class="sidebar__main-menu_button_list" role="menu">
-          <li style="{{(isCurrentPath.indexOf('accessLevels')>-1 || isCurrentPath.indexOf('editAccessLevel')>-1) ? 'color:white; background-color:#449d44 !important;' : '' }}" class="{{isCurrentPath.indexOf('accessLevels')>-1 ? 'selected' : '' }}" ng-click="go('/accessLevels')"><a ng-href="/#!/accessLevels"><span class="glyphicon glyphicon-lock small-margin-right" aria-hidden="true"></span> Access Levels</a></li>
-          <li style="{{isCurrentPath.indexOf('pageAccess')>-1 ? 'color:white; background-color:#449d44 !important;' : '' }}" class="{{isCurrentPath.indexOf('pageAccess')>-1 ? 'selected' : '' }}" ng-click="go('/pageAccess')"><a ng-href="/#!/pageAccess"><span class="glyphicon glyphicon-file small-margin-right" aria-hidden="true"></span> Page Access</a></li>
+          <li style="{{(isCurrentPath.indexOf('accessLevels')>-1 || isCurrentPath.indexOf('editAccessLevel')>-1) ? 'color:white; background-color:#449d44 !important;' : '' }}" class="padding-left {{isCurrentPath.indexOf('accessLevels')>-1 ? 'selected' : '' }}" ng-click="go('/accessLevels')"><a ng-href="/#!/accessLevels"><span style="font-size:0.8em;" class="glyphicon glyphicon-triangle-right small-margin-right" aria-hidden="true"></span>Access Levels</a></li>
+          <li style="{{isCurrentPath.indexOf('pageAccess')>-1 ? 'color:white; background-color:#449d44 !important;' : '' }}" class="padding-left {{isCurrentPath.indexOf('pageAccess')>-1 ? 'selected' : '' }}" ng-click="go('/pageAccess')"><a ng-href="/#!/pageAccess"><span style="font-size:0.8em;" class="glyphicon glyphicon-triangle-right small-margin-right" aria-hidden="true"></span>Page Access</a></li>
         </ul>
       </div>
+
+      <button type="button" class="sidebar-menu_button btn btn-black" ng-click="isCollapsedConfig = !isCollapsedConfig;"><span class="glyphicon glyphicon-cog small-margin-right" aria-hidden="true"></span> Configuration <span ng-class="isCollapsedConfig ? 'glyphicon-menu-right' : 'glyphicon-menu-down'" class="glyphicon pull-right small-margin-top"></span></button>
+      <div uib-collapse="{{(isCurrentPath.indexOf('configuration')>-1) ? '' : 'isCollapsedConfig' }}" >
+        <ul class="sidebar__main-menu_button_list" role="menu">
+          <li ng-repeat="group in configurationGroups" class="small-padding-left {{isCurrentPath.indexOf(group.id)>-1 ? 'selected' : '' }}" style="{{isCurrentPath.indexOf(group.id)>-1 ? 'background-color: #479440 !important;' : '' }}">
+            <a class="sidebar__dropdown_menu-link" ng-href="/#!/configuration/{{group.id}}">
+              <span style="font-size:0.8em;" class="glyphicon glyphicon-triangle-right small-margin-right" aria-hidden="true"></span>{{group.title}}
+            </a>
+          </li>
+        </ul>
+      </div>
+
     </li> 
   </ul>  
-
 
 </div>

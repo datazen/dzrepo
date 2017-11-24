@@ -66,7 +66,7 @@
         $scope.currentPage = 0;
         $scope.pageSize = 10;
         $scope.numberOfPages=function() {
-            return Math.ceil($scope.vm.pages.length/$scope.pageSize);                
+            return Math.ceil($scope.vm.allUsers.length/$scope.pageSize);                
         }    
 
         $scope.go = function ( path ) {

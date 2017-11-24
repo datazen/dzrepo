@@ -11,6 +11,9 @@
 
         vm.login = login;
 
+        // clear any url parameters
+        if ($location.search()) $location.url($location.path());        
+
         (function initController() {
             // reset login status
             AuthenticationService.ClearCredentials();

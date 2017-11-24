@@ -103,6 +103,14 @@ a {
   text-align: left;
   width: 100% !important;
 }
+.sidebar__dropdown_menu-link {
+  display: block;     
+  position: relative;    
+  z-index: 1;     
+  padding: 0.8em;     
+  margin-top: -9px;
+  min-height:44px;
+}
 .sidebar__menu_dropdown > button > span {
   padding-left: 6px;
 }
@@ -238,3 +246,4 @@ fieldset[disabled] .btn-black.active {
   background-color: #222222;
   border-color: #222222;
 } 
+

@@ -11,6 +11,7 @@ require 'Conf/Slim.conf.php';
 require 'Lib/Database.lib.php';
 require 'Model/Users.class.php';
 require 'Model/Access.class.php';
+require 'Model/Configuration.class.php';
 
 date_default_timezone_set('America/New_York');
 
@@ -41,10 +42,16 @@ $app->get('/accessLevels', function () { echo Access::getAllAccessLevels(); });
 $app->get('/getAccessLevelById/{id}', function (Request $request, Response $response) { echo Access::getAccessLevelById($request); });
 $app->post('/updateAccessLevel/{id}', function (Request $request, Response $response) { echo Access::updateAccessLevel($request); });
 
+// Page Access
 $app->post('/getAllPages', function (Request $request, Response $response) { echo Access::getAllPages($request); });
-//$app->get('/getAllPages', function () { echo Access::getAllPages(); });
 $app->get('/getPageById/{id}', function (Request $request, Response $response) { echo Access::getPageById($request); });
 $app->post('/updatePage/{id}', function (Request $request, Response $response) { echo Access::updatePage($request); });
+
+// Configuration
+$app->get('/configurations', function (Request $request, Response $response) { echo Configuration::getAllConfigurations($request); });
+$app->get('/configurationGroups', function (Request $request, Response $response) { echo Configuration::getConfigurationGroups($request); });
+$app->get('/getConfigurationById/{id}', function (Request $request, Response $response) { echo Configuration::getConfigurationById($request); });
+$app->post('/updateConfiguration/{id}', function (Request $request, Response $response) { echo Configuration::updateConfiguration($request); });
 
 // Login
 $app->post('/login', function (Request $request, Response $response) { echo Users::processLogin($request); });

@@ -11,11 +11,10 @@
                     }
                 });           
 
-    PageAccessController.$inject = ['UserService', 'AccessService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout', '$uibModal', '$log', '$route'];
-    function PageAccessController(UserService, AccessService, $rootScope, FlashService, $scope, $location, $timeout, $uibModal, $log, $route) {
+    PageAccessController.$inject = ['AccessService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout', '$uibModal', '$log', '$route'];
+    function PageAccessController(AccessService, $rootScope, FlashService, $scope, $location, $timeout, $uibModal, $log, $route) {
         var vm = this;
 
-        vm.user = null;
         vm.pages = [];
         vm.page = null;
         vm.accessLevels = [];
@@ -37,16 +36,8 @@
         };         
 
         function initController() {
-            loadCurrentUser();
             loadAllPages(); 
             loadAllAccessLevels();          
-        }
-
-        function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.globals.currentUser.username)
-                .then(function (user) {
-                    vm.user = user;
-                });
         }
 
         function loadAllAccessLevels() {

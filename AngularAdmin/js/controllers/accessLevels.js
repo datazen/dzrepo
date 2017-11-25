@@ -5,11 +5,10 @@
         .module('app')
         .controller('AccessLevelsController', AccessLevelsController);
 
-    AccessLevelsController.$inject = ['UserService', 'AccessService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout', '$uibModal', '$log'];
-    function AccessLevelsController(UserService, AccessService, $rootScope, FlashService, $scope, $location, $timeout, $uibModal, $log) {
+    AccessLevelsController.$inject = ['AccessService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout', '$uibModal', '$log'];
+    function AccessLevelsController(AccessService, $rootScope, FlashService, $scope, $location, $timeout, $uibModal, $log) {
         var vm = this;
 
-        vm.user = null;
         vm.accessLevels = [];
         vm.accessLevel = null;
         vm.updateAccessLevel = updateAccessLevel;
@@ -22,15 +21,7 @@
         };         
 
         function initController() {
-            loadCurrentUser();
             loadAllAccessLevels();           
-        }
-
-        function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.globals.currentUser.username)
-                .then(function (user) {
-                    vm.user = user;
-                });
         }
 
         function loadAllAccessLevels() {

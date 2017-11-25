@@ -11,11 +11,10 @@
                     }
                 });           
 
-    ConfigurationController.$inject = ['UserService', 'ConfigurationService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout', '$uibModal', '$log'];
-    function ConfigurationController(UserService, ConfigurationService, $rootScope, FlashService, $scope, $location, $timeout, $uibModal, $log) {
+    ConfigurationController.$inject = ['ConfigurationService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout', '$uibModal', '$log'];
+    function ConfigurationController(ConfigurationService, $rootScope, FlashService, $scope, $location, $timeout, $uibModal, $log) {
         var vm = this;
 
-        vm.user = null;
         vm.configurations = [];
         vm.configuration = null;
         vm.configurationGroups = [];
@@ -35,16 +34,7 @@
         };         
 
         function initController() {
-            loadCurrentUser();
             loadAllConfigurations(); 
-       //     loadConfigurationGroups();
-        }
-
-        function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.globals.currentUser.username)
-                .then(function (user) {
-                    vm.user = user;
-                });
         }
 
         function loadAllConfigurations() {

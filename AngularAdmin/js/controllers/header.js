@@ -5,11 +5,11 @@
         .module('app')
         .controller('HeaderCtrl', HeaderCtrl); 
 
-    HeaderCtrl.$inject = ['UserService', '$rootScope'];
-    function HeaderCtrl(UserService, $rootScope) {
+    HeaderCtrl.$inject = ['UserService', '$rootScope', '$scope'];
+    function HeaderCtrl(UserService, $rootScope, $scope) {
         var vm = this;
 
-        vm.user = null;
+        $scope.thisUser = null;
 
         initController();
 
@@ -20,7 +20,7 @@
         function loadCurrentUser() {
             UserService.GetByUsername($rootScope.globals.currentUser.username)
                 .then(function (user) {
-                    vm.user = user;
+                    $scope.thisUser = user;
                 });
         }
 

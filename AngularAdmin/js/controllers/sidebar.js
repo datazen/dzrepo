@@ -5,8 +5,8 @@
         .module('app')
         .controller('SidebarCtrl', SidebarCtrl);         
 
-    SidebarCtrl.$inject = ['UserService', 'ConfigurationService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout'];
-    function SidebarCtrl(UserService, ConfigurationService, $rootScope, FlashService, $scope, $location, $timeout) {
+    SidebarCtrl.$inject = ['ConfigurationService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout'];
+    function SidebarCtrl(ConfigurationService, $rootScope, FlashService, $scope, $location, $timeout) {
 
         $scope.configurationGroups = [];
         $scope.isCollapsedMain = true;

@@ -54,7 +54,7 @@
 
         function initController() {
         //    loadCurrentUser();
-        //    loadAllUsers();
+            loadAllUsers();
             loadAllAccessLevels();
 
             if (window.location.href.indexOf('editUser/') != -1) {

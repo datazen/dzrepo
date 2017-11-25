@@ -53,12 +53,12 @@
         initController();
 
         function initController() {
-            loadCurrentUser();
-            loadAllUsers();
+        //    loadCurrentUser();
+        //    loadAllUsers();
             loadAllAccessLevels();
 
-            if (window.location.href.indexOf('=') != -1) {
-                var userId = window.location.href.substr(window.location.href.lastIndexOf('=') + 1);
+            if (window.location.href.indexOf('editUser/') != -1) {
+                var userId = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
                 if (userId) loadUserRecord(userId);
             }            
         }
@@ -81,10 +81,6 @@
         }
 
         function loadAllUsers() {
-
-            // clear url parameters if not edit page
-            if (window.location.href.indexOf('editUser') == -1) $location.url($location.path()); 
-
             UserService.GetAll()
                 .then(function (users) {
                     vm.allUsers = users;
@@ -111,7 +107,7 @@
         }
        
         function editUserRecord(id) {
-            $location.path('/editUser/').search({id: id});                        
+            $location.path('/editUser/' + id);                        
         }
 
         function deleteUser(id) {

@@ -28,7 +28,7 @@
                 if (response.data.rpcStatus != 1) {
                     result = { success: false, msg: response.data.msg }
                 } else {
-                    result = { success: true };
+                    result = { success: true, data: response.data.data };
                 }
                 callback(result);
 
@@ -38,13 +38,19 @@
 
         }
 
-        function SetCredentials(username, password) {
+        function SetCredentials(username, password, data) {
+
             var authdata = Base64.encode(username + ':' + password);
 
             $rootScope.globals = {
                 currentUser: {
+                    id: data.id,
                     username: username,
-                    authdata: authdata
+                    authdata: authdata,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    avatar: data.avatar,
+                    accessLevel: data.accessLevel
                 }
             };
 

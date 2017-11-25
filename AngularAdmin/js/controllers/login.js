@@ -11,9 +11,6 @@
 
         vm.login = login;
 
-        // clear any url parameters
-        if ($location.search()) $location.url($location.path());        
-
         (function initController() {
             // reset login status
             AuthenticationService.ClearCredentials();
@@ -23,7 +20,7 @@
             vm.dataLoading = true;
             AuthenticationService.Login(vm.username, vm.password, function (response) {
                 if (response.success == true) {
-                    AuthenticationService.SetCredentials(vm.username, vm.password);
+                    AuthenticationService.SetCredentials(vm.username, vm.password, response.data);
                     $location.path('/');
                 } else {
                     FlashService.Error(response.msg);

@@ -115,24 +115,31 @@ a {
   padding-left: 6px;
 }
 .sidebar__main-menu_button {}
-.sidebar__main-menu_button_list {
+.sidebar__main-menu_button_list,
+.sidebar__settings-menu_button_list {
   padding-left:0 !important;
   background-color: #000;
 }
-.sidebar__main-menu_button_list li {
+.sidebar__main-menu_button_list li,
+.sidebar__settings-menu_button_list li {
   height:44px !important;
   padding-top:10px;  
 }
-.sidebar__main-menu_button_list li > a {
+.sidebar__main-menu_button_list li > a,
+.sidebar__settings-menu_button_list li > a {
   margin-left:20px;
   text-decoration:none;  
   vertical-align: middle;
   color: white;
 }
+
 .sidebar__main-menu_button_list li:hover,
-.sidebar__main-menu_button_list li:focus {
+.sidebar__main-menu_button_list li:focus,
+.sidebar__settings-menu_button_list li:hover,
+.sidebar__settings-menu_button_list li:focus {
   background-color: #333; 
 }
+/*
 .sidebar__main-menu_button_list li:active,
 .sidebar__main-menu_button_list.active {
   color: white;
@@ -140,10 +147,16 @@ a {
   border-color: #337ab7 !important;
   outline: 0 !important;  
 }
+*/
+
+
 .selected {
   background-color: #337ab7 !important;
 }
-
+.selected-config {
+  background-color: #449d44 !important;
+  color:white !important;
+}
 /* 
  * Flash alerts
  */

@@ -26,7 +26,7 @@
         initController();
 
         $scope.currentPage = 0;
-        $scope.pageSize = 10;
+        $scope.pageSize = ($rootScope.globals.config.PAGINATION_LENGTH) ? parseInt($rootScope.globals.config.PAGINATION_LENGTH) : 10;
         $scope.numberOfPages=function() {
             return Math.ceil($scope.vm.pages.length/$scope.pageSize);                
         }      

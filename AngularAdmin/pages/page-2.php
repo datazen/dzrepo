@@ -9,7 +9,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
 		<div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
 
 		<div class="well">
-			<h1>Hi {{vm.user.firstName}}!</h1>
+			<h1>Hi {{globals.currentUser.firstName}} {{globals.currentUser.lastName}}</h1>
 			<p>You're logged in!!</p>
 			<p><a href="#!/login" class="btn btn-primary">Logout</a></p>
 		</div>

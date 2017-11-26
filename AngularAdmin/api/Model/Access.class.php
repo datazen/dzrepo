@@ -78,9 +78,11 @@ class Access {
 
         $routeArr = array();
         $prev = '';
+
 		foreach($routes as $route => $data) {
 
 			$route = str_replace("/", "", $route);
+			if (strpos($route, ":")) $route = substr($route, 0, strpos($route, ":"));
 			if ($route == 'null' || trim($route) == '' || $route == $prev) continue;
 			$routeArr[] = $route;
 			$prev = $route;
@@ -105,7 +107,7 @@ class Access {
 	    } catch(PDOException $e) {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 	    }	
-        
+
         foreach ($result as $value) {
             if (!in_array($value['page'], $routeArr)) {
                 self::_deleteRoute($value['id']);
@@ -113,7 +115,7 @@ class Access {
         }
 	}
 
-	private static function _checkRoute($route) {		
+	private static function _checkRoute($route) {	
 	    $sql = "SELECT id FROM pageAccess WHERE page = :page";
 	    try {
 		    $db = Database::getConnection();
@@ -179,6 +181,43 @@ class Access {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 		}
 	}
+
+	public static function getPageByRoute($request) {
+	    $uri = $request->getUri();
+	    $uriArr = explode("/", $uri);
+	    $route = end($uriArr);
+
+		$sql = "select * FROM pageAccess WHERE page = :route";
+		try {
+			$db = Database::getConnection();
+			$stmt = $db->prepare($sql);  
+	    	$stmt->bindValue(":route", $route);
+	        $stmt->execute(); 
+			$info = $stmt->fetch(PDO::FETCH_ASSOC);
+			$db = null;
+			return json_encode(array('rpcStatus' => 1, 'data' => $info));
+		} catch(PDOException $e) {
+			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
+		}
+	}	
+
+	public static function getPageByConfigRoute($request) {
+
+	    $route = 'configuration:id';
+
+		$sql = "select * FROM pageAccess WHERE page = :route";
+		try {
+			$db = Database::getConnection();
+			$stmt = $db->prepare($sql);  
+	    	$stmt->bindValue(":route", substr($route, 0, strpos($route, ":")));
+	        $stmt->execute(); 
+			$info = $stmt->fetch(PDO::FETCH_ASSOC);
+			$db = null;
+			return json_encode(array('rpcStatus' => 1, 'data' => $info));
+		} catch(PDOException $e) {
+			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
+		}
+	}	
 
 	public static function updatePage($request) {
         $now = new DateTime();

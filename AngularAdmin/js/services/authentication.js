@@ -51,7 +51,8 @@
                     lastName: data.lastName,
                     avatar: data.avatar,
                     accessLevel: data.accessLevel
-                }
+                },
+                config: {}
             };
 
             // set default auth header for http requests

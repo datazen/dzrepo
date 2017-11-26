@@ -24,7 +24,7 @@
         initController();
 
         $scope.currentPage = 0;
-        $scope.pageSize = 10;
+        $scope.pageSize = ($rootScope.globals.config.PAGINATION_LENGTH) ? $rootScope.globals.config.PAGINATION_LENGTH : 10;
         $scope.numberOfPages=function() {
             return Math.ceil($scope.vm.configurations.length/$scope.pageSize);                
         }      
@@ -34,11 +34,16 @@
         };         
 
         function initController() {
-            loadAllConfigurations(); 
+
+            if (window.location.href.indexOf('configuration/') != -1) {
+                var groupId = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
+                if (groupId) loadAllConfigurations(groupId);
+            }  
+
         }
 
-        function loadAllConfigurations() {
-            ConfigurationService.GetAllConfigurations()
+        function loadAllConfigurations(groupId) {
+            ConfigurationService.GetAllConfigurations(groupId)
                 .then(function (configurations) {
                     vm.configurations = configurations.data;
                 });

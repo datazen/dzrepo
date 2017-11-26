@@ -5,8 +5,8 @@
         .module('app')
         .controller('HeaderCtrl', HeaderCtrl); 
 
-    HeaderCtrl.$inject = ['UserService', '$rootScope', '$scope'];
-    function HeaderCtrl(UserService, $rootScope, $scope) {
+    HeaderCtrl.$inject = ['UserService', 'ConfigurationService', '$rootScope', '$scope'];
+    function HeaderCtrl(UserService, ConfigurationService, $rootScope, $scope) {
         var vm = this;
 
         $scope.thisUser = null;
@@ -15,6 +15,7 @@
 
         function initController() {
             loadCurrentUser();
+            loadConfigurationValues();
         }
 
         function loadCurrentUser() {
@@ -23,6 +24,24 @@
                     $scope.thisUser = user;
                 });
         }
+
+        function loadConfigurationValues() {
+            ConfigurationService.GetAllConfigurationData()
+                .then(function (config) {
+
+                    var json = "{";
+                    angular.forEach(config.data , function(value, key) {
+                        json += '"' + value.key + '" : "' + value.value + '",';
+                    });
+                    json = json.slice(0,-1);
+                    json += "}";
+
+                    var configs = eval('(' + json + ')');
+
+                    $rootScope.globals.config = configs;
+                    
+                });
+        }        
 
     }
 

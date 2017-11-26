@@ -3,46 +3,16 @@
 
     angular
         .module('app')
-        .controller('HomeController', HomeController);
+        .controller('DashboardController', DashboardController);
 
-    HomeController.$inject = ['UserService', '$rootScope', '$location'];
-    function HomeController(UserService, $rootScope, $location) {
+    DashboardController.$inject = ['UserService', '$rootScope', '$location'];
+    function DashboardController(UserService, $rootScope, $location) {
         var vm = this;
-
-        vm.user = null;
-        vm.allUsers = [];
-        vm.deleteUser = deleteUser;
-
-        // clear any url parameters
-        if ($location.search()) $location.url($location.path());
 
         initController();
 
         function initController() {
-            loadCurrentUser();
-            loadAllUsers(); 
         }
 
-        function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.globals.currentUser.username)
-                .then(function (user) {
-                    vm.user = user;
-                });
-        }
-
-        function loadAllUsers() {
-            UserService.GetAll()
-                .then(function (users) {
-                    vm.allUsers = users;
-                });
-        }
-
-        function deleteUser(id) {
-            UserService.Delete(id)
-            .then(function () {
-                loadAllUsers();
-            });
-        }
     }
-
 })();

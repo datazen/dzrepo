@@ -5,8 +5,8 @@
         .module('app')
         .controller('SidebarCtrl', SidebarCtrl);         
 
-    SidebarCtrl.$inject = ['ConfigurationService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout'];
-    function SidebarCtrl(ConfigurationService, $rootScope, FlashService, $scope, $location, $timeout) {
+    SidebarCtrl.$inject = ['ConfigurationService', 'AccessService', '$rootScope', 'FlashService', '$scope', '$location', '$timeout'];
+    function SidebarCtrl(ConfigurationService, AccessService, $rootScope, FlashService, $scope, $location, $timeout) {
 
         $scope.configurationGroups = [];
         $scope.isCollapsedMain = true;
@@ -53,8 +53,7 @@
                 .then(function (groups) {
                     $scope.configurationGroups = groups.data;                    
                 });
-        }         
-
+        }        
     }
 
 })();

@@ -1,12 +1,31 @@
 <?php
 class Configuration {
 
-    public static function getAllConfigurations() {
-	    $sql = "select * FROM configuration ORDER BY id";
+    public static function GetAllConfigurationData() {
+	    $sql = "select * FROM configuration ORDER BY groupId";
 	    try {
 		    $db = Database::getConnection();
 		    $stmt = $db->query($sql);  
 		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		    $db = null;
+		    return json_encode(array('rpcStatus' => 1, 'data' => $result));
+	    } catch(PDOException $e) {
+			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
+	    }
+	}	
+
+    public static function getAllConfigurations($request) {
+	    $uri = $request->getUri();
+	    $uriArr = explode("/", $uri);
+	    $groupId = end($uriArr);
+
+	    $sql = "SELECT * FROM configuration WHERE groupId = :groupId ORDER BY id";
+	    try {
+		    $db = Database::getConnection();
+			$stmt = $db->prepare($sql);  
+	    	$stmt->bindValue(":groupId", $groupId, PDO::PARAM_INT);
+	        $stmt->execute(); 
+	        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		    $db = null;
 		    return json_encode(array('rpcStatus' => 1, 'data' => $result));
 	    } catch(PDOException $e) {

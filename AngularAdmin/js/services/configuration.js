@@ -9,6 +9,7 @@
     function ConfigurationService($http) {
         var service = {};
 
+        service.GetAllConfigurationData = GetAllConfigurationData;
         service.GetAllConfigurations = GetAllConfigurations;
         service.GetConfigurationById = GetConfigurationById;
         service.UpdateConfiguration = UpdateConfiguration;
@@ -16,8 +17,12 @@
 
         return service;
 
-        function GetAllConfigurations() {
-            return $http.get('/api/configurations').then(handleSuccess, handleError('Error getting all configuration values'));
+        function GetAllConfigurationData() {
+            return $http.get('/api/getAllConfigurationData').then(handleSuccess, handleError('Error getting all configuration values'));
+        }
+
+        function GetAllConfigurations(groupId) {
+            return $http.get('/api/configurations/' + groupId).then(handleSuccess, handleError('Error getting all configuration values for groupId: ' + groupId));
         }
 
         function GetConfigurationById(id) {

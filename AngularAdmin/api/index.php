@@ -45,10 +45,13 @@ $app->post('/updateAccessLevel/{id}', function (Request $request, Response $resp
 // Page Access
 $app->post('/getAllPages', function (Request $request, Response $response) { echo Access::getAllPages($request); });
 $app->get('/getPageById/{id}', function (Request $request, Response $response) { echo Access::getPageById($request); });
+$app->get('/getPageByRoute/{route}', function (Request $request, Response $response) { echo Access::getPageByRoute($request); });
+$app->get('/getPageByRoute/configuration/{route}', function (Request $request, Response $response) { echo Access::getPageByConfigRoute($request); });
 $app->post('/updatePage/{id}', function (Request $request, Response $response) { echo Access::updatePage($request); });
 
 // Configuration
-$app->get('/configurations', function (Request $request, Response $response) { echo Configuration::getAllConfigurations($request); });
+$app->get('/configurations/{id}', function (Request $request, Response $response) { echo Configuration::getAllConfigurations($request); });
+$app->get('/getAllConfigurationData', function (Request $request, Response $response) { echo Configuration::getAllConfigurationData($request); });
 $app->get('/configurationGroups', function (Request $request, Response $response) { echo Configuration::getConfigurationGroups($request); });
 $app->get('/getConfigurationById/{id}', function (Request $request, Response $response) { echo Configuration::getConfigurationById($request); });
 $app->post('/updateConfiguration/{id}', function (Request $request, Response $response) { echo Configuration::updateConfiguration($request); });

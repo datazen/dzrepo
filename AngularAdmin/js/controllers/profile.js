@@ -37,7 +37,7 @@
         function loadCurrentUser() {
             UserService.GetByUsername($rootScope.globals.currentUser.username)
                 .then(function (user) {
-                    vm.user = user;
+                    vm.user = user.data;
                 });
         }
 
@@ -53,6 +53,8 @@
                     if (response.rpcStatus == 1) {
                         window.scrollTo(0,0);
                         vm.user.avatar = file.name + '?' + new Date().getTime();                        
+                        $rootScope.globals.currentUser.avatar = file.name + '?' + new Date().getTime();                        
+
                         FlashService.Success('Update successful', true);
                         vm.dataLoading2 = false;   
                     } else {

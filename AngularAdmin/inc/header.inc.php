@@ -7,13 +7,13 @@
             
         <div class="header-avatar" uib-dropdown-toggle ng-disabled="disabled">    
           <div class="header-avatar_img-container">
-            <img class="header-avatar_img img-circle" src="img/{{thisUser.avatar}}" alt="{{thisUser.firstName}} {{thisUser.lastName}}">
+            <img class="header-avatar_img img-circle" src="img/{{((globals.currentUser.avatar) ? globals.currentUser.avatar : 'na.png')}}" alt="{{globals.currentUser.firstName}} {{globals.currentUser.lastName}}">
           </div>
         </div>
 
         <!-- Profile -->
         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-          <li role="menuitem" class="margin-left">{{thisUser.firstName}} {{thisUser.lastName}} <br />@{{thisUser.username}}</li>
+          <li role="menuitem" class="margin-left">{{globals.currentUser.firstName}} {{globals.currentUser.lastName}} <br />@{{globals.currentUser.username}}</li>
           <li role="separator" class="divider"></li>
           <li role="menuitem"><a ng-href="#!/profile"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
           <li role="separator" class="divider"></li>

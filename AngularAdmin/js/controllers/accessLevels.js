@@ -27,14 +27,14 @@
         function loadAllAccessLevels() {
             AccessService.GetAllAccessLevels()
                 .then(function (levels) {
-                    vm.accessLevels = levels;
+                    vm.accessLevels = levels.data;
                 });
         } 
 
         function loadAccessLevel(id) {
             AccessService.GetAccessLevelById(id)
                 .then(function (level) {
-                    vm.accessLevel = level;
+                    vm.accessLevel = level.data;
                 });
         }               
 
@@ -91,7 +91,7 @@
                     $uibModalInstance.close('closed');
 
                     updateAccessLevel();
-                    loadAllAccessLevels();
+                    $timeout(function(){ loadAllAccessLevels(); }, 200);
                 } else {
                     console.log('Access levels form is NOT in scope');
                 }

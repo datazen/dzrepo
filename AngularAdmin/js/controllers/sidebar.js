@@ -53,6 +53,10 @@
                 .then(function (groups) {
                     $scope.configurationGroups = groups.data;                    
                 });
+        }
+
+        $scope.hasAccess = function(page) {
+            return ($.inArray(page, $rootScope.globals.currentUser.pageAccess) !== -1) ? true : false;
         }        
     }
 

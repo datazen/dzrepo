@@ -7,26 +7,23 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
 	<h1 class="page-header no-margin-top small-margin-bottom">Dashboard</h1>
 	<div class="col-sm-12 no-padding-left">
 		<div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
-            <h3 class="no-margin-top">Globals</h3>
+		<h3 class="no-margin-top">Globals</h3>
 
-<div>
-	Listings per Page: {{globals.config.PAGINATION_LENGTH}}
-</div>
-
-            <div ng-repeat="(key, global) in globals">
-            	<div class="col-sm-6">
-            	<div class="well">
-            	  <span class="lead">{{key}}</span>
-            	  <ul>
-					<li ng-repeat="(k, v) in global">
-	                  {{k}} = {{v}}
-	  			    </li>
-  			      </ul>
-			    </div>
-			    </div>
+		<div ng-repeat="(key, global) in globals">
+			<div class="col-sm-6">
+				<div class="well">
+					<span class="lead">{{key}}</span>
+					<ul>
+						<li ng-if="k!='pageAccess'" ng-repeat="(k, v) in global">{{k}} = {{v}}</li>
+						<li ng-if="k=='pageAccess'" ng-repeat="(k, v) in global">{{k}} = 
+							<ul>
+								<li ng-repeat="page in v">{{page}}</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
 			</div>
-
-
+		</div>
 
 	</div>
 	<p>&nbsp;</p>

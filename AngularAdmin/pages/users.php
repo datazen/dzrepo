@@ -28,7 +28,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
        	  <button ng-click="vm.editUserRecord(user.id);" type="button" class="btn btn-default" aria-label="Edit"> 
             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
           </button>
-          <button class="btn btn-sm btn-danger" type="button" aria-label="Delete" ng-confirm-click="Are you sure you want to delete this record?" confirmed-click="vm.deleteUser(user.id);">
+          <button ng-disabled="(user.id == 1)" class="btn btn-sm btn-danger" type="button" aria-label="Delete" ng-confirm-click="Are you sure you want to delete this record?" confirmed-click="vm.deleteUser(user.id);">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           </button>                  
         </td>

@@ -15,6 +15,7 @@
         service.GetAllPages = GetAllPages;
         service.GetPageById = GetPageById;
         service.GetPageByRoute = GetPageByRoute;
+        service.GetPagesByAccessLevel = GetPagesByAccessLevel;
         service.UpdatePage = UpdatePage;
 
         return service;
@@ -39,9 +40,13 @@
             return $http.get('/api/getPageById/' + id).then(handleSuccess, handleError('Error getting page access data by id'));
         }
 
-        function GetPageByRoute(route) {
-            return $http.get('/api/getPageByRoute' + route).then(handleSuccess, handleError('Error getting page access data by id'));
+        function GetPageByRoute(route) {  // slash is left off on purpose
+            return $http.get('/api/getPageByRoute' + route).then(handleSuccess, handleError('Error getting page access data by route'));
         }        
+
+        function GetPagesByAccessLevel(level) {
+            return $http.get('/api/getPagesByAccessLevel/' + level).then(handleSuccess, handleError('Error getting page access data by route'));
+        } 
 
         function UpdatePage(page) {
             return $http.post('/api/updatePage/' + page.id, page).then(handleSuccess, handleError('Error updating access for this page'));

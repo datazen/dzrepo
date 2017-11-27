@@ -16,12 +16,9 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
         <td>{{level.level}}<span class="margin-left" ng-if="level.level == 0">(lowest)</span><span class="margin-left" ng-if="level.level == 5">(highest)</span></td>
         <td>{{level.name}}</td>
         <td class="action">
-
-
-            <button ng-click="vm.showForm(level.id);" type="button" class="btn btn-default" ng-disabled="level.level == 0" aria-label="Edit"> 
+            <button ng-click="vm.showForm(level.id);" type="button" class="btn btn-default" aria-label="Edit"> 
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>               
-
         </td>
       </tr>
     </table>
@@ -33,7 +30,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
       </div>
       <form name="form.accessForm" ng-submit="submitForm()" novalidate>
           <div class="modal-body well margin-left margin-right">
-              <div class="form-group" ng-class="{ 'has-error': form.level.$dirty && form.accessLevel.$error.required }">
+              <div class="form-group" ng-class="{ 'has-error': form.level.$dirty && form.level.$error.required }">
                   <label for="level">Access Level</label>
                   <input type="text" name="level" id="level" class="form-control" ng-model="vm.accessLevel.level" readonly />
               </div>

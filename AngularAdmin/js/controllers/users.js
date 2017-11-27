@@ -76,14 +76,14 @@
         function loadCurrentUser() {
             UserService.GetByUsername($rootScope.globals.currentUser.username)
                 .then(function (user) {
-                    vm.user = user;
+                    vm.user = user.data;
                 });
         }
 
         function loadAllUsers() {
             UserService.GetAll()
                 .then(function (users) {
-                    vm.allUsers = users;
+                    vm.allUsers = users.data;
                 });
 
             // fade out the alert if there is one
@@ -95,14 +95,14 @@
         function loadAllAccessLevels() {
             AccessService.GetAllAccessLevels()
                 .then(function (levels) {
-                    vm.levels = levels;
+                    vm.levels = levels.data;
                 });
         } 
 
         function loadUserRecord(id) {
             UserService.GetById(id)
                 .then(function (user) {
-                    vm.userRecord = user;
+                    vm.userRecord = user.data;
                 });
         }
        

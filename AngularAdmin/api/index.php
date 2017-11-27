@@ -46,7 +46,9 @@ $app->post('/updateAccessLevel/{id}', function (Request $request, Response $resp
 $app->post('/getAllPages', function (Request $request, Response $response) { echo Access::getAllPages($request); });
 $app->get('/getPageById/{id}', function (Request $request, Response $response) { echo Access::getPageById($request); });
 $app->get('/getPageByRoute/{route}', function (Request $request, Response $response) { echo Access::getPageByRoute($request); });
-$app->get('/getPageByRoute/configuration/{route}', function (Request $request, Response $response) { echo Access::getPageByConfigRoute($request); });
+$app->get('/getPagesByAccessLevel/{level}', function (Request $request, Response $response) { echo Access::getPagesByAccessLevel($request); });
+$app->get('/getPageByRoute/configuration/{route}', function (Request $request, Response $response) { echo Access::getPageByConfigRoute($request, 'configuration'); });
+$app->get('/getPageByRoute/editUser/{route}', function (Request $request, Response $response) { echo Access::getPageByConfigRoute($request, 'editUser'); });
 $app->post('/updatePage/{id}', function (Request $request, Response $response) { echo Access::updatePage($request); });
 
 // Configuration

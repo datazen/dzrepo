@@ -43,21 +43,21 @@
         function loadAllAccessLevels() {
             AccessService.GetAllAccessLevels()
                 .then(function (levels) {
-                    vm.accessLevels = levels;
+                    vm.accessLevels = levels.data;
                 });
         }         
 
         function loadAllPages() {
             AccessService.GetAllPages(vm.routes)
                 .then(function (pages) {
-                    vm.pages = pages;
+                    vm.pages = pages.data;
                 });
         } 
 
         function loadPage(id) {
             AccessService.GetPageById(id)
                 .then(function (page) {
-                    vm.page = page;
+                    vm.page = page.data;
                 });
         }               
 
@@ -115,7 +115,7 @@
                     $uibModalInstance.close('closed');
 
                     updatePage();
-                    loadAllPages();
+                    $timeout(function(){ loadAllPages(); }, 200);
                 } else {
                     console.log('Page access form is NOT in scope');
                 }

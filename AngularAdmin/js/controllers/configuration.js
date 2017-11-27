@@ -53,14 +53,13 @@
             ConfigurationService.GetConfigurationGroups()
                 .then(function (groups) {
                     vm.configurationGroups = groups.data;
-//alert(print_r(groups, true));                    
                 });
         } 
 
         function loadConfiguration(id) {
             ConfigurationService.GetConfigurationById(id)
                 .then(function (configuration) {
-                    vm.configuration = configuration;
+                    vm.configuration = configuration.data;
                 });
         } 
 
@@ -68,7 +67,7 @@
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;              
-            ConfigurationService.Update(vm.configurations)
+            ConfigurationService.UpdateConfiguration(vm.configuration)
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         FlashService.Success('Update configuration successful', true);
@@ -113,12 +112,12 @@
         function modalInstanceCtrl($scope, $uibModalInstance, configurationForm) {
             $scope.form = {}
             $scope.submitForm = function () {
-                if ($scope.form.configuration.$valid) {
+                if ($scope.form.configurationForm.$valid) {
                     console.log('Configuration form is in scope');
                     $uibModalInstance.close('closed');
 
                     updateConfiguration();
-                    loadAllConfigurations();
+                    $timeout(function(){ initController(); }, 200);
                 } else {
                     console.log('Configuration form is NOT in scope');
                 }

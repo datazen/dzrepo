@@ -33,10 +33,6 @@ class Configuration {
 	    }
 	}	
 
-	private static function _loadAllConfigurationValues() {
-
-	}
-
 	public static function getConfigurationById($request) {
 	    $uri = $request->getUri();
 	    $uriArr = explode("/", $uri);

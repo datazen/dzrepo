@@ -27,6 +27,15 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
                     </div>  
                 </form>
             </div>
+            <div class="well">
+                <label for="accessLevel">Access Level:</label> 
+                <span ng-if="(vm.user.accessLevel == 0)"><img class="small-margin-left small-margin-right" src="img/stars_0.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 1)"><img class="small-margin-left small-margin-right" src="img/stars_1.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 2)"><img class="small-margin-left small-margin-right" src="img/stars_2.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 3)"><img class="small-margin-left small-margin-right" src="img/stars_3.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 4)"><img class="small-margin-left small-margin-right" src="img/stars_4.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 5)"><img class="small-margin-left small-margin-right" src="img/stars_5.png"> ({{globals.currentUser.accessTitle}})</span>
+            </div>
         </div>   
 
         <div class="col-sm-8 no-padding-right">

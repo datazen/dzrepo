@@ -8,24 +8,11 @@ class Users {
 		    $stmt = $db->query($sql);  
 		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		    $db = null;
-		    return json_encode($result);
+        	return json_encode(array('rpcStatus' => 1, 'data' => $result));
 	    } catch(PDOException $e) {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 	    }
 	}
-
-    public static function getAllAccessLevels() {
-	    $sql = "select * FROM accessLevels ORDER BY id";
-	    try {
-		    $db = Database::getConnection();
-		    $stmt = $db->query($sql);  
-		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		    $db = null;
-		    return json_encode($result);
-	    } catch(PDOException $e) {
-			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
-	    }
-	}	
 
 	public static function getUserById($request) {
 	    $uri = $request->getUri();
@@ -38,9 +25,9 @@ class Users {
 			$stmt = $db->prepare($sql);  
 	    	$stmt->bindValue(":uid", $uid, PDO::PARAM_INT);
 	        $stmt->execute(); 
-			$info = $stmt->fetch(PDO::FETCH_ASSOC);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 			$db = null;
-			return json_encode($info);
+        	return json_encode(array('rpcStatus' => 1, 'data' => $result));
 		} catch(PDOException $e) {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 		}
@@ -51,15 +38,15 @@ class Users {
 	    $uriArr = explode("/", $uri);
 	    $username = end($uriArr);
 
-		$sql = "select * FROM users WHERE username = :username";
+		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.username = :username";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
 	    	$stmt->bindParam(":username", $username);
 	        $stmt->execute(); 
-			$info = $stmt->fetch(PDO::FETCH_ASSOC);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 			$db = null;
-			return json_encode($info);
+        	return json_encode(array('rpcStatus' => 1, 'data' => $result));
 		} catch(PDOException $e) {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 		}
@@ -71,7 +58,7 @@ class Users {
         $username = (isset($postData['username'])) ? $postData['username'] : null;
         $rawPassword = (isset($postData['password'])) ? $postData['password'] : null;
 
-		$sql = "select * FROM users WHERE username = :username LIMIT 1";
+		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.username = :username LIMIT 1";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  

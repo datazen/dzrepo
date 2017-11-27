@@ -8,7 +8,7 @@ class Access {
 		    $stmt = $db->query($sql);  
 		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		    $db = null;
-		    return json_encode($result);
+		    return json_encode(array('rpcStatus' => 1, 'data' => $result));
 	    } catch(PDOException $e) {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 	    }
@@ -25,9 +25,9 @@ class Access {
 			$stmt = $db->prepare($sql);  
 	    	$stmt->bindValue(":lid", $lid, PDO::PARAM_INT);
 	        $stmt->execute(); 
-			$info = $stmt->fetch(PDO::FETCH_ASSOC);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 			$db = null;
-			return json_encode($info);
+		    return json_encode(array('rpcStatus' => 1, 'data' => $result));
 		} catch(PDOException $e) {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 		}
@@ -68,11 +68,30 @@ class Access {
 		    $stmt = $db->query($sql);  
 		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		    $db = null;
-		    return json_encode($result);
+		    return json_encode(array('rpcStatus' => 1, 'data' => $result));	    
 	    } catch(PDOException $e) {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 	    }
 	}	
+
+    public static function getPagesByAccessLevel($request) {
+	    $uri = $request->getUri();
+	    $uriArr = explode("/", $uri);
+	    $level = end($uriArr);
+
+	    $sql = "SELECT page FROM pageAccess WHERE level <= :level ORDER BY id";
+	    try {
+		    $db = Database::getConnection();
+			$stmt = $db->prepare($sql);  
+	    	$stmt->bindValue(":level", $level);
+	        $stmt->execute(); 
+		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		    $db = null;
+		    return json_encode(array('rpcStatus' => 1, 'data' => $result));	    
+	    } catch(PDOException $e) {
+			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
+	    }
+	}
 
 	private static function _syncRoutes($routes) {
 
@@ -147,7 +166,6 @@ class Access {
 	    }		
 
 	}
-
 	private static function _deleteRoute($id) {
         $now = new DateTime();
 	    $sql = "DELETE FROM pageAccess WHERE id = :pid";
@@ -174,9 +192,9 @@ class Access {
 			$stmt = $db->prepare($sql);  
 	    	$stmt->bindValue(":pid", $pid, PDO::PARAM_INT);
 	        $stmt->execute(); 
-			$info = $stmt->fetch(PDO::FETCH_ASSOC);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 			$db = null;
-			return json_encode($info);
+		    return json_encode(array('rpcStatus' => 1, 'data' => $result));
 		} catch(PDOException $e) {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 		}
@@ -201,15 +219,13 @@ class Access {
 		}
 	}	
 
-	public static function getPageByConfigRoute($request) {
-
-	    $route = 'configuration:id';
+	public static function getPageByConfigRoute($request, $route) {
 
 		$sql = "select * FROM pageAccess WHERE page = :route";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
-	    	$stmt->bindValue(":route", substr($route, 0, strpos($route, ":")));
+	    	$stmt->bindValue(":route", $route);
 	        $stmt->execute(); 
 			$info = $stmt->fetch(PDO::FETCH_ASSOC);
 			$db = null;

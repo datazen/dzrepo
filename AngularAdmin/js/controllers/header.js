@@ -5,24 +5,15 @@
         .module('app')
         .controller('HeaderCtrl', HeaderCtrl); 
 
-    HeaderCtrl.$inject = ['UserService', 'ConfigurationService', '$rootScope', '$scope'];
-    function HeaderCtrl(UserService, ConfigurationService, $rootScope, $scope) {
+    HeaderCtrl.$inject = ['ConfigurationService', 'AccessService', '$rootScope', '$scope'];
+    function HeaderCtrl(ConfigurationService, AccessService, $rootScope, $scope) {
         var vm = this;
-
-        $scope.thisUser = null;
 
         initController();
 
         function initController() {
-            loadCurrentUser();
             loadConfigurationValues();
-        }
-
-        function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.globals.currentUser.username)
-                .then(function (user) {
-                    $scope.thisUser = user;
-                });
+            loadPageAccess();
         }
 
         function loadConfigurationValues() {
@@ -41,7 +32,24 @@
                     $rootScope.globals.config = configs;
                     
                 });
-        }        
+        }  
+
+        function loadPageAccess() {
+            AccessService.GetPagesByAccessLevel($rootScope.globals.currentUser.accessLevel)
+                .then(function (pages) {
+
+                    var json = "[";
+                    angular.forEach(pages.data , function(value, key) {
+                        json += '"' + value.page + '",';
+                    });
+                    json = json.slice(0,-1);
+                    json += "]";
+
+                    var access = eval('(' + json + ')');
+
+                    $rootScope.globals.currentUser.pageAccess = access;
+                });
+        }
 
     }
 

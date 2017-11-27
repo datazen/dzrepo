@@ -40,10 +40,22 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
       </div>
       <form name="form.configurationForm" ng-submit="submitForm()" novalidate>
           <div class="modal-body well margin-left margin-right">
-
-
-
-             
+              <div class="form-group" ng-class="{ 'has-error': form.configurationForm.title.$dirty && form.configurationForm.title.$error.required }">
+                  <label for="title">Configuration Title</label>
+                  <input type="text" name="title" id="title" class="form-control" ng-model="vm.configuration.title" />
+              </div> 
+              <div class="form-group" ng-class="{ 'has-error': form.configurationForm.description.$dirty && form.configurationForm.description.$error.required }">
+                  <label for="description">Configuration Description</label>
+                  <input type="text" name="description" id="description" class="form-control" ng-model="vm.configuration.description" />
+              </div> 
+              <div class="form-group" ng-class="{ 'has-error': form.configurationForm.key.$dirty && form.configurationForm.key.$error.required }">
+                  <label for="key">Configuration Key</label>
+                  <input type="text" name="key" id="key" class="form-control" ng-model="vm.configuration.key" readonly />
+              </div>
+              <div class="form-group" ng-class="{ 'has-error': form.configurationForm.value.$dirty && form.configurationForm.value.$error.required }">
+                  <label for="value">Configuration Value</label>
+                  <input type="text" name="value" id="value" class="form-control" ng-model="vm.configuration.value" />
+              </div>                          
           </div>
           <div class="modal-footer">
               <span ng-click="cancel()" class="btn btn-link">Cancel</span>

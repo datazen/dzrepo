@@ -5,8 +5,8 @@
         .module('app')
         .factory('AuthenticationService', AuthenticationService);
 
-    AuthenticationService.$inject = ['$http', '$cookies', '$rootScope', '$timeout', 'UserService'];
-    function AuthenticationService($http, $cookies, $rootScope, $timeout, UserService) {
+    AuthenticationService.$inject = ['$http', '$cookies', '$rootScope', '$timeout', 'UserService', 'AccessService'];
+    function AuthenticationService($http, $cookies, $rootScope, $timeout, UserService, AccessService) {
         var service = {};
 
         service.Login = Login;
@@ -42,6 +42,7 @@
 
             var authdata = Base64.encode(username + ':' + password);
 
+
             $rootScope.globals = {
                 currentUser: {
                     id: data.id,
@@ -50,7 +51,9 @@
                     firstName: data.firstName,
                     lastName: data.lastName,
                     avatar: data.avatar,
-                    accessLevel: data.accessLevel
+                    accessLevel: data.accessLevel,
+                    accessTitle: data.accessTitle,
+                    pageAccess: {}
                 },
                 config: {}
             };

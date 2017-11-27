@@ -74,7 +74,10 @@
                         vm.dataLoading = false;
                     }
                     $timeout(function(){ $scope.startFade = true;
-                        $timeout(function(){ $scope.hidethis = true; }, 200);
+                        $timeout(function(){ 
+                            $scope.hidethis = true; 
+                            FlashService.DeleteFlashMessage();
+                        }, 200);
                     }, 2000);                     
                 });
         }

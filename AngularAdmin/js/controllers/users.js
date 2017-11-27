@@ -64,7 +64,7 @@
         }
 
         $scope.currentPage = 0;
-        $scope.pageSize = 10;
+        $scope.pageSize = ($rootScope.globals.config.PAGINATION_LENGTH) ? parseInt($rootScope.globals.config.PAGINATION_LENGTH) : 10;
         $scope.numberOfPages=function() {
             return Math.ceil($scope.vm.allUsers.length/$scope.pageSize);                
         }    
@@ -88,7 +88,10 @@
 
             // fade out the alert if there is one
             $timeout(function(){ $scope.startFade = true;
-                $timeout(function(){ $scope.hidethis = true; }, 200);
+                $timeout(function(){ 
+                    $scope.hidethis = true; 
+                    FlashService.DeleteFlashMessage();
+                }, 200);
             }, 2000);                  
         }
 
@@ -124,7 +127,10 @@
                     }
                     vm.dataLoading = false;
                     $timeout(function(){ $scope.startFade = true;
-                        $timeout(function(){ $scope.hidethis = true; }, 200);
+                        $timeout(function(){ 
+                            $scope.hidethis = true; 
+                            FlashService.DeleteFlashMessage();
+                        }, 200);
                     }, 2000);                      
                 });        
         }        
@@ -158,7 +164,10 @@
                     }
                     vm.dataLoading = false;
                     $timeout(function(){ $scope.startFade = true;
-                        $timeout(function(){ $scope.hidethis = true; }, 200);
+                        $timeout(function(){ 
+                            $scope.hidethis = true; 
+                            FlashService.DeleteFlashMessage();
+                        }, 200);
                     }, 2000);                     
                 });
         }

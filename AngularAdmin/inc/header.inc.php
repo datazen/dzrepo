@@ -37,13 +37,17 @@
       <div class="collapse navbar-collapse margin-left" ng-class="!navCollapsed && 'in'" ng-click="navCollapsed=true">     
         <ul class="nav navbar-nav visible-xs">
             <li><span class="lead nav-title">Main Menu</span></li>
-            <li><a ng-href="#!/dashboard" class="active">Dashboard</a></li>
+            <li ng-if="hasAccess('dashboard')"><a ng-href="#!/dashboard" class="active">Dashboard</a></li>
+            <li ng-if="hasAccess('page-1')"><a ng-href="/#!/page-1">Page 1</a></li>
+            <li ng-if="hasAccess('page-2')"><a ng-href="/#!/page-2">Page 2</a></li>
+            <li ng-if="hasAccess('page-3')"><a ng-href="/#!/page-3">Page 3</a></li>
+            <li ng-if="hasAccess('page-4')"><a ng-href="/#!/page-4">Page 4</a></li>
             <li><span class="lead nav-title">Settings Menu</span></li>
-            <li><a ng-href="#!/profile">My Profile</a></li>
-            <li><a ng-href="#!/users">Users</a></li>
-            <li><a ng-href="#!/accessLevels">Access Levels</a></li>
-            <li><a ng-href="#!/pageAccess">Page Access</a></li>
-            <li><a ng-href="#!/configuration">Configuration</a></li>
+            <li ng-if="hasAccess('profile')"><a ng-href="#!/profile">My Profile</a></li>
+            <li ng-if="hasAccess('users')"><a ng-href="#!/users">Users</a></li>
+            <li ng-if="hasAccess('accessLevels')"><a ng-href="#!/accessLevels">Access Levels</a></li>
+            <li ng-if="hasAccess('pageAccess')"><a ng-href="#!/pageAccess">Page Access</a></li>
+            <li ng-if="hasAccess('configuration')"><a ng-href="#!/configuration">Configuration</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </nav>

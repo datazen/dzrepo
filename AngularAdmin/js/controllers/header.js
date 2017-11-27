@@ -51,6 +51,10 @@
                 });
         }
 
+        $scope.hasAccess = function(page) {
+            return ($.inArray(page, $rootScope.globals.currentUser.pageAccess) !== -1) ? true : false;
+        }        
+
     }
 
 })();

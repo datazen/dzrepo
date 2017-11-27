@@ -6,9 +6,9 @@
   </div>
 </nav> 
 
-<div class="col-sm-4 col-sm-offset-4">
-<div class="large-margin-top" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
-<div class="well large-margin-top">
+<div class="col-sm-4 col-sm-offset-4 margin-top">
+<div class="default margin-top small-margin-bottom" ng-hide="hidethis" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error', fade: startFade }" ng-if="flash" ng-bind="flash.message"></div>
+<div class="well margin-top">
     <h2 class="no-margin-top">Login</h2>
     <form name="form" ng-submit="vm.login()" role="form">
         <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">

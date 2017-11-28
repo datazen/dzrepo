@@ -16,7 +16,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
         <td>{{level.level}}<span class="margin-left" ng-if="level.level == 0">(lowest)</span><span class="margin-left" ng-if="level.level == 5">(highest)</span></td>
         <td>{{level.name}}</td>
         <td class="action">
-            <button ng-click="vm.showForm(level.id);" type="button" class="btn btn-default" aria-label="Edit"> 
+            <button ng-click="vm.showForm(level.id);" type="button" class="btn btn-sm btn-primary" aria-label="Edit"> 
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>               
         </td>

@@ -23,13 +23,13 @@
 		<div class="well">
 		    <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
 		        <label for="username">Username</label>
-		        <input type="text" name="username" id="username" class="form-control" ng-model="vm.userRecord.username" ng-readonly="(vm.userRecord.username)" required />
+		        <input type="text" name="username" id="username" class="form-control" ng-model="vm.userRecord.username" ng-readonly="(vm.isEditUser && vm.userRecord.username)" required />
 		        <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
 		    </div>
 
 		    <div class="form-group" ng-class="{ 'has-error' : form.password.$dirty && form.password.$invalid }">
 		        <label for="password">Password</label>
-		        <input type="password" class="form-control" id="password" name="password" ng-model="vm.userRecord.password" password-verify="{{vm.userRecord.confirmPassword}}" required />
+		        <input type="password" class="form-control" id="password" name="password" ng-model="vm.userRecord.password" password-verify="{{vm.userRecord.confirmPassword}}" ng-required="!vm.isEditUser" />
 		        <div class="help-block" ng-messages="form.password.$error" ng-if="form.password.$dirty">
 		            <p ng-message="required">This field is required</p>
 		            <p ng-message="minlength">This field is too short</p>
@@ -40,7 +40,7 @@
 		    </div>
 		    <div class="form-group" ng-class="{ 'has-error' : form.confirmPassword.$dirty && form.confirmPassword.$invalid }">
 		        <label for="confirmPassword">Confirm Password</label>
-		        <input class="form-control" id="confirmPassword" ng-model="vm.userRecord.confirmPassword" name="confirmPassword" type="password" password-verify="{{vm.userRecord.password}}" required />
+		        <input class="form-control" id="confirmPassword" ng-model="vm.userRecord.confirmPassword" name="confirmPassword" type="password" password-verify="{{vm.userRecord.password}}" ng-required="!vm.isEditUser" />
 		        <div class="help-block" ng-messages="form.confirmPassword.$error" ng-if="form.confirmPassword.$dirty">
 		            <p ng-message="required">This field is required</p>
 		            <p ng-message="minlength">This field is too short</p>

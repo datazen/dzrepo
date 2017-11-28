@@ -17,7 +17,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
         <td>{{page.page}}</td>
         <td>{{page.level}} - {{page.accessName}}</td>
         <td class="action">
-            <button ng-click="vm.showForm(page.id);" type="button" class="btn btn-default" ng-disabled="page.page == 'login'" aria-label="Edit"> 
+            <button ng-click="vm.showForm(page.id);" type="button" class="btn btn-sm btn-primary" ng-disabled="(page.page == 'login' || page.page == 'restricted')" aria-label="Edit"> 
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>               
 

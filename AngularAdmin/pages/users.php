@@ -25,7 +25,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
         <td>{{user.username}}</td>
         <td align="center">{{user.accessLevel}}</td>
         <td class="action">
-       	  <button ng-click="vm.editUserRecord(user.id);" type="button" class="btn btn-default" aria-label="Edit"> 
+       	  <button ng-click="vm.editUserRecord(user.id);" type="button" class="btn btn-sm btn-primary" aria-label="Edit"> 
             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
           </button>
           <button ng-disabled="(user.id == 1)" class="btn btn-sm btn-danger" type="button" aria-label="Delete" ng-confirm-click="Are you sure you want to delete this record?" confirmed-click="vm.deleteUser(user.id);">

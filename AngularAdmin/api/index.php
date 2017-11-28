@@ -30,8 +30,8 @@ $container['upload_directory'] = __DIR__ . '/img';
 
 // Users
 $app->get('/users', function () { echo Users::getAll(); });
-$app->get('/getById/{id}', function (Request $request, Response $response) { echo Users::getUserById($request); });
-$app->get('/getByUsername/{username}', function (Request $request, Response $response) { echo Users::getUserByUsername($request); });
+$app->get('/getUserById/{id}', function (Request $request, Response $response) { echo Users::getUserById($request); });
+$app->get('/getUserByUsername/{username}', function (Request $request, Response $response) { echo Users::getUserByUsername($request); });
 $app->post('/addUser', function (Request $request, Response $response) { echo Users::addUser($request); });
 $app->post('/updateUser/{id}', function (Request $request, Response $response) { echo Users::updateUser($request); });
 $app->post('/updateAvatar/{id}', function (Request $request, Response $response) { echo Users::updateAvatar($request); });

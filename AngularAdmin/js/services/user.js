@@ -10,7 +10,6 @@
         var service = {};
 
         service.GetAll = GetAll;
-        service.GetAllAccessLevels = GetAllAccessLevels;
         service.GetById = GetById;
         service.GetByUsername = GetByUsername;
         service.Create = Create;
@@ -23,18 +22,14 @@
             return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
         }
 
-        function GetAllAccessLevels() {
-            return $http.get('/api/levels').then(handleSuccess, handleError('Error getting all access levels'));
-        }
-
         function GetById(id) {
 //            return $http({ method: 'GET', url: '/api/getById/' + id, cache: true }).then(handleSuccess, handleError('Error getting user by id'));
-            return $http.get('/api/getById/' + id).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('/api/getUserById/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
         function GetByUsername(username) {
         //    return $http({ method: 'GET', url: '/api/getByUsername/' + username, cache: true }).then(handleSuccess, handleError('Error getting user by username'));
-            return $http.get('/api/getByUsername/' + username).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('/api/getUserByUsername/' + username).then(handleSuccess, handleError('Error getting user by username'));
         }
 
         function Create(user) {

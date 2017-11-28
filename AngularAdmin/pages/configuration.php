@@ -21,7 +21,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
         <td>{{config.key}}</td>
         <td>{{config.value}}</td>
         <td class="action">
-            <button ng-click="vm.showForm(config.id);" type="button" class="btn btn-default" aria-label="Edit"> 
+            <button ng-click="vm.showForm(config.id);" type="button" class="btn btn-sm btn-primary" aria-label="Edit"> 
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>               
         </td>

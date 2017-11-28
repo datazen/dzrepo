@@ -118,8 +118,13 @@
               var val1 = ngModel.$viewValue;
               var val2 = attrs.passwordVerify;
 
+
               // set validity
-              ngModel.$setValidity('passwordVerify', val1 === val2);
+              if ((val1 == undefined || val1 == '') && (val2 == undefined || val2 == '')) { // blank is valid
+                ngModel.$setValidity('passwordVerify', true);
+              } else {
+                ngModel.$setValidity('passwordVerify', val1 == val2);
+              }
             };
           }
         }

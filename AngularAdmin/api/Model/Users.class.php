@@ -26,6 +26,10 @@ class Users {
 	    	$stmt->bindValue(":uid", $uid, PDO::PARAM_INT);
 	        $stmt->execute(); 
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+            // move password to encrpted   
+            $result['encrypted'] = $result['password'];
+            // reset password for forms
+            $result['password'] = '';
 			$db = null;
         	return json_encode(array('rpcStatus' => 1, 'data' => $result));
 		} catch(PDOException $e) {
@@ -69,7 +73,7 @@ class Users {
 
 			$info = (isset($result[0])) ? $result[0] : array();
             if (isset($info['username']) && isset($info['password'])) {
-			    if (self::validateUser($rawPassword, $info['password'])) {
+			    if (self::_validatePassword($rawPassword, $info['password'])) {
 			    	return json_encode(array('rpcStatus' => 1, 'data' => $info));
                    // validation success
 			    } else {
@@ -90,10 +94,10 @@ class Users {
         $now = new DateTime();
         $postData = $request->getParsedBody();
         $user = array();
-        $user['username'] = (isset($postData['username'])) ? $postData['username'] : null;
-        $user['password'] = (isset($postData['password'])) ? $postData['password'] : null;
-        $user['firstName'] = (isset($postData['firstName'])) ? $postData['firstName'] : null;
-        $user['lastName'] = (isset($postData['lastName'])) ? $postData['lastName'] : null;
+        $user['username'] = (isset($postData['username'])) ? $postData['username'] : '';
+        $user['password'] = (isset($postData['password'])) ? $postData['password'] : '';
+        $user['firstName'] = (isset($postData['firstName'])) ? $postData['firstName'] : '';
+        $user['lastName'] = (isset($postData['lastName'])) ? $postData['lastName'] : '';
         $user['lastModified'] = $now->format('Y-m-d H:i:s');
 
         // sanity check to see if username already exists
@@ -113,10 +117,11 @@ class Users {
         if ($exists === false) {
 			$sql = "INSERT INTO users (username, password, firstName, lastName, lastModified) VALUES (:username, :password, :firstName, :lastName, :lastModified)";
 			try {
+				$encrypted = self::_encryptPassword($user['password']);
 				$db = Database::getConnection();
 				$stmt = $db->prepare($sql);  
 				$stmt->bindParam("username", $user['username']);
-				$stmt->bindParam("password", $user['password']);
+				$stmt->bindParam("password", $encrypted);
 				$stmt->bindParam("firstName", $user['firstName']);
 				$stmt->bindParam("lastName", $user['lastName']);
 				$stmt->bindParam("lastModified", $user['lastModified']);
@@ -182,20 +187,29 @@ class Users {
         $now = new DateTime();
         $postData = $request->getParsedBody();  
         $user = array();
-        $user['username'] = (isset($postData['username'])) ? $postData['username'] : null;
-        $user['password'] = (isset($postData['password'])) ? $postData['password'] : null;
-        $user['firstName'] = (isset($postData['firstName'])) ? $postData['firstName'] : null;
-        $user['lastName'] = (isset($postData['lastName'])) ? $postData['lastName'] : null;
-        $user['accessLevel'] = (isset($postData['accessLevel'])) ? $postData['accessLevel'] : null;
+        $user['username'] = (isset($postData['username'])) ? $postData['username'] : '';
+
+        $user['password'] = (isset($postData['password'])) ? $postData['password'] : '';
+        $savePassword = (trim($user['password']) != null || trim($user['password']) != '') ? true : false;
+
+        $user['firstName'] = (isset($postData['firstName'])) ? $postData['firstName'] : '';
+        $user['lastName'] = (isset($postData['lastName'])) ? $postData['lastName'] : '';
+        $user['accessLevel'] = (isset($postData['accessLevel'])) ? $postData['accessLevel'] : 0;
         $user['avatar'] = (isset($filename)) ? $filename : 'na.png';
         $user['lastModified'] = $now->format('Y-m-d H:i:s');
 
-		$sql = "UPDATE users SET password = :password, firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE username = :username";
+        if ($savePassword) {
+		    $encrypted = self::_encryptPassword($user['password']);
+   		    $sql = "UPDATE users SET password = :password, firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE username = :username";
+   		} else {    
+   		    $sql = "UPDATE users SET firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE username = :username";
+        }
+
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
 			$stmt->bindvalue(":username", $user['username']);
-			$stmt->bindvalue(":password", $user['password']);
+			if ($savePassword) $stmt->bindvalue(":password", $encrypted);
 			$stmt->bindvalue(":firstName", $user['firstName']);
 			$stmt->bindvalue(":lastName", $user['lastName']);
 			$stmt->bindvalue(":accessLevel", $user['accessLevel']);
@@ -226,15 +240,34 @@ class Users {
 	    }
 	}
 
-	private static function validateUser($rawPassword, $password) {
-        $result = ($rawPassword == $password) ? true : false;
+	private static function _encryptPassword($plain) {
+        $password = '';
+    
+        for ($i=0; $i<10; $i++) {
+            $password .= mt_rand();
+        }
+        $salt = substr(hash('sha256', $password), 0, 2);
+        $password = hash('sha256', $salt . $plain) . '::' . $salt;
 
-		return $result;
-	} 
-
-	private static function createEncrypted($rawPassword) {
-
+        return $password;
 	}
+
+	private static function _validatePassword($plain, $encrypted) {
+		if (!empty($plain) && !empty($encrypted)) {  
+	        // split apart the hash / salt
+			$stack = explode('::', $encrypted);
+
+			if (sizeof($stack) != 2) {
+				return false;
+			}
+
+			if (hash('sha256', $stack[1] . $plain) == $stack[0]) {
+				return true;
+			}      	
+		}
+
+        return false;
+    }
 
 	private static function _resizeAvatar($file_name) {
         $maxDim = 128;

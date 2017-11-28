@@ -50,16 +50,18 @@
         vm.deleteUser = deleteUser;
         vm.editUserRecord = editUserRecord;
 
+        vm.isEditUser = false;
+
         initController();
 
         function initController() {
-        //    loadCurrentUser();
             loadAllUsers();
             loadAllAccessLevels();
 
             if (window.location.href.indexOf('editUser/') != -1) {
                 var userId = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
                 if (userId) loadUserRecord(userId);
+                vm.isEditUser = true;
             }            
         }
 

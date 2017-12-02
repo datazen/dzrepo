@@ -1,8 +1,7 @@
 <?php
-if (file_exists('../inc/header.inc.php')) include '../inc/header.inc.php';
-if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
+if (file_exists('../../../../app/shared/Admin/header/headerView.php')) include '../../../../app/shared/Admin/header/headerView.php';
+if (file_exists('../../../../app/shared/Admin/sidebar/sidebarView.php')) include '../../../../app/shared/Admin/sidebar/sidebarView.php';
 ?> 
-
 <div class="profile col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h2 class="no-margin-top margin-bottom">My Profile</h2>
     <div class="col-sm-12 no-padding-left no-padding-right">
@@ -12,7 +11,7 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
             <div class="well">
                  <label for="avatar">Avatar <small class="margin-left">&nbsp;&nbsp;(128x128)</small></label>
                  <div class="avatar margin-bottom">
-                     <img ng-src="img/{{vm.user.avatar}}">
+                     <img ng-src="{{globals.config.IMAGES_PATH}}Admin/{{vm.user.avatar}}">
                  </div>
                 <form class="form-inline" name="aform" role="form" enctype="multipart/form-data">
                     <div class="form-group">
@@ -29,12 +28,12 @@ if (file_exists('../inc/sidebar.inc.php')) include '../inc/sidebar.inc.php';
             </div>
             <div class="well">
                 <label for="accessLevel">Access Level:</label> 
-                <span ng-if="(vm.user.accessLevel == 0)"><img class="small-margin-left small-margin-right" src="img/stars_0.png"> ({{globals.currentUser.accessTitle}})</span>
-                <span ng-if="(vm.user.accessLevel == 1)"><img class="small-margin-left small-margin-right" src="img/stars_1.png"> ({{globals.currentUser.accessTitle}})</span>
-                <span ng-if="(vm.user.accessLevel == 2)"><img class="small-margin-left small-margin-right" src="img/stars_2.png"> ({{globals.currentUser.accessTitle}})</span>
-                <span ng-if="(vm.user.accessLevel == 3)"><img class="small-margin-left small-margin-right" src="img/stars_3.png"> ({{globals.currentUser.accessTitle}})</span>
-                <span ng-if="(vm.user.accessLevel == 4)"><img class="small-margin-left small-margin-right" src="img/stars_4.png"> ({{globals.currentUser.accessTitle}})</span>
-                <span ng-if="(vm.user.accessLevel == 5)"><img class="small-margin-left small-margin-right" src="img/stars_5.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 0)"><img class="small-margin-left small-margin-right" ng-src="{{globals.config.IMAGES_PATH}}Admin/stars_0.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 1)"><img class="small-margin-left small-margin-right" ng-src="{{globals.config.IMAGES_PATH}}Admin/stars_1.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 2)"><img class="small-margin-left small-margin-right" ng-src="{{globals.config.IMAGES_PATH}}Admin/stars_2.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 3)"><img class="small-margin-left small-margin-right" ng-src="{{globals.config.IMAGES_PATH}}Admin/stars_3.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 4)"><img class="small-margin-left small-margin-right" ng-src="{{globals.config.IMAGES_PATH}}Admin/stars_4.png"> ({{globals.currentUser.accessTitle}})</span>
+                <span ng-if="(vm.user.accessLevel == 5)"><img class="small-margin-left small-margin-right" ng-src="{{globals.config.IMAGES_PATH}}Admin/stars_5.png"> ({{globals.currentUser.accessTitle}})</span>
             </div>
         </div>   
 

@@ -276,7 +276,7 @@ class Users {
 	private static function _resizeAvatar($file_name) {
         $maxDim = 128;
         $sourceFile = substr(__DIR__, 0, strpos(__DIR__, 'api/')) . 'media/' . $file_name;
-        $targetFile = substr(__DIR__, 0, strpos(__DIR__, 'api/')) . 'img/' . $file_name;
+        $targetFile = substr(__DIR__, 0, strpos(__DIR__, 'api/')) . 'assets/img/Admin/' . $file_name;
 
         //$file_name = $_FILES['myFile']['tmp_name'];
         list($width, $height, $type, $attr) = getimagesize( $sourceFile );

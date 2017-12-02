@@ -3,7 +3,7 @@
 
     angular
         .module('app')
-        .controller('ProfileController', ProfileController)
+        .controller('AdminProfileController', AdminProfileController)
         .directive('fileModel', ['$parse', function ($parse) {
             return {
                 restrict: 'A',
@@ -19,8 +19,8 @@
             };
         }]);
         
-    ProfileController.$inject = ['UserService', '$location', '$scope', '$rootScope', 'FlashService', 'UploadService', '$timeout'];
-    function ProfileController(UserService, $location, $scope, $rootScope, FlashService, UploadService, $timeout) {
+    AdminProfileController.$inject = ['AdminUserService', 'AdminFlashService', 'AdminUploadService', '$rootScope', '$scope', '$location', '$timeout'];
+    function AdminProfileController(AdminUserService, AdminFlashService, AdminUploadService, $rootScope, $scope, $location, $timeout) {
         var vm = this;
 
         vm.user = null;
@@ -34,7 +34,7 @@
         }
 
         function loadCurrentUser() {
-            UserService.GetByUsername($rootScope.globals.currentUser.username)
+            AdminUserService.GetByUsername($rootScope.globals.currentUser.username)
                 .then(function (user) {
                     vm.user = user.data;
                 });
@@ -47,24 +47,24 @@
             vm.dataLoading2 = true;
             $scope.hidethis = false;
             $scope.startFade = false;
-            UploadService.UpdateAvatar(vm.user, fd)
+            AdminUploadService.UpdateAvatar(vm.user, fd)
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         window.scrollTo(0,0);
                         vm.user.avatar = file.name + '?' + new Date().getTime();                        
                         $rootScope.globals.currentUser.avatar = file.name + '?' + new Date().getTime();                        
 
-                        FlashService.Success('Update successful', true);
+                        AdminFlashService.Success('Update successful', true);
                         vm.dataLoading2 = false;   
                     } else {
                         window.scrollTo(0,0);                       
-                        FlashService.Error(response.msg);
+                        AdminFlashService.Error(response.msg);
                         vm.dataLoading2 = false;
                     }
                     $timeout(function(){ $scope.startFade = true;
                         $timeout(function(){ 
                             $scope.hidethis = true; 
-                            FlashService.DeleteFlashMessage();
+                            AdminFlashService.DeleteFlashMessage();
                         }, 200);
                     }, 2000);                    
                 });
@@ -74,21 +74,21 @@
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;            
-            UserService.Update(vm.user)
+            AdminUserService.Update(vm.user)
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         window.scrollTo(0,0);                       
-                        FlashService.Success('Update successful', true);
+                        AdminFlashService.Success('Update successful', true);
                         vm.dataLoading = false;
                     } else {
                         window.scrollTo(0,0);
-                        FlashService.Error(response.msg);
+                        AdminFlashService.Error(response.msg);
                         vm.dataLoading = false;
                     }     
                     $timeout(function(){ $scope.startFade = true;
                         $timeout(function(){ 
                             $scope.hidethis = true; 
-                            FlashService.DeleteFlashMessage();
+                            AdminFlashService.DeleteFlashMessage();
                         }, 200);
                     }, 2000);                                    
                 });

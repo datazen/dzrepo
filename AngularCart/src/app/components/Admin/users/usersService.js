@@ -19,29 +19,29 @@
         return service;
 
         function GetAll() {
-            return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
+            return $http.get('/api/getAllAdminUsers').then(handleSuccess, handleError('Error getting all users'));
         }
 
         function GetById(id) {
 //            return $http({ method: 'GET', url: '/api/getById/' + id, cache: true }).then(handleSuccess, handleError('Error getting user by id'));
-            return $http.get('/api/getUserById/' + id).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('/api/getAdminUserById/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
         function GetByUsername(username) {
         //    return $http({ method: 'GET', url: '/api/getByUsername/' + username, cache: true }).then(handleSuccess, handleError('Error getting user by username'));
-            return $http.get('/api/getUserByUsername/' + username).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('/api/getAdminUserByUsername/' + username).then(handleSuccess, handleError('Error getting user by username'));
         }
 
         function Create(user) {
-            return $http.post('/api/addUser', user).then(handleSuccess, handleError('Error creating user'));
+            return $http.post('/api/addAdminUser', user).then(handleSuccess, handleError('Error creating user'));
         }
 
         function Update(user) {
-            return $http.post('/api/updateUser/' + user.id, user).then(handleSuccess, handleError('Error updating user'));
+            return $http.post('/api/updateAdminUser/' + user.id, user).then(handleSuccess, handleError('Error updating user'));
         }
 
         function Delete(id) {
-            return $http.get('/api/deleteUser/' + id).then(handleSuccess, handleError('Error deleting user'));
+            return $http.get('/api/deleteAdminUser/' + id).then(handleSuccess, handleError('Error deleting user'));
         }
 
         // private functions

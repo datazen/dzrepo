@@ -14,18 +14,22 @@
         $stateProvider
         .state('public', {
             abstract: true,
+            site: 'Store',
             module: 'public'
         })
         .state('public.login', {
             url: '/login',
+            site: 'Store',           
             module: 'public'
         })
         .state('public.home', {
             url: '/home',
+            site: 'Store',            
             module: 'public'
         })
         .state('public.account', {
             url: '/account',
+            site: 'Store',            
             module: 'public'
         });
 

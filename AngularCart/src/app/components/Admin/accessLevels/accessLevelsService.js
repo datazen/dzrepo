@@ -16,15 +16,15 @@
         return service;
 
         function GetAllAccessLevels() {
-            return $http.get('/api/accessLevels').then(handleSuccess, handleError('Error getting all access levels'));
+            return $http.get('/api/getAllAdminAccessLevels').then(handleSuccess, handleError('Error getting all access levels'));
         }
 
         function GetAccessLevelById(id) {
-            return $http.get('/api/getAccessLevelById/' + id).then(handleSuccess, handleError('Error getting access level by id'));
+            return $http.get('/api/getAdminAccessLevelById/' + id).then(handleSuccess, handleError('Error getting access level by id'));
         }
 
         function UpdateAccessLevel(level) {
-            return $http.post('/api/updateAccessLevel/' + level.id, level).then(handleSuccess, handleError('Error updating access level'));
+            return $http.post('/api/updateAdminAccessLevel/' + level.id, level).then(handleSuccess, handleError('Error updating access level'));
         }      
 
         // private functions

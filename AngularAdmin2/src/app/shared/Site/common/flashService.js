@@ -3,10 +3,10 @@
 
     angular
         .module('app')
-        .factory('StoreFlashService', StoreFlashService);
+        .factory('SiteFlashService', SiteFlashService);
 
-    StoreFlashService.$inject = ['$rootScope'];
-    function StoreFlashService($rootScope) {
+    SiteFlashService.$inject = ['$rootScope'];
+    function SiteFlashService($rootScope) {
         var service = {};
 
         service.Success = Success;

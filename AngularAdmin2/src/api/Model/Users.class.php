@@ -37,16 +37,16 @@ class Users {
 		}
 	}	
 
-	public static function getUserByUsername($request) {
+	public static function getUserByEmail($request) {
 	    $uri = $request->getUri();
 	    $uriArr = explode("/", $uri);
-	    $username = end($uriArr);
+	    $email = end($uriArr);
 
-		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.username = :username";
+		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.email = :email";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
-	    	$stmt->bindParam(":username", $username);
+	    	$stmt->bindParam(":email", $email);
 	        $stmt->execute(); 
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
             // move password to encrpted   
@@ -63,20 +63,20 @@ class Users {
 	public static function processLogin($request) {
 
         $postData = $request->getParsedBody();
-        $username = (isset($postData['username'])) ? $postData['username'] : null;
+        $email = (isset($postData['email'])) ? $postData['email'] : null;
         $rawPassword = (isset($postData['password'])) ? $postData['password'] : null;
 
-		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.username = :username LIMIT 1";
+		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.email = :email LIMIT 1";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
-	    	$stmt->bindParam(":username", $username);
+	    	$stmt->bindParam(":email", $email);
 	        $stmt->execute(); 
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);          
 			$db = null;
 
 			$info = (isset($result[0])) ? $result[0] : array();
-            if (isset($info['username']) && isset($info['password'])) {
+            if (isset($info['email']) && isset($info['password'])) {
 			    if (self::_validatePassword($rawPassword, $info['password'])) {
 			    	return json_encode(array('rpcStatus' => 1, 'data' => $info));
                    // validation success
@@ -98,18 +98,18 @@ class Users {
         $now = new DateTime();
         $postData = $request->getParsedBody();
         $user = array();
-        $user['username'] = (isset($postData['username'])) ? $postData['username'] : '';
+        $user['email'] = (isset($postData['email'])) ? $postData['email'] : '';
         $user['password'] = (isset($postData['password'])) ? $postData['password'] : '';
         $user['firstName'] = (isset($postData['firstName'])) ? $postData['firstName'] : '';
         $user['lastName'] = (isset($postData['lastName'])) ? $postData['lastName'] : '';
         $user['lastModified'] = $now->format('Y-m-d H:i:s');
 
-        // sanity check to see if username already exists
-        $sql = "SELECT id FROM users WHERE username = :username LIMIT 1";
+        // sanity check to see if email already exists
+        $sql = "SELECT id FROM users WHERE email = :email LIMIT 1";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
-			$stmt->bindParam("username", $user['username']);
+			$stmt->bindParam("email", $user['email']);
 			$stmt->execute();
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);          
 			$db = null;
@@ -119,12 +119,12 @@ class Users {
 		}        
         
         if ($exists === false) {
-			$sql = "INSERT INTO users (username, password, firstName, lastName, lastModified) VALUES (:username, :password, :firstName, :lastName, :lastModified)";
+			$sql = "INSERT INTO users (email, password, firstName, lastName, lastModified) VALUES (:email, :password, :firstName, :lastName, :lastModified)";
 			try {
 				$encrypted = self::_encryptPassword($user['password']);
 				$db = Database::getConnection();
 				$stmt = $db->prepare($sql);  
-				$stmt->bindParam("username", $user['username']);
+				$stmt->bindParam("email", $user['email']);
 				$stmt->bindParam("password", $encrypted);
 				$stmt->bindParam("firstName", $user['firstName']);
 				$stmt->bindParam("lastName", $user['lastName']);
@@ -137,8 +137,8 @@ class Users {
 				return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 			}
 		} else {
-			// username already exists
-			return json_encode(array('rpcStatus' => 0, 'msg' => 'Username already exists.'));
+			// email already exists
+			return json_encode(array('rpcStatus' => 0, 'msg' => 'E-mail already exists.'));
 		}
 	}
 
@@ -191,7 +191,7 @@ class Users {
         $now = new DateTime();
         $postData = $request->getParsedBody();  
         $user = array();
-        $user['username'] = (isset($postData['username'])) ? $postData['username'] : '';
+        $user['email'] = (isset($postData['email'])) ? $postData['email'] : '';
 
         $user['password'] = (isset($postData['password'])) ? $postData['password'] : '';
         $savePassword = (trim($user['password']) != null || trim($user['password']) != '') ? true : false;
@@ -204,15 +204,15 @@ class Users {
 
         if ($savePassword) {
 		    $encrypted = self::_encryptPassword($user['password']);
-   		    $sql = "UPDATE users SET password = :password, firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE username = :username";
+   		    $sql = "UPDATE users SET password = :password, firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE email = :email";
    		} else {    
-   		    $sql = "UPDATE users SET firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE username = :username";
+   		    $sql = "UPDATE users SET firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE email = :email";
         }
 
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
-			$stmt->bindvalue(":username", $user['username']);
+			$stmt->bindvalue(":email", $user['email']);
 			if ($savePassword) $stmt->bindvalue(":password", $encrypted);
 			$stmt->bindvalue(":firstName", $user['firstName']);
 			$stmt->bindvalue(":lastName", $user['lastName']);

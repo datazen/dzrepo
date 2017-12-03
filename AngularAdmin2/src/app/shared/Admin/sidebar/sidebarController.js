@@ -37,7 +37,8 @@
 		  $location.path( path );
 		};    
 
-        if (($rootScope.isCurrentPath.indexOf('users')>-1) ||
+        if (($rootScope.isCurrentPath.indexOf('company')>-1) ||
+            ($rootScope.isCurrentPath.indexOf('users')>-1) ||
             ($rootScope.isCurrentPath.indexOf('addUser')>-1) ||
             ($rootScope.isCurrentPath.indexOf('editUser')>-1) ||
             ($rootScope.isCurrentPath.indexOf('profile')>-1) ||

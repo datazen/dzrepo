@@ -20,9 +20,9 @@
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;             
-            AdminLoginService.Login(vm.username, vm.password, function (response) {
+            AdminLoginService.Login(vm.email, vm.password, function (response) {
                 if (response.success == true) {
-                    AdminLoginService.SetCredentials(vm.username, vm.password, response.data);
+                    AdminLoginService.SetCredentials(vm.email, vm.password, response.data);
                     $location.path('/Admin/dashboard');
                 } else {
                     var errMsg = (response.msg || 'An unknown API communication error has occurred');

@@ -11,7 +11,7 @@
 
         service.GetAll = GetAll;
         service.GetById = GetById;
-        service.GetByUsername = GetByUsername;
+        service.GetByEmail = GetByEmail;
         service.Create = Create;
         service.Update = Update;
         service.Delete = Delete;
@@ -27,9 +27,9 @@
             return $http.get('/api/getAdminUserById/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
-        function GetByUsername(username) {
+        function GetByEmail(email) {
         //    return $http({ method: 'GET', url: '/api/getByUsername/' + username, cache: true }).then(handleSuccess, handleError('Error getting user by username'));
-            return $http.get('/api/getAdminUserByUsername/' + username).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('/api/getAdminUserByEmail/' + email).then(handleSuccess, handleError('Error getting user by email'));
         }
 
         function Create(user) {

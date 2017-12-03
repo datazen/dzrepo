@@ -27,13 +27,26 @@
     <script src="//code.angularjs.org/1.6.6/angular-sanitize.min.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="//code.angularjs.org/1.6.6/angular-messages.min.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="//unpkg.com/angular-ui-router@0.4.2/release/angular-ui-router.js"></script>
+    <script src="node_modules/angular-translate/dist/angular-translate.min.js"></script>
+    
     <script src="assets/lib/ui-bootstrap-2.5.0.min.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
 
+    <!-- Translations -->
+    <script src="i18n/en/Admin/translations.en.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="i18n/es/Admin/translations.es.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="i18n/fr/Admin/translations.fr.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="i18n/de/Admin/translations.de.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+
+    <!-- Routes -->
+    <script src="app/routes/app.routes.Admin.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="app/routes/app.routes.Site.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="app/app.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
     <!-- Admin -->
     <script src="app/components/Admin/dashboard/dashboardController.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="app/components/Admin/company/companyService.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="app/components/Admin/company/companyController.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="app/components/Admin/users/usersService.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="app/components/Admin/users/usersController.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="app/components/Admin/login/loginService.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
@@ -55,14 +68,9 @@
     <script src="app/shared/Admin/common/passwordVerifyDirective.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="app/shared/Admin/common/startFromFilter.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
-    <!-- Store -->
-    <script src="app/components/Store/home/homeController.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
-    <script src="app/components/Store/login/loginController.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
-    <script src="app/components/Store/login/loginService.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>    
-    <script src="app/components/Store/account/accountService.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
-    <script src="app/components/Store/account/accountController.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
- 
-    <script src="app/shared/Store/common/flashService.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <!-- Public Site -->
+    <script src="app/components/Site/home/homeController.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="app/shared/Site/common/flashService.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
     <?php
     if (file_exists('assets/js/general.js.php')) include 'assets/js/general.js.php';

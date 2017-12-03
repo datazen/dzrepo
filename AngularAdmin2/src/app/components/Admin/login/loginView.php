@@ -11,10 +11,10 @@
 <div class="well margin-top">
     <h2 class="no-margin-top">Login</h2>
     <form name="form" ng-submit="vm.login()" role="form">
-        <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" class="form-control" ng-model="vm.username" required />
-            <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+        <div class="form-group" ng-class="{ 'has-error': form.email.$dirty && form.email.$error.required }">
+            <label for="email">E-mail Address</label>
+            <input type="email" name="email" id="email" class="form-control" ng-model="vm.email" required />
+            <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">E-mail is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
             <label for="password">Password</label>

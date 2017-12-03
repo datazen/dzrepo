@@ -15,13 +15,13 @@
 
         return service;
 
-        function Login(username, password, callback) {
+        function Login(email, password, callback) {
 
             $http({
                 method: 'POST',
                 url: 'http://ngcart.zloaded.com/api/Admin/login',
                 dataType: 'json',
-                data: { username: username, password: password },
+                data: { email: email, password: password },
                 headers: { 'Content-Type': 'application/json; charset=UTF-8' }
             }).then(function (response) {
                 var result;
@@ -38,15 +38,15 @@
 
         }
 
-        function SetCredentials(username, password, data) {
+        function SetCredentials(email, password, data) {
 
-            var authdata = Base64.encode(username + ':' + password);
+            var authdata = Base64.encode(email + ':' + password);
 
 
             $rootScope.globals = {
                 currentUser: {
                     id: data.id,
-                    username: username,
+                    email: email,
                     authdata: authdata,
                     firstName: data.firstName,
                     lastName: data.lastName,

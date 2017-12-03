@@ -34,7 +34,7 @@
         }
 
         function loadCurrentUser() {
-            AdminUserService.GetByUsername($rootScope.globals.currentUser.username)
+            AdminUserService.GetByEmail($rootScope.globals.currentUser.email)
                 .then(function (user) {
                     vm.user = user.data;
                 });

@@ -24,6 +24,7 @@
 
   <ul class="sidebar__settings-menu nav sidebar-nav" ng-show="!menuToggle">
     <li class="sidebar__menu_dropdown">
+      <button ng-if="hasAccess('profile')" type="button" class="{{isCurrentPath.indexOf('company')>-1 ? 'selected-config' : '' }} sidebar-menu_button btn btn-black" ng-click="go('/Admin/company')"><span class="glyphicon glyphicon-briefcase small-margin-right" aria-hidden="true"></span> My Company <span class="sr-only">(current)</span></button>
       <button ng-if="hasAccess('profile')" type="button" class="{{isCurrentPath.indexOf('profile')>-1 ? 'selected-config' : '' }} sidebar-menu_button btn btn-black" ng-click="go('/Admin/profile')"><span class="glyphicon glyphicon-user small-margin-right" aria-hidden="true"></span> My Profile <span class="sr-only">(current)</span></button>
       <button ng-if="hasAccess('users')" type="button" class="{{(isCurrentPath.indexOf('users')>-1 || isCurrentPath.indexOf('User')>-1) ? 'selected-config' : '' }} sidebar-menu_button btn btn-black" ng-click="go('/Admin/users')"><span class="glyphicon glyphicon-th-list small-margin-right" aria-hidden="true"></span> Users <span class="sr-only">(current)</span></button>
 

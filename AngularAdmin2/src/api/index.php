@@ -31,7 +31,7 @@ $app = new \Slim\App(["settings" => $config]);
 // Users
 $app->get('/getAllAdminUsers', function () { echo Users::getAll(); });
 $app->get('/getAdminUserById/{id}', function (Request $request, Response $response) { echo Users::getUserById($request); });
-$app->get('/getAdminUserByUsername/{username}', function (Request $request, Response $response) { echo Users::getUserByUsername($request); });
+$app->get('/getAdminUserByEmail/{email}', function (Request $request, Response $response) { echo Users::getUserByEmail($request); });
 $app->post('/addAdminUser', function (Request $request, Response $response) { echo Users::addUser($request); });
 $app->post('/updateAdminUser/{id}', function (Request $request, Response $response) { echo Users::updateUser($request); });
 $app->post('/updateAdminAvatar/{id}', function (Request $request, Response $response) { echo Users::updateAvatar($request); });

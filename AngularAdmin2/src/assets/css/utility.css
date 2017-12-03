@@ -1,0 +1,159 @@
+/********************************************************/
+/*                  4. Utility classes                  */
+/********************************************************/
+
+/* Align */
+.center { text-align:center; }
+.align-left		{ text-align: left; }
+.align-center	{ text-align: center; }
+.align-right	{ text-align: right; }
+.align-middle   { vertical-align: 50% !important; }
+.no-break       { white-space: nowrap !important; }
+
+/* Floating elements */
+.float-left		{ float: left !important; }
+.float-right	{ float: right !important; }
+.clear-left		{ clear: left !important; }
+.clear-right	{ clear: right !important; }
+.clear-both		{ clear: both !important; }
+
+/* Padding */
+.with-padding      { padding: 20px !important; }
+.with-padding-no-top	{ padding: 0 20px 20px 20px  !important; }
+.with-mid-padding		{ padding: 10px !important; }
+.with-small-padding		{ padding: 5px !important; }
+.no-padding				{ padding: 0 !important; }
+.large-padding-top		{ padding-top: 30px !important; }
+.padding-top				{ padding-top: 16px !important; }
+.mid-padding-top			{ padding-top: 8px !important; }
+.small-padding-top		{ padding-top: 4px !important; }
+.no-padding-top			{ padding-top: 0 !important; }
+.large-padding-right		{ padding-right: 30px !important; }
+.padding-right			{ padding-right: 16px !important; }
+.mid-padding-right		{ padding-right: 8px !important; }
+.small-padding-right		{ padding-right: 4px !important; }
+.no-padding-right		{ padding-right: 0 !important; }
+.large-padding-left		{ padding-left: 30px !important; }
+.padding-left			{ padding-left: 16px !important; }
+.mid-padding-left		{ padding-left: 8px !important; }
+.small-padding-left		{ padding-left: 4px !important; }
+.no-padding-left			{ padding-left: 0 !important; }
+.large-padding-bottom	{ padding-bottom: 30px !important; }
+.padding-bottom			{ padding-bottom: 16px !important; }
+.mid-padding-bottom		{ padding-bottom: 8px !important; }
+.small-padding-bottom	{ padding-bottom: 4px !important; }
+.no-padding-bottom		{ padding-bottom: 0 !important; }
+
+/* Margins */
+.large-margin-top		{ margin-top: 30px !important; }
+.margin-top				{ margin-top: 16px !important; }
+.mid-margin-top			{ margin-top: 8px !important; }
+.small-margin-top		{ margin-top: 4px !important; }
+.no-margin-top			{ margin-top: 0 !important; }
+.large-margin-right		{ margin-right: 30px !important; }
+.margin-right			{ margin-right: 16px !important; }
+.mid-margin-right		{ margin-right: 8px !important; }
+.small-margin-right		{ margin-right: 4px !important; }
+.no-margin-right		{ margin-right: 0 !important; }
+.large-margin-left		{ margin-left: 30px !important; }
+.margin-left			{ margin-left: 16px !important; }
+.mid-margin-left		{ margin-left: 8px !important; }
+.small-margin-left		{ margin-left: 4px !important; }
+.no-margin-left			{ margin-left: 0 !important; }
+.large-margin-bottom	{ margin-bottom: 30px !important; }
+.margin-bottom			{ margin-bottom: 16px !important; }
+.mid-margin-bottom		{ margin-bottom: 8px !important; }
+.small-margin-bottom	{ margin-bottom: 4px !important; }
+.no-margin-bottom		{ margin-bottom: 0 !important; }
+
+/* Negative margins */
+.neg-large-margin-top		{ margin-top: -30px !important; }
+.neg-margin-top				{ margin-top: -16px !important; }
+.neg-mid-margin-top			{ margin-top: -8px !important; }
+.neg-small-margin-top		{ margin-top: -4px !important; }
+.neg-large-margin-right		{ margin-right: -30px !important; }
+.neg-margin-right			{ margin-right: -16px !important; }
+.neg-mid-margin-right		{ margin-right: -8px !important; }
+.neg-small-margin-right		{ margin-right: -4px !important; }
+.neg-large-margin-left		{ margin-left: -30px !important; }
+.neg-margin-left			{ margin-left: -16px !important; }
+.neg-mid-margin-left		{ margin-left: -8px !important; }
+.neg-small-margin-left		{ margin-left: -4px !important; }
+.neg-large-margin-bottom	{ margin-bottom: -30px !important; }
+.neg-margin-bottom			{ margin-bottom: -16px !important; }
+.neg-mid-margin-bottom		{ margin-bottom: -8px !important; }
+.neg-small-margin-bottom	{ margin-bottom: -4px !important; }
+
+/* Absolute positioning */
+.relative				{ position: relative; }
+.absolute-left,
+.absolute-right {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px;
+	}
+	.absolute-left {
+		left: 0;
+	}
+	.absolute-right {
+		right: 0;
+	}
+
+/* This class disables mouse events on compatible browsers, a polyfill is provded in setup.js for others */
+.no-pointer-events		{ pointer-events: none; }
+
+/* This class is only active if the device does not handle touch */
+.no-touch .show-on-parent-hover {
+	pointer-events: none;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	-khtml-opacity: 0;
+	-moz-opacity: 0;
+	opacity: 0;
+	-webkit-transition: opacity 200ms;
+	-moz-transition: opacity 200ms;
+	-ms-transition: opacity 200ms;
+	-o-transition: opacity 200ms;
+	transition: opacity 200ms;
+	}
+	.no-touch :hover > .show-on-parent-hover {
+		pointer-events: auto;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		filter: alpha(opacity=100);
+		-khtml-opacity: 1;
+		-moz-opacity: 1;
+		opacity: 1;
+	}
+
+/* IE7 vertically aligned images fix */
+.vert-align {
+	display: inline;
+	width: 0;
+	margin-right: -4px;
+}
+
+/* Contextual elements */
+.hidden-on-mobile,
+.only-on-tablet,
+.only-on-desktop {
+	display: none;
+}
+.hidden-on-tablet,
+.hidden-on-desktop,
+.only-on-mobile {
+	display: block;
+}
+
+.transparent {
+  background:#333333;
+  background:rgba(0,0,0,0.9);
+}
+
+.round-corners {
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px; /* future proofing */
+  -khtml-border-radius: 10px; /* for old Konqueror browsers */
+}
+
+.full-width { width: 100% !important; }

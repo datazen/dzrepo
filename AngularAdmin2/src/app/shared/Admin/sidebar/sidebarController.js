@@ -5,10 +5,11 @@
         .module('app')
         .controller('AdminSidebarController', AdminSidebarController);         
 
-    AdminSidebarController.$inject = ['AdminConfigurationService', '$rootScope', '$scope', '$location'];
-    function AdminSidebarController(AdminConfigurationService, $rootScope, $scope, $location) {
+    AdminSidebarController.$inject = ['AdminConfigurationService', 'AdminCompanyService', '$rootScope', '$scope', '$location'];
+    function AdminSidebarController(AdminConfigurationService, AdminCompanyService, $rootScope, $scope, $location) {
 
         $scope.configurationGroups = [];
+        $scope.company = [];
         $scope.isCollapsedMain = true;
         $scope.isCollapsedAccess = true;
         $scope.isCollapsedConfig = true;
@@ -17,9 +18,8 @@
         
         function initController() {
             loadConfigurationGroups();
+            loadCurrentCompany()
         }
-
-        $rootScope.isCurrentPath = $location.path(); 
 
         if (($rootScope.isCurrentPath.indexOf('accessLevels')>-1) ||
             ($rootScope.isCurrentPath.indexOf('pageAccess')>-1)) {
@@ -55,6 +55,13 @@
                     $scope.configurationGroups = groups.data;                    
                 });
         }
+
+        function loadCurrentCompany() {
+            AdminCompanyService.GetById($rootScope.globals.currentUser.cID)
+                .then(function (company) {
+                    $scope.company = company.data;
+                });
+        }        
 
         $scope.hasAccess = function(page) {
             return ($.inArray(page, $rootScope.globals.currentUser.pageAccess) !== -1) ? true : false;

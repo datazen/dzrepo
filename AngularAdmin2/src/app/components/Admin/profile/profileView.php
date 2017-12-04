@@ -46,10 +46,10 @@
                         <input type="text" name="lastName" id="Text1" class="form-control" ng-model="vm.user.lastName" required />
                         <span ng-show="form.lastName.$dirty && form.lastName.$error.required" class="help-block">Last name is required</span>
                     </div>
-                    <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
-                        <label for="username">Username</label>
-                        <input type="text" name="username" id="username" class="form-control" ng-model="vm.user.username" ng-readonly="true" />
-                        <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+                    <div class="form-group" ng-class="{ 'has-error': form.email.$dirty && form.email.$error.required }">
+                        <label for="email">E-Mail</label>
+                        <input type="text" name="email" id="email" class="form-control" ng-model="vm.user.email" />
+                        <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">E-mail is required</span>
                     </div>
 
                     <div class="form-group" ng-class="{ 'has-error' : form.password.$dirty && form.password.$invalid }">

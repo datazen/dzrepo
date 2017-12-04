@@ -1,7 +1,7 @@
 <div class="sidebar col-sm-3 col-md-2" ng-controller="AdminSidebarController">
 
   <div class="sidebar-title relative">
-    <h4 class="sidebar-title__name"><span ng-show="menuToggle" ng-hide="!menuToggle">My Company</span><span ng-show="!menuToggle" ng-hide="menuToggle">Settings</span></h4>
+    <h4 class="sidebar-title__name"><span ng-class="{'sidebar-title__name_long': (company.tradeName.length > 18), 'sidebar-title__name_verylong': (company.tradeName.length > 28)}" ng-show="menuToggle" ng-hide="!menuToggle">{{company.tradeName}}</span><span ng-show="!menuToggle" ng-hide="menuToggle">Settings</span></h4>
     <button ng-click="menuToggle = !menuToggle" class="sidebar-title__button btn btn-xs" ng-class="menuToggle ? 'btn-success' : 'btn-primary'">
       <span class="sidebar-title__button-glyph glyphicon" ng-class="menuToggle ? 'glyphicon-cog' : 'glyphicon-home'" aria-hidden="true"></span>
     </button>
@@ -13,10 +13,10 @@
       <button type="button" class="sidebar-menu_button btn btn-black" ng-click="isCollapsedMain = !isCollapsedMain"><span class="glyphicon glyphicon-globe small-margin-right" aria-hidden="true"></span> Menu 1 <span ng-class="isCollapsedMain ? 'glyphicon-menu-right' : 'glyphicon-menu-down'" class="glyphicon pull-right small-margin-top"></span></button>
       <div uib-collapse="{{isCurrentPath.indexOf('page')>-1 ? '' : 'isCollapsedMain' }}" >
         <ul class="sidebar__main-menu_button_list">
-          <li ng-if="hasAccess('page-1')" class="{{isCurrentPath.indexOf('page-1')>-1 ? 'selected' : '' }}" ng-click="go('/Admin/page-1')"><a ng-href="/#!/Admin/page-1"><span class="glyphicon glyphicon-dashboard small-margin-right" aria-hidden="true"></span> Page 1</a></li>
-          <li ng-if="hasAccess('page-2')" class="{{isCurrentPath.indexOf('page-2')>-1 ? 'selected' : '' }}" ng-click="go('/Admin/page-2')"><a ng-href="/#!/Admin/page-2"><span class="glyphicon glyphicon-dashboard small-margin-right" aria-hidden="true"></span> Page 2</a></li>
-          <li ng-if="hasAccess('page-3')" class="{{isCurrentPath.indexOf('page-3')>-1 ? 'selected' : '' }}" ng-click="go('/Admin/page-3')"><a ng-href="/#!/Admin/page-3"><span class="glyphicon glyphicon-dashboard small-margin-right" aria-hidden="true"></span> Page 3</a></li>
-          <li ng-if="hasAccess('page-4')" class="{{isCurrentPath.indexOf('page-4')>-1 ? 'selected' : '' }}" ng-click="go('/Admin/page-4')"><a ng-href="/#!/Admin/page-4"><span class="glyphicon glyphicon-dashboard small-margin-right" aria-hidden="true"></span> Page 4</a></li>
+          <li ng-if="hasAccess('page-1')" class="{{isCurrentPath.indexOf('page-1')>-1 ? 'selected-main' : '' }}" ng-click="go('/Admin/page-1')"><a ng-href="/#!/Admin/page-1"><span class="glyphicon glyphicon-dashboard small-margin-right" aria-hidden="true"></span> Page 1</a></li>
+          <li ng-if="hasAccess('page-2')" class="{{isCurrentPath.indexOf('page-2')>-1 ? 'selected-main' : '' }}" ng-click="go('/Admin/page-2')"><a ng-href="/#!/Admin/page-2"><span class="glyphicon glyphicon-dashboard small-margin-right" aria-hidden="true"></span> Page 2</a></li>
+          <li ng-if="hasAccess('page-3')" class="{{isCurrentPath.indexOf('page-3')>-1 ? 'selected-main' : '' }}" ng-click="go('/Admin/page-3')"><a ng-href="/#!/Admin/page-3"><span class="glyphicon glyphicon-dashboard small-margin-right" aria-hidden="true"></span> Page 3</a></li>
+          <li ng-if="hasAccess('page-4')" class="{{isCurrentPath.indexOf('page-4')>-1 ? 'selected-main' : '' }}" ng-click="go('/Admin/page-4')"><a ng-href="/#!/Admin/page-4"><span class="glyphicon glyphicon-dashboard small-margin-right" aria-hidden="true"></span> Page 4</a></li>
         </ul>
       </div>
     </li> 
@@ -24,7 +24,7 @@
 
   <ul class="sidebar__settings-menu nav sidebar-nav" ng-show="!menuToggle">
     <li class="sidebar__menu_dropdown">
-      <button ng-if="hasAccess('profile')" type="button" class="{{isCurrentPath.indexOf('company')>-1 ? 'selected-config' : '' }} sidebar-menu_button btn btn-black" ng-click="go('/Admin/company')"><span class="glyphicon glyphicon-briefcase small-margin-right" aria-hidden="true"></span> My Company <span class="sr-only">(current)</span></button>
+      <button ng-if="hasAccess('company')" type="button" class="{{isCurrentPath.indexOf('company')>-1 ? 'selected-config' : '' }} sidebar-menu_button btn btn-black" ng-click="go('/Admin/company')"><span class="glyphicon glyphicon-briefcase small-margin-right" aria-hidden="true"></span> My Company <span class="sr-only">(current)</span></button>
       <button ng-if="hasAccess('profile')" type="button" class="{{isCurrentPath.indexOf('profile')>-1 ? 'selected-config' : '' }} sidebar-menu_button btn btn-black" ng-click="go('/Admin/profile')"><span class="glyphicon glyphicon-user small-margin-right" aria-hidden="true"></span> My Profile <span class="sr-only">(current)</span></button>
       <button ng-if="hasAccess('users')" type="button" class="{{(isCurrentPath.indexOf('users')>-1 || isCurrentPath.indexOf('User')>-1) ? 'selected-config' : '' }} sidebar-menu_button btn btn-black" ng-click="go('/Admin/users')"><span class="glyphicon glyphicon-th-list small-margin-right" aria-hidden="true"></span> Users <span class="sr-only">(current)</span></button>
 

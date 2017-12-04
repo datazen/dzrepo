@@ -82,6 +82,12 @@ a {
   color: white;
   margin-top: 0;
 }
+.sidebar-title__name_long { 
+  font-size: 0.9em; 
+}
+.sidebar-title__name_verylong { 
+  font-size: 0.8em; 
+}
 .sidebar-title__button {
   cursor: pointer; 
   position: absolute; 
@@ -132,14 +138,19 @@ a {
   vertical-align: middle;
   color: white;
 }
-
+/*
 .sidebar__main-menu_button_list li:hover,
-.sidebar__main-menu_button_list li:focus,
-.sidebar__settings-menu_button_list li:hover,
-.sidebar__settings-menu_button_list li:focus {
+.sidebar__settings-menu_button_list li:hover {
   background-color: #333; 
 }
-/*
+
+.sidebar__main-menu_button_list li:focus {
+  background-color: #449d44;   
+}
+.sidebar__settings-menu_button_list li:focus {
+  background-color: #337ab7; 
+}
+
 .sidebar__main-menu_button_list li:active,
 .sidebar__main-menu_button_list.active {
   color: white;
@@ -148,10 +159,9 @@ a {
   outline: 0 !important;  
 }
 */
-
-
-.selected {
+.selected-main {
   background-color: #337ab7 !important;
+  color:white !important;  
 }
 .selected-config {
   background-color: #449d44 !important;

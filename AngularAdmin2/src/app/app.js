@@ -35,6 +35,8 @@
         $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
 
             $rootScope.currentState = toState
+            // set the current path for sidebar reference
+            $rootScope.isCurrentPath = $location.path(); 
 //            alert(print_r($rootScope.currentState, true));
 
             if($rootScope.currentState.site && $rootScope.currentState.site == 'Admin') {  

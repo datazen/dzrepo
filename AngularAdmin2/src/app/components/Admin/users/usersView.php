@@ -9,7 +9,7 @@
 				<th>ID</th>
 				<th>First Name</th>
         <th>Last Name</th>
-        <th>User Name</th>
+        <th>E-Mail</th>
 				<th class="center">Access Level</th>
 				<th class="action">Action</th>
 			</tr>
@@ -17,7 +17,7 @@
         <td>{{user.id}}</td>
         <td>{{user.firstName}}</td>
         <td>{{user.lastName}}</td>
-        <td>{{user.username}}</td>
+        <td>{{user.email}}</td>
         <td align="center">{{user.accessLevel}}</td>
         <td class="action">
        	  <button ng-click="vm.editUserRecord(user.id);" type="button" class="btn btn-sm btn-primary" aria-label="Edit"> 

@@ -4,7 +4,7 @@
     <base href="/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Angular Cart</title>
+    <title>Angular Admin</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" />
     <link rel="stylesheet" href="assets/css/app.Admin.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/utility.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
@@ -13,10 +13,10 @@
 </head>
 <body>  
 
-    <ng-include ng-if="currentState.site == 'Admin'" src="'./app/shared/Admin/header/headerView.php'"></ng-include>
-    <ng-include ng-if="currentState.site == 'Admin'" src="'./app/shared/Admin/sidebar/sidebarView.php'"></ng-include>
     <div class="container-fluid" id="body-container">
         <div class="row">
+            <ng-include ng-if="currentState.site == 'Admin' && currentState.module == 'private'" src="'./app/shared/Admin/header/headerView.php'"></ng-include>
+            <ng-include ng-if="currentState.site == 'Admin' && currentState.module == 'private'" src="'./app/shared/Admin/sidebar/sidebarView.php'"></ng-include>
             <div ng-view></div>
         </div>
     </div>

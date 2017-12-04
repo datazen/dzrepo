@@ -12,6 +12,7 @@
         initController();
 
         function initController() {
+            window.scrollTo(0,0);
         }
 
     }

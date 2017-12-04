@@ -1,7 +1,7 @@
 <?php
-class Configuration {
+class AdminConfiguration {
 
-    public static function GetAllConfigurationData() {
+    public static function getAllAdminConfigurations() {
 	    $sql = "select * FROM configuration ORDER BY groupId";
 	    try {
 		    $db = Database::getConnection();
@@ -21,7 +21,7 @@ class Configuration {
 	    }
 	}	
 
-    public static function getAllConfigurations($request) {
+    public static function getAdminConfigurationsByGroupId($request) {
 	    $uri = $request->getUri();
 	    $uriArr = explode("/", $uri);
 	    $groupId = end($uriArr);
@@ -40,7 +40,7 @@ class Configuration {
 	    }
 	}	
 
-	public static function getConfigurationById($request) {
+	public static function getAdminConfigurationById($request) {
 	    $uri = $request->getUri();
 	    $uriArr = explode("/", $uri);
 	    $cid = end($uriArr);
@@ -59,7 +59,7 @@ class Configuration {
 		}
 	}
 
-	public static function updateConfiguration($request) {
+	public static function updateAdminConfiguration($request) {
         $now = new DateTime();
         $postData = $request->getParsedBody();        
         $config = array();
@@ -87,7 +87,7 @@ class Configuration {
 		}
 	}	
 
-    public static function getConfigurationGroups() {
+    public static function getAdminConfigurationGroups() {
 	    $sql = "select * FROM configurationGroups ORDER BY sortOrder";
 	    try {
 		    $db = Database::getConnection();

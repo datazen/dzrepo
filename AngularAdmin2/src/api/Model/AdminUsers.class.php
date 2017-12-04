@@ -1,7 +1,7 @@
 <?php
-class Users {
+class AdminUsers {
 
-    public static function getAll() {
+    public static function getAllUsers() {
 	    $sql = "select * FROM users ORDER BY id";
 	    try {
 		    $db = Database::getConnection();

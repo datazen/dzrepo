@@ -1,5 +1,5 @@
 <?php
-class Company {
+class AdminCompany {
 
 	public static function getCompanyById($request) {
 	    $uri = $request->getUri();

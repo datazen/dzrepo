@@ -1,5 +1,5 @@
 <?php
-class Admin {
+class AdminLogin {
 
 	public static function processLogin($request) {
 
@@ -7,7 +7,7 @@ class Admin {
         $email = (isset($postData['email'])) ? $postData['email'] : null;
         $rawPassword = (isset($postData['password'])) ? $postData['password'] : null;
 
-		$sql = "select a.*, al.title as accessTitle FROM administrators a LEFT JOIN accessLevels al ON (a.accessLevel = al.level) WHERE a.email = :email LIMIT 1";
+		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.email = :email LIMIT 1";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  

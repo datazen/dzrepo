@@ -13,7 +13,7 @@
             TITLE: 'Standort Startseite',
             TEXT_1: 'Dies ist die Startseite für die Frontend-Site. Wir werden dies durch eine Website und ein Anmeldeformular ersetzen',
             TEXT_2: 'Der Anmeldeprozess erstellt eine untergeordnete Firma unter der Master-Firma (HQ)',
-            TEXT_3: 'Diese App ist Multi-Site Multi-Lingual und unterstützt Ihre Sprache!'
+            TEXT_3: 'Diese App ist One-Page Multi-Lingual Multi-Site-Design und unterstützt Ihre Sprache!'
         });
 
     }   

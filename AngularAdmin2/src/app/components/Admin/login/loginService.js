@@ -46,7 +46,8 @@
             $rootScope.globals = {
                 currentUser: {
                     id: data.id,
-                    email: email,
+                    cID: data.cID,
+                    email: data.email,
                     authdata: authdata,
                     firstName: data.firstName,
                     lastName: data.lastName,

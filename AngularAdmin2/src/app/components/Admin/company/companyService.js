@@ -10,7 +10,6 @@
         var service = {};
 
         service.GetById    = GetById;
-        service.GetByEmail = GetByEmail;
         service.Update     = Update;
 
         return service;
@@ -18,12 +17,7 @@
         function GetById(id) {
 //            return $http({ method: 'GET', url: '/api/getById/' + id, cache: true }).then(handleSuccess, handleError('Error getting customer by id'));
             return $http.get('/api/getAdminCompanyById/' + id).then(handleSuccess, handleError('Error getting customer by id'));
-        }
-
-        function GetByEmail(email) {
-//            return $http({ method: 'GET', url: '/api/getById/' + id, cache: true }).then(handleSuccess, handleError('Error getting customer by id'));
-            return $http.get('/api/getAdminCompanyByEmail/' + email).then(handleSuccess, handleError('Error getting customer by id'));
-        }        
+        }    
 
         function Update(company) {
             return $http.post('/api/updateAdminCompany/' + company.id, company).then(handleSuccess, handleError('Error updating customer'));

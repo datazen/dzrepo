@@ -1,7 +1,3 @@
-<?php
-if (file_exists('../../../../app/shared/Admin/header/headerView.php')) include '../../../../app/shared/Admin/header/headerView.php';
-if (file_exists('../../../../app/shared/Admin/sidebar/sidebarView.php')) include '../../../../app/shared/Admin/sidebar/sidebarView.php';
-?> 
 <div class="list col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main relative">
 	<h2 class="no-margin-top margin-bottom">User List</h2>
   <button ng-click="go('/Admin/addUser')" class="list__add-button btn btn-success btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>

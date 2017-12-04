@@ -11,6 +11,8 @@
     function config($routeProvider, $stateProvider, $translateProvider) {
         // Admin routes are in app/routes/app.routes.Admin.js
         // Site routes are in app/routes/app.routes.Site.js
+
+        // redirect to site home (public)
         $routeProvider.otherwise({ redirectTo: '/' });
 
         $translateProvider.preferredLanguage('en');        
@@ -18,7 +20,7 @@
     } 
 
     run.$inject = ['$rootScope', '$location', '$cookieStore', '$http', 'AdminPageAccessService', '$state'];
-    function run($rootScope, $location, $cookieStore, $http, AdminPageAccessService, $state) {  
+    function run($rootScope, $location, $cookieStore, $http, AdminPageAccessService, $state) { 
         // keep user logged in after page refresh
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {            

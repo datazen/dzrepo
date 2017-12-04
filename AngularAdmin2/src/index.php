@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:ng="http://angularjs.org" ng-app="app">
 <head>
+    <base href="/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Angular Cart</title>
@@ -12,6 +13,8 @@
 </head>
 <body>  
 
+    <ng-include ng-if="currentState.site == 'Admin'" src="'./app/shared/Admin/header/headerView.php'"></ng-include>
+    <ng-include ng-if="currentState.site == 'Admin'" src="'./app/shared/Admin/sidebar/sidebarView.php'"></ng-include>
     <div class="container-fluid" id="body-container">
         <div class="row">
             <div ng-view></div>

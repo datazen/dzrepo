@@ -10,6 +10,7 @@ require '../vendor/autoload.php';
 require 'Conf/Slim.conf.php';
 require 'Lib/Database.lib.php';
 require 'Model/Admin.class.php';
+require 'Model/Company.class.php';
 require 'Model/Users.class.php';
 require 'Model/Access.class.php';
 require 'Model/Configuration.class.php';
@@ -27,6 +28,10 @@ die('11');
 $app = new \Slim\App(["settings" => $config]);
 
 // Endpoint naming format: camelCase([action][site][class][method])  i.e. getStoreAccessById
+
+// Company
+$app->get('/getAdminCompanyById/{id}', function (Request $request, Response $response) { echo Company::getCompanyById($request); });
+$app->post('/updateAdminCompany/{id}', function (Request $request, Response $response) { echo Company::updateCompany($request); });
 
 // Users
 $app->get('/getAllAdminUsers', function () { echo Users::getAll(); });

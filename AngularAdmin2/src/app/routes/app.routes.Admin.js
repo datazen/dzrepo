@@ -28,6 +28,7 @@
             })
             .state('Admin.profile', {
                 url: '/Admin/profile',
+                site: 'Admin',
                 module: 'private'
             }) 
             .state('Admin.users', {

@@ -1,16 +1,24 @@
 <?php
 class AdminPageAccess {
 
-    public static function getAllPageAccess($request) {
-        $routes = $request->getParsedBody(); 
+    public static function getAllAdminPageAccess($request) {
+        $postData = $request->getParsedBody(); 
+        $routes = (isset($postData['routes'])) ? $postData['routes'] : array();
+        $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;      
 
         self::_syncRoutes($routes);
 
-	    $sql = "SELECT pa.*, al.name as accessName FROM pageAccess pa LEFT JOIN accessLevels al ON (pa.level = al.level) ORDER BY pa.id";
+	    $sql = "SELECT * FROM pageAccess WHERE cID = :cID ORDER BY id";
 	    try {
 		    $db = Database::getConnection();
-		    $stmt = $db->query($sql);  
-		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt = $db->prepare($sql);  
+	    	$stmt->bindValue(":cID", $cID, PDO::PARAM_INT);
+	        $stmt->execute(); 		    
+	        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);       
+            // add accessLevel title
+			foreach ($result as $key => $value) {
+				$result[$key]['accessTitle'] = AdminAccessLevels::getAdminAccessLevelTitle($cID, $value['level']);
+			}	        
 		    $db = null;
 		    return json_encode(array('rpcStatus' => 1, 'data' => $result));	    
 	    } catch(PDOException $e) {
@@ -18,18 +26,19 @@ class AdminPageAccess {
 	    }
 	}	
 
-    public static function getPageAccessByAccessLevel($request) {
-	    $uri = $request->getUri();
-	    $uriArr = explode("/", $uri);
-	    $level = end($uriArr);
+    public static function getAdminPageAccessByAccessLevel($request) {
+		$postData = $request->getParsedBody();
+        $level = (isset($postData['level'])) ? $postData['level'] : '';
+        $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;
 
-	    $sql = "SELECT page FROM pageAccess WHERE level <= :level ORDER BY id";
+	    $sql = "SELECT page FROM pageAccess WHERE level <= :level AND cID = :cID ORDER BY id";
 	    try {
 		    $db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
+	    	$stmt->bindValue(":cID", $cID, PDO::PARAM_INT);
 	    	$stmt->bindValue(":level", $level);
 	        $stmt->execute(); 
-		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 		    
 		    $db = null;
 		    return json_encode(array('rpcStatus' => 1, 'data' => $result));	    
 	    } catch(PDOException $e) {
@@ -37,16 +46,17 @@ class AdminPageAccess {
 	    }
 	}
 
-	public static function getPageAccessById($request) {
-	    $uri = $request->getUri();
-	    $uriArr = explode("/", $uri);
-	    $pid = end($uriArr);
+	public static function getAdminPageAccessById($request) {
+		$postData = $request->getParsedBody();		
+        $paid = (isset($postData['id'])) ? $postData['id'] : '';
+        $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;
 
-		$sql = "select * FROM pageAccess WHERE id = :pid";
+		$sql = "SELECT * FROM pageAccess WHERE id = :paid AND cID = :cID";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
-	    	$stmt->bindValue(":pid", $pid, PDO::PARAM_INT);
+	    	$stmt->bindValue(":paid", $paid, PDO::PARAM_INT);
+	    	$stmt->bindValue(":cID", $cID, PDO::PARAM_INT);
 	        $stmt->execute(); 
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 			$db = null;
@@ -56,20 +66,27 @@ class AdminPageAccess {
 		}
 	}
 
-	public static function getPageAccessByRoute($request) {
-	    $uri = $request->getUri();
-	    $uriArr = explode("/", $uri);
-	    $route = end($uriArr);
-	    
-		$sql = "select * FROM pageAccess WHERE page = :route";
+	public static function getAdminPageAccessByRoute($request) {
+		$postData = $request->getParsedBody();
+        $route = (isset($postData['route'])) ? $postData['route'] : '';
+        $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;
+
+		$new = '';
+		if(strpos($route, '/') !== false) {
+			$rArr = explode("/", $route);
+			$route = end($rArr);
+		}
+    
+		$sql = "SELECT * FROM pageAccess WHERE page = :route AND cID = :cID";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
+	    	$stmt->bindValue(":cID", $cID, PDO::PARAM_INT);		
 	    	$stmt->bindValue(":route", $route);
 	        $stmt->execute(); 
-			$info = $stmt->fetch(PDO::FETCH_ASSOC);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);		
 			$db = null;
-			return json_encode(array('rpcStatus' => 1, 'data' => $info));
+			return json_encode(array('rpcStatus' => 1, 'data' => $result));
 		} catch(PDOException $e) {
 			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
 		}
@@ -91,21 +108,23 @@ class AdminPageAccess {
 		}
 	}	
 
-	public static function updatePageAccess($request) {
+	public static function updateAdminPageAccess($request) {
         $now = new DateTime();
         $postData = $request->getParsedBody(); 
 
         $page = array();
         $page['id'] = (isset($postData['id'])) ? $postData['id'] : null;
+        $page['cID'] = (isset($postData['cID'])) ? $postData['cID'] : null;
         $page['level'] = (isset($postData['level'])) ? $postData['level'] : null;
         //$page['page'] = (isset($postData['page'])) ? $postData['page'] : null;
         $page['lastModified'] = $now->format('Y-m-d H:i:s');
 
-		$sql = "UPDATE pageAccess SET level = :level, lastModified = :lastModified WHERE id = :pid";
+		$sql = "UPDATE pageAccess SET level = :level, lastModified = :lastModified WHERE id = :pid AND cID = :cID";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
 			$stmt->bindvalue(":pid", $page['id'], PDO::PARAM_INT);
+			$stmt->bindvalue(":cID", $page['cID'], PDO::PARAM_INT);
 			$stmt->bindvalue(":level", $page['level']);
 			$stmt->bindvalue(":lastModified", $page['lastModified']);
 			$stmt->execute();

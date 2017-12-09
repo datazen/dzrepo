@@ -1,21 +1,23 @@
 <?php
 class AdminLogin {
 
-	public static function processLogin($request) {
+	public static function processAdminLogin($request) {
 
         $postData = $request->getParsedBody();
         $email = (isset($postData['email'])) ? $postData['email'] : null;
         $rawPassword = (isset($postData['password'])) ? $postData['password'] : null;
 
-		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.email = :email LIMIT 1";
+		$sql = "select * FROM users WHERE email = :email";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
 	    	$stmt->bindParam(":email", $email);
 	        $stmt->execute(); 
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);          
-			$db = null;
-			$info = (isset($result[0])) ? $result[0] : array();
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);     
+            // add accessLevel title
+    		$result['accessTitle'] = AdminAccessLevels::getAdminAccessLevelTitle($result['cID'], $result['accessLevel']);
+			$db = null;			
+			$info = (isset($result)) ? $result : array();
             if (isset($info['email']) && isset($info['password'])) {
 			    if (self::_validatePassword($rawPassword, $info['password'])) {
 			    	return json_encode(array('rpcStatus' => 1, 'data' => $info));

@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Angular Admin</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/app.Admin.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/utility.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/ie10-viewport-bug-workaround.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <script src="//code.jquery.com/jquery-3.1.1.min.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="assets/lib/jquery-3.2.1.min.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="//code.angularjs.org/1.6.6/angular.min.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="//code.angularjs.org/1.6.6/angular-route.min.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="//code.angularjs.org/1.6.6/angular-cookies.min.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
@@ -69,6 +69,7 @@
     <script src="app/shared/Admin/common/ngConfirmClickDirective.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="app/shared/Admin/common/stringToNumberDirective.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
     <script src="app/shared/Admin/common/passwordVerifyDirective.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <!-- script src="app/shared/Admin/common/fileModelDirective.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script -->
     <script src="app/shared/Admin/common/startFromFilter.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
     <!-- Public Site -->

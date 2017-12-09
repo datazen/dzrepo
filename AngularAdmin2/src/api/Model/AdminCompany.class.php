@@ -1,16 +1,16 @@
 <?php
 class AdminCompany {
 
-	public static function getCompanyById($request) {
-	    $uri = $request->getUri();
-	    $uriArr = explode("/", $uri);
-	    $cid = end($uriArr);
+	public static function getAdminCompanyById($request) {
+		$postData = $request->getParsedBody();
+        $company = array();
+        $company['id'] = (isset($postData['cID'])) ? $postData['cID'] : 0;
 
-		$sql = "select * FROM companies WHERE id = :cid";
+		$sql = "select * FROM companies WHERE id = :cID LIMIT 1";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
-	    	$stmt->bindValue(":cid", $cid, PDO::PARAM_INT);
+	    	$stmt->bindValue(":cID", $company['id'], PDO::PARAM_INT);
 	        $stmt->execute(); 
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 			$db = null;
@@ -20,7 +20,7 @@ class AdminCompany {
 		}
 	}	
 
-	public static function updateCompany($request) {
+	public static function updateAdminCompany($request) {
         $now = new DateTime();
         $postData = $request->getParsedBody();        
         $company = array();
@@ -43,7 +43,7 @@ class AdminCompany {
 		$sql = "UPDATE companies SET legalName = :legalName, tradeName = :tradeName, address1 = :address1, address2 = :address2, 
 		                             city = :city, state = :state, zip = :zip, contactName = :contactName, contactPhone = :contactPhone, 
 		                             contactFax = :contactFax, contactEmail = :contactEmail,
-		                             lastModified = :lastModified WHERE id = :id";
+		                             www = :www, lastModified = :lastModified WHERE id = :id";
 
 		try {
 			$db = Database::getConnection();
@@ -56,6 +56,7 @@ class AdminCompany {
 			$stmt->bindvalue(":city", $company['city']);
 			$stmt->bindvalue(":state", $company['state']);
 			$stmt->bindvalue(":zip", $company['zip']);
+			$stmt->bindvalue(":www", $company['www']);
 			$stmt->bindvalue(":contactName", $company['contactName']);
 			$stmt->bindvalue(":contactPhone", $company['contactPhone']);
 			$stmt->bindvalue(":contactFax", $company['contactFax']);

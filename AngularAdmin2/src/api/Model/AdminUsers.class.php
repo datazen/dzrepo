@@ -1,12 +1,21 @@
 <?php
 class AdminUsers {
 
-    public static function getAllUsers() {
-	    $sql = "select * FROM users ORDER BY id";
+    public static function getAllAdminUsers($request) {
+		$postData = $request->getParsedBody();
+        $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;
+
+	    $sql = "SELECT * FROM users WHERE cID = :cID ORDER BY id";
 	    try {
 		    $db = Database::getConnection();
-		    $stmt = $db->query($sql);  
-		    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt = $db->prepare($sql);  
+	    	$stmt->bindValue(":cID", $cID, PDO::PARAM_INT);
+	        $stmt->execute(); 
+	        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);	
+            // add accessLevel title
+			foreach ($result as $key => $value) {
+				$result[$key]['accessTitle'] = AdminAccessLevels::getAdminAccessLevelTitle($cID, $value['accessLevel']);
+			}
 		    $db = null;
         	return json_encode(array('rpcStatus' => 1, 'data' => $result));
 	    } catch(PDOException $e) {
@@ -14,22 +23,25 @@ class AdminUsers {
 	    }
 	}
 
-	public static function getUserById($request) {
-	    $uri = $request->getUri();
-	    $uriArr = explode("/", $uri);
-	    $uid = end($uriArr);
+	public static function getAdminUserById($request) {
+		$postData = $request->getParsedBody();
+        $uid = (isset($postData['id'])) ? $postData['id'] : 0;
+        $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;
 
-		$sql = "select * FROM users WHERE id = :uid";
+		$sql = "SELECT * FROM users WHERE id = :uid AND cID = :cID";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
 	    	$stmt->bindValue(":uid", $uid, PDO::PARAM_INT);
+	    	$stmt->bindValue(":cID", $cID, PDO::PARAM_INT);    	
 	        $stmt->execute(); 
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
             // move password to encrpted   
             $result['encrypted'] = $result['password'];
             // reset password for forms
             $result['password'] = '';
+            // add accessLevel title
+    		$result['accessTitle'] = AdminAccessLevels::getAdminAccessLevelTitle($cID, $result['accessLevel']);
 			$db = null;
         	return json_encode(array('rpcStatus' => 1, 'data' => $result));
 		} catch(PDOException $e) {
@@ -37,22 +49,25 @@ class AdminUsers {
 		}
 	}	
 
-	public static function getUserByEmail($request) {
-	    $uri = $request->getUri();
-	    $uriArr = explode("/", $uri);
-	    $email = end($uriArr);
+	public static function getAdminUserByEmail($request) {
+		$postData = $request->getParsedBody();
+        $email = (isset($postData['email'])) ? $postData['email'] : '';
+        $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;
 
-		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.email = :email";
+		$sql = "SELECT * FROM users WHERE email = :email AND cID = :cID";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
 	    	$stmt->bindParam(":email", $email);
+	    	$stmt->bindParam(":cID", $cID);
 	        $stmt->execute(); 
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
             // move password to encrpted   
             $result['encrypted'] = $result['password'];
             // reset password for forms
-            $result['password'] = '';			
+            $result['password'] = '';
+            // add accessLevel title
+    		$result['accessTitle'] = AdminAccessLevels::getAdminAccessLevelTitle($cID, $result['accessLevel']);
 			$db = null;
         	return json_encode(array('rpcStatus' => 1, 'data' => $result));
 		} catch(PDOException $e) {
@@ -60,56 +75,24 @@ class AdminUsers {
 		}
 	}	
 
-	public static function processLogin($request) {
-
-        $postData = $request->getParsedBody();
-        $email = (isset($postData['email'])) ? $postData['email'] : null;
-        $rawPassword = (isset($postData['password'])) ? $postData['password'] : null;
-
-		$sql = "select u.*, al.title as accessTitle FROM users u LEFT JOIN accessLevels al ON (u.accessLevel = al.level) WHERE u.email = :email LIMIT 1";
-		try {
-			$db = Database::getConnection();
-			$stmt = $db->prepare($sql);  
-	    	$stmt->bindParam(":email", $email);
-	        $stmt->execute(); 
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);          
-			$db = null;
-
-			$info = (isset($result[0])) ? $result[0] : array();
-            if (isset($info['email']) && isset($info['password'])) {
-			    if (self::_validatePassword($rawPassword, $info['password'])) {
-			    	return json_encode(array('rpcStatus' => 1, 'data' => $info));
-                   // validation success
-			    } else {
-                   // validation failed
-			        return json_encode(array('rpcStatus' => 0, 'msg' => 'Validation Failed'));
-	  			}
-    		} else {
-    			// user not found
-    		    return json_encode(array('rpcStatus' => 0, 'msg' => 'User Not Found'));
-    		}
-
-		} catch(PDOException $e) {
-			return json_encode(array('rpcStatus' => 0, 'msg' => $e->getMessage()));
-		}
-	}
-
-	public static function addUser($request) {
+	public static function addAdminUser($request) {
         $now = new DateTime();
         $postData = $request->getParsedBody();
-        $user = array();
-        $user['email'] = (isset($postData['email'])) ? $postData['email'] : '';
-        $user['password'] = (isset($postData['password'])) ? $postData['password'] : '';
-        $user['firstName'] = (isset($postData['firstName'])) ? $postData['firstName'] : '';
-        $user['lastName'] = (isset($postData['lastName'])) ? $postData['lastName'] : '';
-        $user['lastModified'] = $now->format('Y-m-d H:i:s');
 
+        $user = array();
+        $user['cID'] = (isset($postData['cID'])) ? $postData['cID'] : 0;
+        $user['email'] = (isset($postData['data']['email'])) ? $postData['data']['email'] : '';
+        $user['password'] = (isset($postData['data']['password'])) ? $postData['data']['password'] : '';
+        $user['firstName'] = (isset($postData['data']['firstName'])) ? $postData['data']['firstName'] : '';
+        $user['lastName'] = (isset($postData['data']['lastName'])) ? $postData['data']['lastName'] : '';
+        $user['lastModified'] = $now->format('Y-m-d H:i:s');
         // sanity check to see if email already exists
-        $sql = "SELECT id FROM users WHERE email = :email LIMIT 1";
+        $sql = "SELECT id FROM users WHERE email = :email AND cID = :cID LIMIT 1";
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
-			$stmt->bindParam("email", $user['email']);
+			$stmt->bindParam(":email", $user['email']);
+			$stmt->bindParam(":cID", $user['cID']);
 			$stmt->execute();
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);          
 			$db = null;
@@ -119,11 +102,15 @@ class AdminUsers {
 		}        
         
         if ($exists === false) {
-			$sql = "INSERT INTO users (email, password, firstName, lastName, lastModified) VALUES (:email, :password, :firstName, :lastName, :lastModified)";
+			$sql = "INSERT INTO users (cID, email, password, firstName, lastName, lastModified) 
+			        VALUES (:cID, :email, :password, :firstName, :lastName, :lastModified)";
 			try {
 				$encrypted = self::_encryptPassword($user['password']);
+	            // don't send back raw password
+	            $user['password'] = $encrypted;				
 				$db = Database::getConnection();
 				$stmt = $db->prepare($sql);  
+				$stmt->bindParam("cID", $user['cID']);
 				$stmt->bindParam("email", $user['email']);
 				$stmt->bindParam("password", $encrypted);
 				$stmt->bindParam("firstName", $user['firstName']);
@@ -142,10 +129,11 @@ class AdminUsers {
 		}
 	}
 
-	public static function updateAvatar($request) {
-	    $uri = $request->getUri();
-	    $uriArr = explode("/", $uri);
-	    $uid = end($uriArr);
+	public static function updateAdminUserAvatar($request) {
+        $now = new DateTime();
+        $postData = $request->getParsedBody();  
+        $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;
+        $uid = (isset($postData['id'])) ? $postData['id'] : 0;
 
 	    $directory = substr(__DIR__, 0, strpos(__DIR__, 'api/')) . 'media';
 	    $uploadedFiles = $request->getUploadedFiles();
@@ -171,11 +159,12 @@ class AdminUsers {
 	        $user['avatar'] = (isset($filename)) ? $filename : 'na.png';
 	        $user['lastModified'] = $now->format('Y-m-d H:i:s');
 
-			$sql = "UPDATE users SET avatar = :avatar, lastModified = :lastModified WHERE id = :uid";
+			$sql = "UPDATE users SET avatar = :avatar, lastModified = :lastModified WHERE id = :uid AND cID = :cID";
 			try {
 				$db = Database::getConnection();
 				$stmt = $db->prepare($sql);  
 		    	$stmt->bindValue(":uid", $uid, PDO::PARAM_INT);
+		    	$stmt->bindValue(":cID", $cID, PDO::PARAM_INT);
 				$stmt->bindvalue(":avatar", $user['avatar']);
 				$stmt->bindvalue(":lastModified", $user['lastModified']);
 				$stmt->execute();
@@ -187,35 +176,37 @@ class AdminUsers {
 	    }
 	}
 
-	public static function updateUser($request) {
+	public static function updateAdminUser($request) {
         $now = new DateTime();
         $postData = $request->getParsedBody();  
         $user = array();
+        $user['cID'] = (isset($postData['cID'])) ? $postData['cID'] : 0;
+        $user['uid'] = (isset($postData['id'])) ? $postData['id'] : 0;
         $user['email'] = (isset($postData['email'])) ? $postData['email'] : '';
-
         $user['password'] = (isset($postData['password'])) ? $postData['password'] : '';
-        $savePassword = (trim($user['password']) != null || trim($user['password']) != '') ? true : false;
-
         $user['firstName'] = (isset($postData['firstName'])) ? $postData['firstName'] : '';
         $user['lastName'] = (isset($postData['lastName'])) ? $postData['lastName'] : '';
         $user['accessLevel'] = (isset($postData['accessLevel'])) ? $postData['accessLevel'] : 0;
         $user['avatar'] = (isset($filename)) ? $filename : 'na.png';
         $user['lastModified'] = $now->format('Y-m-d H:i:s');
 
+        $savePassword = (trim($user['password']) != null || trim($user['password']) != '') ? true : false;
         if ($savePassword) {
 		    $encrypted = self::_encryptPassword($user['password']);
-   		    $sql = "UPDATE users SET password = :password, firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE email = :email";
+   		    $sql = "UPDATE users SET password = :password, firstName = :firstName, lastName = :lastName, email = :email, accessLevel = :accessLevel, lastModified = :lastModified WHERE id = :uid AND cID = :cID";
    		} else {    
-   		    $sql = "UPDATE users SET firstName = :firstName, lastName = :lastName, accessLevel = :accessLevel, lastModified = :lastModified WHERE email = :email";
+   		    $sql = "UPDATE users SET firstName = :firstName, lastName = :lastName, email = :email, accessLevel = :accessLevel, lastModified = :lastModified WHERE id = :uid AND cID = :cID";
         }
 
 		try {
 			$db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
-			$stmt->bindvalue(":email", $user['email']);
+	    	$stmt->bindValue(":uid", $user['uid'], PDO::PARAM_INT);
+	    	$stmt->bindValue(":cID", $user['cID'], PDO::PARAM_INT); 
 			if ($savePassword) $stmt->bindvalue(":password", $encrypted);
 			$stmt->bindvalue(":firstName", $user['firstName']);
 			$stmt->bindvalue(":lastName", $user['lastName']);
+    		$stmt->bindvalue(":email", $user['email']);
 			$stmt->bindvalue(":accessLevel", $user['accessLevel']);
 			$stmt->bindvalue(":lastModified", $user['lastModified']);
 			$stmt->execute();
@@ -226,16 +217,17 @@ class AdminUsers {
 		}
 	}	
 
-	public static function deleteUser($request) {
-	    $uri = $request->getUri();
-	    $uriArr = explode("/", $uri);
-	    $uid = end($uriArr);		
+	public static function deleteAdminUser($request) {
+        $postData = $request->getParsedBody();  
+        $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;
+        $uid = (isset($postData['id'])) ? $postData['id'] : '';	
 
-	    $sql = "DELETE FROM users WHERE id = :uid";
+	    $sql = "DELETE FROM users WHERE id = :uid AND cID = :cID";
 	    try {
 		    $db = Database::getConnection();
 			$stmt = $db->prepare($sql);  
 	    	$stmt->bindValue(":uid", $uid, PDO::PARAM_INT);
+	    	$stmt->bindValue(":cID", $cID, PDO::PARAM_INT);
 			$stmt->execute();  
 		    $db = null;
 		    return json_encode(array('rpcStatus' => 1));

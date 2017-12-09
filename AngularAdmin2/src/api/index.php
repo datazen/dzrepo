@@ -31,42 +31,45 @@ $app = new \Slim\App(["settings" => $config]);
 
 // Endpoint naming format: camelCase([action][site][class][method])  i.e. getStoreAccessById
 
-// Company
-$app->get('/getAdminCompanyById/{id}', function (Request $request, Response $response) { echo AdminCompany::getCompanyById($request); });
-$app->post('/updateAdminCompany/{id}', function (Request $request, Response $response) { echo AdminCompany::updateCompany($request); });
-
-// Users
-$app->get('/getAllAdminUsers', function () { echo AdminUsers::getAllUsers(); });
-$app->get('/getAdminUserById/{id}', function (Request $request, Response $response) { echo AdminUsers::getUserById($request); });
-$app->get('/getAdminUserByEmail/{email}', function (Request $request, Response $response) { echo AdminUsers::getUserByEmail($request); });
-$app->post('/addAdminUser', function (Request $request, Response $response) { echo AdminUsers::addUser($request); });
-$app->post('/updateAdminUser/{id}', function (Request $request, Response $response) { echo AdminUsers::updateUser($request); });
-$app->post('/updateAdminAvatar/{id}', function (Request $request, Response $response) { echo AdminUsers::updateAvatar($request); });
-$app->get('/deleteAdminUser/{id}', function (Request $request, Response $response) { echo AdminUsers::deleteUser($request); });
+// Login
+$app->post('/Admin/login', function (Request $request, Response $response) { echo AdminLogin::processAdminLogin($request); });
 
 // Access
-$app->get('/getAllAdminAccessLevels', function () { echo AdminAccessLevels::getAllAccessLevels(); });
-$app->get('/getAdminAccessLevelById/{id}', function (Request $request, Response $response) { echo AdminAccessLevels::getAccessLevelById($request); });
-$app->post('/updateAdminAccessLevel/{id}', function (Request $request, Response $response) { echo AdminAccessLevel::updateAccessLevel($request); });
+$app->post('/getAllAdminAccessLevels', function (Request $request, Response $response) { echo AdminAccessLevels::getAllAdminAccessLevels($request); });
+$app->post('/getAdminAccessLevelById', function (Request $request, Response $response) { echo AdminAccessLevels::getAdminAccessLevelById($request); });
+$app->post('/updateAdminAccessLevel', function (Request $request, Response $response) { echo AdminAccessLevels::updateAdminAccessLevel($request); });
+
+// Company
+$app->post('/getAdminCompanyById', function (Request $request, Response $response) { echo AdminCompany::getAdminCompanyById($request); });
+$app->post('/updateAdminCompany', function (Request $request, Response $response) { echo AdminCompany::updateAdminCompany($request); });
+
+// Users
+$app->post('/getAllAdminUsers', function (Request $request, Response $response) { echo AdminUsers::getAllAdminUsers($request); });
+$app->post('/getAdminUserById', function (Request $request, Response $response) { echo AdminUsers::getAdminUserById($request); });
+$app->post('/getAdminUserByEmail', function (Request $request, Response $response) { echo AdminUsers::getAdminUserByEmail($request); });
+$app->post('/addAdminUser', function (Request $request, Response $response) { echo AdminUsers::addAdminUser($request); });
+$app->post('/updateAdminUser', function (Request $request, Response $response) { echo AdminUsers::updateAdminUser($request); });
+$app->post('/updateAdminUserAvatar', function (Request $request, Response $response) { echo AdminUsers::updateAdminUserAvatar($request); });
+$app->post('/deleteAdminUser', function (Request $request, Response $response) { echo AdminUsers::deleteAdminUser($request); });
 
 // Page Access
-$app->post('/getAllAdminPageAccess', function (Request $request, Response $response) { echo AdminPageAccess::getAllPageAccess($request); });
-$app->get('/getAdminPageAccessById/{id}', function (Request $request, Response $response) { echo AdminPageAccess::getPageAccessById($request); });
-$app->get('/getAdminPageAccessByRoute/Admin/{route}', function (Request $request, Response $response) { echo AdminPageAccess::getPageAccessByRoute($request); });
-$app->get('/getAllAdminPageAccessByAccessLevel/{level}', function (Request $request, Response $response) { echo AdminPageAccess::getPageAccessByAccessLevel($request); });
-$app->get('/getAdminPageAccessByRoute/Admin/configuration/{route}', function (Request $request, Response $response) { echo AdminPageAccess::getPageAccessByConfigRoute($request, 'configuration'); });
-$app->get('/getAdminPageAccessByRoute/Admin/editUser/{route}', function (Request $request, Response $response) { echo AdminPageAccess::getPageAccessByConfigRoute($request, 'editUser'); });
-$app->post('/updateAdminPageAccess/{id}', function (Request $request, Response $response) { echo AdminPageAccess::updatePageAccess($request); });
+$app->post('/getAllAdminPageAccess', function (Request $request, Response $response) { echo AdminPageAccess::getAllAdminPageAccess($request); });
+$app->post('/getAdminPageAccessByAccessLevel', function (Request $request, Response $response) { echo AdminPageAccess::getAdminPageAccessByAccessLevel($request); });
+$app->post('/getAdminPageAccessByRoute', function (Request $request, Response $response) { echo AdminPageAccess::getAdminPageAccessByRoute($request); });
+$app->post('/getAdminPageAccessById', function (Request $request, Response $response) { echo AdminPageAccess::getAdminPageAccessById($request); });
+$app->post('/updateAdminPageAccess', function (Request $request, Response $response) { echo AdminPageAccess::updateAdminPageAccess($request); });
+
+//$app->get('/getAdminPageAccessByRoute/Admin/configuration/{route}', function (Request $request, Response $response) { echo AdminPageAccess::getPageAccessByConfigRoute($request, 'configuration'); });
+//$app->get('/getAdminPageAccessByRoute/Admin/editUser/{route}', function (Request $request, Response $response) { echo AdminPageAccess::getPageAccessByConfigRoute($request, 'editUser'); });
 
 // Configuration
-$app->get('/getAllAdminConfigurations', function (Request $request, Response $response) { echo AdminConfiguration::getAllAdminConfigurations($request); });
-$app->get('/getAdminConfigurationsByGroupId/{id}', function (Request $request, Response $response) { echo AdminConfiguration::getAdminConfigurationsByGroupId($request); });
-$app->get('/getAllAdminConfigurationGroups', function (Request $request, Response $response) { echo AdminConfiguration::getAdminConfigurationGroups($request); });
-$app->get('/getAdminConfigurationById/{id}', function (Request $request, Response $response) { echo AdminConfiguration::getAdminConfigurationById($request); });
-$app->post('/updateAdminConfiguration/{id}', function (Request $request, Response $response) { echo AdminConfiguration::updateAdminConfiguration($request); });
+$app->post('/getAllAdminConfigurations', function (Request $request, Response $response) { echo AdminConfiguration::getAllAdminConfigurations($request); });
+$app->post('/getAllAdminConfigurationGroups', function (Request $request, Response $response) { echo AdminConfiguration::getAllAdminConfigurationGroups($request); });
+$app->post('/getAdminConfigurationsByGroupId', function (Request $request, Response $response) { echo AdminConfiguration::getAdminConfigurationsByGroupId($request); });
+$app->post('/getAdminConfigurationById', function (Request $request, Response $response) { echo AdminConfiguration::getAdminConfigurationById($request); });
+$app->post('/updateAdminConfiguration', function (Request $request, Response $response) { echo AdminConfiguration::updateAdminConfiguration($request); });
 
-// Login
-$app->post('/Admin/login', function (Request $request, Response $response) { echo AdminLogin::processLogin($request); });
+
 
 /*
  * STORE 

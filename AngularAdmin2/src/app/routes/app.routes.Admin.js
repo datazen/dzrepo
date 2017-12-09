@@ -41,8 +41,8 @@
                 site: 'Admin',                
                 module: 'private'
             })     
-            .state('/Admin.editUser', {
-                url: '/Admin/editUser/:id',
+            .state('Admin.editUser', {
+                url: '/Admin/editUser',
                 site: 'Admin',                
                 module: 'private'
             })
@@ -56,7 +56,7 @@
                 site: 'Admin',                
                 module: 'private'
             })      
-            .state('Admin.configuration/:id', {
+            .state('Admin.configuration', {
                 url: '/Admin/configuration',
                 site: 'Admin',                
                 module: 'private'
@@ -121,7 +121,7 @@
                 templateUrl: 'app/components/Admin/users/addUserView.php',
                 controllerAs: 'vm'
             })     
-            .when('/Admin/editUser/:id', {
+            .when('/Admin/editUser', {
                 controller: 'AdminUsersController',
                 templateUrl: 'app/components/Admin/users/editUserView.php',
                 controllerAs: 'vm'
@@ -136,7 +136,7 @@
                 templateUrl: 'app/components/Admin/pageAccess/pageAccessView.php',
                 controllerAs: 'vm'
             })      
-            .when('/Admin/configuration/:id', {
+            .when('/Admin/configuration', {
                 controller: 'AdminConfigurationController',
                 templateUrl: 'app/components/Admin/configuration/configurationView.php',
                 controllerAs: 'vm'

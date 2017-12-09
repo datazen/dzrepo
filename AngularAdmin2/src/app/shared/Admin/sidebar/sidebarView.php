@@ -39,8 +39,8 @@
       <button ng-hide="!hasAccess('configuration')" type="button" class="sidebar-menu_button btn btn-black" ng-click="isCollapsedConfig = !isCollapsedConfig;"><span class="glyphicon glyphicon-cog small-margin-right" aria-hidden="true"></span> Configuration <span ng-class="isCollapsedConfig ? 'glyphicon-menu-right' : 'glyphicon-menu-down'" class="glyphicon pull-right small-margin-top"></span></button>
       <div uib-collapse="{{(isCurrentPath.indexOf('configuration')>-1) ? '' : 'isCollapsedConfig' }}" >
         <ul class="sidebar__main-menu_button_list" role="menu">
-          <li ng-repeat="group in configurationGroups" class="small-padding-left {{isCurrentPath.indexOf('configuration/' + group.id)>-1 ? 'selected-config' : '' }}">
-            <a class="sidebar__dropdown_menu-link" ng-href="/#!/Admin/configuration/{{group.id}}">
+          <li ng-repeat="group in configurationGroups" class="small-padding-left {{isCurrentPath.indexOf('configuration')>-1 && globals.adminConfigGroupToShow == group.id ? 'selected-config' : '' }}">
+            <a class="sidebar__dropdown_menu-link" ng-click="getAdminConfigurationGroup(group.id)">
               <span style="font-size:0.8em;" class="glyphicon glyphicon-triangle-right small-margin-right" aria-hidden="true"></span>{{group.title}}
             </a>
           </li>

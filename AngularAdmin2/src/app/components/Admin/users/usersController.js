@@ -12,23 +12,25 @@
         vm.user = null;
         vm.userRecord = null;
         vm.allUsers = [];
+        vm.addAdminUser = addAdminUser;
+        vm.updateAdminUser = updateAdminUser;
+        vm.deleteAdminUser = deleteAdminUser;
+        vm.editAdminUserRecord = editAdminUserRecord;
         vm.levels = [];
-        vm.addUser = addUser;
-        vm.updateUser = updateUser;
-        vm.deleteUser = deleteUser;
-        vm.editUserRecord = editUserRecord;
 
         vm.isEditUser = false;
 
         initController();
 
         function initController() {
-            loadAllUsers();
-            loadAllAccessLevels();
+            loadAllAdminUsers();
+            loadAllAdminAccessLevels();
 
-            if (window.location.href.indexOf('/Admin/editUser/') != -1) {
-                var userId = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
-                if (userId) loadUserRecord(userId);
+            if (window.location.href.indexOf('/Admin/editUser') != -1) {
+                if($rootScope.globals.adminUserRecordToEdit == undefined) $location.path('/Admin/users');
+                var userId = $rootScope.globals.adminUserRecordToEdit;
+              //  delete($rootScope.globals.adminUserRecordToEdit);
+                if (userId) loadAdminUserRecord(userId);
                 vm.isEditUser = true;
             }            
         }
@@ -43,15 +45,15 @@
           $location.path( path );
         }; 
 
-        function loadCurrentUser() {
-            AdminUserService.GetByUsername($rootScope.globals.currentUser.username)
+        function loadCurrentAdminUser() {
+            AdminUserService.GetAdminUserByEmail({ cID: $rootScope.globals.currentUser.cID, email: $rootScope.globals.currentUser.email })
                 .then(function (user) {
                     vm.user = user.data;
                 });
         }
 
-        function loadAllUsers() {
-            AdminUserService.GetAll()
+        function loadAllAdminUsers() {
+            AdminUserService.GetAllAdminUsers({ cID: $rootScope.globals.currentUser.cID })
                 .then(function (users) {
                     vm.allUsers = users.data;
                 });
@@ -65,33 +67,34 @@
             }, 2000);                  
         }
 
-        function loadAllAccessLevels() {
-            AdminAccessLevelsService.GetAllAccessLevels()
+        function loadAllAdminAccessLevels() {
+            AdminAccessLevelsService.GetAllAdminAccessLevels({ cID: $rootScope.globals.currentUser.cID })
                 .then(function (levels) {
                     vm.levels = levels.data;
                 });
         } 
 
-        function loadUserRecord(id) {
-            AdminUserService.GetById(id)
+        function loadAdminUserRecord(id) {
+            AdminUserService.GetAdminUserById({ cID: $rootScope.globals.currentUser.cID, id: id })
                 .then(function (user) {
                     vm.userRecord = user.data;
                 });
         }
        
-        function editUserRecord(id) {
-            $location.path('/Admin/editUser/' + id);                        
+        function editAdminUserRecord(id) {
+            $rootScope.globals.adminUserRecordToEdit = id;  
+            $location.path('/Admin/editUser');
         }
 
-        function deleteUser(id) {
+        function deleteAdminUser(id) {
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;            
-            AdminUserService.Delete(id)
+            AdminUserService.DeleteAdminUser({ cID: $rootScope.globals.currentUser.cID, id: id })
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         AdminFlashService.Success('Delete user successful', true);
-                        loadAllUsers();
+                        loadAllAdminUsers();
                     } else {
                         AdminFlashService.Error(response.msg);
                     }
@@ -105,14 +108,14 @@
                 });        
         }        
 
-        function addUser() {
+        function addAdminUser() {
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;            
-            AdminUserService.Create(vm.userRecord)
+            AdminUserService.CreateAdminUser({ cID: $rootScope.globals.currentUser.cID, data: vm.userRecord })
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
-                        $location.path('/users');
+                        $location.path('/Admin/users');
                         $timeout(function(){ AdminFlashService.Success('Add user successful', true); }, 500);
                     } else {
                         AdminFlashService.Error(response.msg);
@@ -121,11 +124,11 @@
                 });
         }    
 
-        function updateUser() {
+        function updateAdminUser() {
             vm.dataLoading = true;
             $scope.hidethis = false;
-            $scope.startFade = false;              
-            AdminUserService.Update(vm.userRecord)
+            $scope.startFade = false;   
+            AdminUserService.UpdateAdminUser(vm.userRecord)
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         AdminFlashService.Success('Update user successful', true);

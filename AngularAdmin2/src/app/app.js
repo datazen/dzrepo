@@ -50,7 +50,7 @@
                         $location.path('/Admin/login');
                     } else { // get the route access level from the db
                         var thisPath = ($location.path() == '/Admin') ? '/Admin/login' : $location.path();
-                        AdminPageAccessService.GetPageByRoute(thisPath)
+                        AdminPageAccessService.GetAdminPageAccessByRoute({ cID:  $rootScope.globals.currentUser.cID, route: thisPath })
                             .then(function (route) {
                                 thisRoute = route.data;
                                 if (thisRoute != undefined) {

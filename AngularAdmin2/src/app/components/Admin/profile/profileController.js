@@ -35,7 +35,7 @@
         }
 
         function loadCurrentUser() {
-            AdminUserService.GetByEmail($rootScope.globals.currentUser.email)
+            AdminUserService.GetAdminUserByEmail({ cID: $rootScope.globals.currentUser.cID, email: $rootScope.globals.currentUser.email })
                 .then(function (user) {
                     vm.user = user.data;
                 });
@@ -75,7 +75,7 @@
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;            
-            AdminUserService.Update(vm.user)
+            AdminUserService.UpdateAdminUser(vm.user)
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         window.scrollTo(0,0);                       

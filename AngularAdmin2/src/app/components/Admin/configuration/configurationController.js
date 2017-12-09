@@ -18,7 +18,7 @@
         vm.configurations = [];
         vm.configuration = null;
         vm.configurationGroups = [];
-        vm.updateConfiguration = updateConfiguration;
+        vm.updateAdminConfiguration = updateAdminConfiguration;
         vm.showForm = showForm;
 
         initController();
@@ -35,39 +35,40 @@
 
         function initController() {
 
-            if (window.location.href.indexOf('configuration/') != -1) {
-                var groupId = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
-                if (groupId) loadAllConfigurations(groupId);
+            if (window.location.href.indexOf('/Admin/configuration') != -1) {
+                var groupId = ($rootScope.globals.adminConfigGroupToShow) ? $rootScope.globals.adminConfigGroupToShow : 1;
+                //delete($rootScope.globals.adminConfigRecordToEdit);
+                if (groupId) loadAllAdminConfigurations(groupId);
             }  
 
         }
 
-        function loadAllConfigurations(groupId) {
-            AdminConfigurationService.GetAllConfigurations(groupId)
+        function loadAllAdminConfigurations(groupId) {
+            AdminConfigurationService.GetAllAdminConfigurationsByGroupId({ cID: $rootScope.globals.currentUser.cID, groupId: groupId })
                 .then(function (configurations) {
                     vm.configurations = configurations.data;
                 });
         }    
 
-        function loadConfigurationGroups() {
-            AdminConfigurationService.GetConfigurationGroups()
+        function loadAdminConfigurationGroups() {
+            AdminConfigurationService.GetAllAdminConfigurationGroups({ cID: $rootScope.globals.currentUser.cID })
                 .then(function (groups) {
                     vm.configurationGroups = groups.data;
                 });
         } 
 
-        function loadConfiguration(id) {
-            AdminConfigurationService.GetConfigurationById(id)
+        function loadAdminConfigurationById(id) {
+            AdminConfigurationService.GetAdminConfigurationById({ cID: $rootScope.globals.currentUser.cID, id: id})
                 .then(function (configuration) {
                     vm.configuration = configuration.data;
                 });
         } 
 
-        function updateConfiguration() {
+        function updateAdminConfiguration() {
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;              
-            AdminConfigurationService.UpdateConfiguration(vm.configuration)
+            AdminConfigurationService.UpdateAdminConfiguration(vm.configuration)
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         AdminFlashService.Success('Update configuration successful', true);
@@ -85,11 +86,10 @@
         }        
 
         function showForm(id) {
-
             $scope.message = "Show form button clicked";
             console.log($scope.message);
 
-            loadConfiguration(id);
+            loadAdminConfigurationById(id);
 
          //   $timeout(function(){  
                 var modalInstance = $uibModal.open({
@@ -119,7 +119,7 @@
                     console.log('Configuration form is in scope');
                     $uibModalInstance.close('closed');
 
-                    updateConfiguration();
+                    updateAdminConfiguration();
                     $timeout(function(){ initController(); }, 200);
                 } else {
                     console.log('Configuration form is NOT in scope');

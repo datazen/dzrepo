@@ -12,12 +12,12 @@
         initController();
 
         function initController() {
-            loadConfigurationValues();
-            loadPageAccess();
+            loadAdminConfigurationValues();
+            loadAdminPageAccess();
         }
 
-        function loadConfigurationValues() {
-            AdminConfigurationService.GetAllConfigurationData()
+        function loadAdminConfigurationValues() {
+            AdminConfigurationService.GetAllAdminConfigurations({ cID: $rootScope.globals.currentUser.cID })
                 .then(function (config) {
                     var jsonString = JSON.stringify(config.data);
                     var configs = JSON.parse(jsonString);
@@ -25,8 +25,8 @@
                 });
         }       
 
-        function loadPageAccess() {
-            AdminPageAccessService.GetPagesByAccessLevel($rootScope.globals.currentUser.accessLevel)
+        function loadAdminPageAccess() {
+            AdminPageAccessService.GetAdminPageAccessByAccessLevel({ cID: $rootScope.globals.currentUser.cID, level: $rootScope.globals.currentUser.accessLevel })
                 .then(function (pages) {
 
                     var json = "[";

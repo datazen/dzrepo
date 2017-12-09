@@ -20,7 +20,7 @@
         }
 
         function loadCompany() {
-            AdminCompanyService.GetById($rootScope.globals.currentUser.cID)
+            AdminCompanyService.GetAdminCompanyById({ cID: $rootScope.globals.currentUser.cID })
                 .then(function (company) {
                     vm.company = company.data;
                 });
@@ -30,7 +30,7 @@
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;              
-            AdminCompanyService.Update(vm.company)
+            AdminCompanyService.UpdateAdminCompany(vm.company)
                 .then(function (response) {
                     window.scrollTo(0,0);
                     if (response.rpcStatus == 1) {

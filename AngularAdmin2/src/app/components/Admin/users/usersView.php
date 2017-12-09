@@ -10,7 +10,7 @@
 				<th>First Name</th>
         <th>Last Name</th>
         <th>E-Mail</th>
-				<th class="center">Access Level</th>
+				<th>Access Level</th>
 				<th class="action">Action</th>
 			</tr>
 			<tr ng-repeat="user in vm.allUsers | startFrom:currentPage*pageSize | limitTo:pageSize">
@@ -18,12 +18,12 @@
         <td>{{user.firstName}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.email}}</td>
-        <td align="center">{{user.accessLevel}}</td>
+        <td>{{user.accessLevel}} - {{user.accessTitle}}</td>
         <td class="action">
-       	  <button ng-click="vm.editUserRecord(user.id);" type="button" class="btn btn-sm btn-primary" aria-label="Edit"> 
+       	  <button ng-click="vm.editAdminUserRecord(user.id);" type="button" class="btn btn-sm btn-primary" aria-label="Edit"> 
             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
           </button>
-          <button ng-disabled="(user.id == 1)" class="btn btn-sm btn-danger" type="button" aria-label="Delete" ng-confirm-click="Are you sure you want to delete this record?" confirmed-click="vm.deleteUser(user.id);">
+          <button ng-disabled="(user.id == 1)" class="btn btn-sm btn-danger" type="button" aria-label="Delete" ng-confirm-click="Are you sure you want to delete this record?" confirmed-click="vm.deleteAdminUser(user.id);">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           </button>                  
         </td>

@@ -5,12 +5,12 @@
 		<table class="table table-striped">
 			<tr>
 				<th>Level</th>
-				<th>Description</th>
+				<th>Title</th>
 				<th class="action">Action</th>
 			</tr>
 			<tr ng-repeat="level in vm.accessLevels">
         <td>{{level.level}}<span class="margin-left" ng-if="level.level == 0">(lowest)</span><span class="margin-left" ng-if="level.level == 5">(highest)</span></td>
-        <td>{{level.name}}</td>
+        <td>{{level.title}}</td>
         <td class="action">
             <button ng-click="vm.showForm(level.id);" type="button" class="btn btn-sm btn-primary" aria-label="Edit"> 
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -30,10 +30,10 @@
                   <label for="level">Access Level</label>
                   <input type="text" name="level" id="level" class="form-control" ng-model="vm.accessLevel.level" readonly />
               </div>
-              <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
-                  <label for="name">Description</label>
-                  <input type="text" name="name" id="name" class="form-control" ng-model="vm.accessLevel.name" required />
-                  <span ng-show="form.name.$dirty && form.name.$error.required" class="help-block">Access name is required</span>
+              <div class="form-group" ng-class="{ 'has-error': form.title.$dirty && form.title.$error.required }">
+                  <label for="title">Title</label>
+                  <input type="text" name="title" id="title" class="form-control" ng-model="vm.accessLevel.title" required />
+                  <span ng-show="form.title.$dirty && form.title.$error.required" class="help-block">Access title is required</span>
               </div>
 
           </div>

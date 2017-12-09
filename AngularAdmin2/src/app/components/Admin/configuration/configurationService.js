@@ -9,32 +9,32 @@
     function AdminConfigurationService($http) {
         var service = {};
 
-        service.GetAllConfigurationData = GetAllConfigurationData;
-        service.GetAllConfigurations = GetAllConfigurations;
-        service.GetConfigurationById = GetConfigurationById;
-        service.UpdateConfiguration = UpdateConfiguration;
-        service.GetConfigurationGroups = GetConfigurationGroups;
+        service.GetAllAdminConfigurations = GetAllAdminConfigurations;
+        service.GetAllAdminConfigurationsByGroupId = GetAllAdminConfigurationsByGroupId;
+        service.GetAdminConfigurationById = GetAdminConfigurationById;
+        service.UpdateAdminConfiguration = UpdateAdminConfiguration;
+        service.GetAllAdminConfigurationGroups = GetAllAdminConfigurationGroups;
 
         return service;
 
-        function GetAllConfigurationData() {
-            return $http.get('/api/getAllAdminConfigurations').then(handleSuccess, handleError('Error getting all configuration values'));
+        function GetAllAdminConfigurations(data) {
+            return $http.post('/api/getAllAdminConfigurations', data).then(handleSuccess, handleError('Error getting all configuration values'));
         }
 
-        function GetAllConfigurations(groupId) {
-            return $http.get('/api/getAdminConfigurationsByGroupId/' + groupId).then(handleSuccess, handleError('Error getting all configuration values for groupId: ' + groupId));
+        function GetAllAdminConfigurationsByGroupId(data) {
+            return $http.post('/api/getAdminConfigurationsByGroupId', data).then(handleSuccess, handleError('Error getting all configuration values for groupId'));
         }
 
-        function GetConfigurationById(id) {
-            return $http.get('/api/getAdminConfigurationById/' + id).then(handleSuccess, handleError('Error getting configuration value by id'));
+        function GetAdminConfigurationById(data) {
+            return $http.post('/api/getAdminConfigurationById', data).then(handleSuccess, handleError('Error getting configuration value by id'));
         }
 
-        function UpdateConfiguration(data) {
-            return $http.post('/api/updateAdminConfiguration/' + data.id, data).then(handleSuccess, handleError('Error updating configuration value'));
+        function UpdateAdminConfiguration(data) {
+            return $http.post('/api/updateAdminConfiguration', data).then(handleSuccess, handleError('Error updating configuration value'));
         }
 
-        function GetConfigurationGroups() {
-            return $http.get('/api/getAllAdminConfigurationGroups').then(handleSuccess, handleError('Error getting configuration groups'));
+        function GetAllAdminConfigurationGroups(data) {
+            return $http.post('/api/getAllAdminConfigurationGroups', data).then(handleSuccess, handleError('Error getting configuration groups'));
         }        
 
         // private functions

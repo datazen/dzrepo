@@ -1,19 +1,19 @@
     <div class="col-sm-6 no-padding-left">
     	<div class="well">
 		    <div class="form-group" ng-class="{ 'has-error': form.firstName.$dirty && form.firstName.$error.required }">
-		        <label for="username">First name</label>
+		        <label for="email">First name</label>
 		        <input type="text" name="firstName" id="firstName" class="form-control" ng-model="vm.userRecord.firstName" required />
 		        <span ng-show="form.firstName.$dirty && form.firstName.$error.required" class="help-block">First name is required</span>
 		    </div>
 		    <div class="form-group" ng-class="{ 'has-error': form.lastName.$dirty && form.lastName.$error.required }">
-		        <label for="username">Last name</label>
+		        <label for="email">Last name</label>
 		        <input type="text" name="lastName" id="Text1" class="form-control" ng-model="vm.userRecord.lastName" required />
 		        <span ng-show="form.lastName.$dirty && form.lastName.$error.required" class="help-block">Last name is required</span>
 		    </div>
 			<div class="form-group" ng-class="{ 'has-error': form.accessLevel.$dirty && form.accessLevel.$error.required }">
 				<label class="control-label" for="accessLevel">Access Level</label>
-                <select name="accessLevel" id="accessLevel" class="form-control" ng-model="vm.userRecord.accessLevel" ng-disabled="(vm.userRecord.username == 'admin')">
-                    <option ng-repeat="level in vm.levels" value="{{level.level}}">{{level.level}} - {{level.name}}</option>
+                <select name="accessLevel" id="accessLevel" class="form-control" ng-model="vm.userRecord.accessLevel" ng-disabled="(vm.userRecord.email == 'admin')">
+                    <option ng-repeat="level in vm.levels" value="{{level.level}}">{{level.level}} - {{level.title}}</option>
                 </select>
 				<span ng-show="form.accessLevel.$dirty && form.accessLevel.$error.required" class="help-block">Access level is required</span>
 			</div>		    
@@ -21,10 +21,10 @@
 	</div>
 	<div class="col-sm-6 no-padding-right">
 		<div class="well">
-		    <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
-		        <label for="username">Username</label>
-		        <input type="text" name="username" id="username" class="form-control" ng-model="vm.userRecord.username" ng-readonly="(vm.isEditUser && vm.userRecord.username)" required />
-		        <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+		    <div class="form-group" ng-class="{ 'has-error': form.email.$dirty && form.email.$error.required }">
+		        <label for="email">E-mail Address</label>
+		        <input type="email" name="email" id="email" class="form-control" ng-model="vm.userRecord.email" ng-readonly="(vm.isEditUser && vm.userRecord.email)" required />
+		        <span ng-show="form.email.$dirty && form.email.$error.required" class="help-block">email is required</span>
 		    </div>
 
 		    <div class="form-group" ng-class="{ 'has-error' : form.password.$dirty && form.password.$invalid }">

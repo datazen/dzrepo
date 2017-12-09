@@ -1,7 +1,3 @@
-<?php
-if (file_exists('../../../../app/shared/Admin/header/headerView.php')) include '../../../../app/shared/Admin/header/headerView.php';
-if (file_exists('../../../../app/shared/Admin/sidebar/sidebarView.php')) include '../../../../app/shared/Admin/sidebar/sidebarView.php';
-?> 
 <style>
 .action { text-align: right; }
 .half { width:30%; }
@@ -10,9 +6,9 @@ if (file_exists('../../../../app/shared/Admin/sidebar/sidebarView.php')) include
 	<h2 class="no-margin-top margin-bottom">Edit User</h2>
 	<div class="col-sm-12 no-padding-left">
         <div class="default" ng-hide="hidethis" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error', fade: startFade }" ng-if="flash" ng-bind="flash.message"></div>
- 	        <form novalidate name="form" ng-submit="vm.updateUser()" role="form">
+ 	        <form novalidate name="form" ng-submit="vm.updateAdminUser()" role="form">
                 
-                <?php if (file_exists('../../../../app/components/Admin/users/userFormPartial.php')) include('../../../../app/components/Admin/users/userFormPartial.php'); ?>
+                <ng-include src="'./app/components/Admin/users/userFormPartial.php'"></ng-include>
 
 			</form>
 		</div>

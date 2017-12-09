@@ -9,22 +9,22 @@
     function AdminAccessLevelsService($http) {
         var service = {};
 
-        service.GetAllAccessLevels = GetAllAccessLevels;
-        service.GetAccessLevelById = GetAccessLevelById;
-        service.UpdateAccessLevel = UpdateAccessLevel;
+        service.GetAllAdminAccessLevels = GetAllAdminAccessLevels;
+        service.GetAdminAccessLevelById = GetAdminAccessLevelById;
+        service.UpdateAdminAccessLevel = UpdateAdminAccessLevel;
 
         return service;
 
-        function GetAllAccessLevels() {
-            return $http.get('/api/getAllAdminAccessLevels').then(handleSuccess, handleError('Error getting all access levels'));
+        function GetAllAdminAccessLevels(data) {
+            return $http.post('/api/getAllAdminAccessLevels', data).then(handleSuccess, handleError('Error getting all access levels'));
         }
 
-        function GetAccessLevelById(id) {
-            return $http.get('/api/getAdminAccessLevelById/' + id).then(handleSuccess, handleError('Error getting access level by id'));
+        function GetAdminAccessLevelById(data) {
+            return $http.post('/api/getAdminAccessLevelById', data).then(handleSuccess, handleError('Error getting access level by id'));
         }
 
-        function UpdateAccessLevel(level) {
-            return $http.post('/api/updateAdminAccessLevel/' + level.id, level).then(handleSuccess, handleError('Error updating access level'));
+        function UpdateAdminAccessLevel(data) {
+            return $http.post('/api/updateAdminAccessLevel', data).then(handleSuccess, handleError('Error updating access level'));
         }      
 
         // private functions

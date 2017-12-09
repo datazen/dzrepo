@@ -11,7 +11,7 @@
 
         vm.accessLevels = [];
         vm.accessLevel = null;
-        vm.updateAccessLevel = updateAccessLevel;
+        vm.updateAdminAccessLevel = updateAdminAccessLevel;
         vm.showForm = showForm;
 
         initController();
@@ -21,28 +21,28 @@
         };         
 
         function initController() {
-            loadAllAccessLevels();           
+            loadAllAdminAccessLevels();           
         }
 
-        function loadAllAccessLevels() {
-            AdminAccessLevelsService.GetAllAccessLevels()
+        function loadAllAdminAccessLevels() {
+            AdminAccessLevelsService.GetAllAdminAccessLevels({ cID: $rootScope.globals.currentUser.cID })
                 .then(function (levels) {
                     vm.accessLevels = levels.data;
                 });
         } 
 
-        function loadAccessLevel(id) {
-            AdminAccessLevelsService.GetAccessLevelById(id)
+        function loadAdminAccessLevel(id) {
+            AdminAccessLevelsService.GetAdminAccessLevelById({ id: id, cID: $rootScope.globals.currentUser.cID })
                 .then(function (level) {
                     vm.accessLevel = level.data;
                 });
         }               
 
-        function updateAccessLevel() {
+        function updateAdminAccessLevel() {
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;              
-            AdminAccessLevelsService.UpdateAccessLevel(vm.accessLevel)
+            AdminAccessLevelsService.UpdateAdminAccessLevel(vm.accessLevel)
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         AdminFlashService.Success('Update access level successful', true);
@@ -65,7 +65,7 @@
             $scope.message = "Show form button clicked";
             console.log($scope.message);
 
-            loadAccessLevel(id);
+            loadAdminAccessLevel(id);
 
             var modalInstance = $uibModal.open({
                 templateUrl: 'access-modal-form.html',
@@ -93,8 +93,8 @@
                     console.log('Access levels form is in scope');
                     $uibModalInstance.close('closed');
 
-                    updateAccessLevel();
-                    $timeout(function(){ loadAllAccessLevels(); }, 200);
+                    updateAdminAccessLevel();
+                    $timeout(function(){ loadAllAdminAccessLevels(); }, 200);
                 } else {
                     console.log('Access levels form is NOT in scope');
                 }

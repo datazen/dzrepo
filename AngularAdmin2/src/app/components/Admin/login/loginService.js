@@ -19,7 +19,7 @@
 
             $http({
                 method: 'POST',
-                url: 'http://ngcart.zloaded.com/api/Admin/login',
+                url: 'http://zloaded.com/api/Admin/login',
                 dataType: 'json',
                 data: { email: email, password: password },
                 headers: { 'Content-Type': 'application/json; charset=UTF-8' }

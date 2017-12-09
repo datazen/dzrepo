@@ -10,7 +10,7 @@
       </tr>
       <tr ng-repeat="page in vm.pages | startFrom:currentPage*pageSize | limitTo:pageSize">
         <td>{{page.page}}</td>
-        <td>{{page.level}} - {{page.accessName}}</td>
+        <td>{{page.level}} - {{page.accessTitle}}</td>
         <td class="action">
             <button ng-click="vm.showForm(page.id);" type="button" class="btn btn-sm btn-primary" ng-disabled="(page.page == 'login' || page.page == 'restricted')" aria-label="Edit"> 
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -39,7 +39,7 @@
               <div class="form-group" ng-class="{ 'has-error': form.level.$dirty && form.level.$error.required }">
                 <label class="control-label" for="level">Access Level</label>
                     <select  name="level" id="level" class="form-control" ng-model="vm.page.level" required>
-                        <option ng-repeat="accessLevel in vm.accessLevels" value="{{accessLevel.level}}">{{accessLevel.level}} - {{accessLevel.name}}</option>
+                        <option ng-repeat="accessLevel in vm.accessLevels" value="{{accessLevel.level}}">{{accessLevel.level}} - {{accessLevel.title}}</option>
                     </select>
                 <span ng-show="form.level.$dirty && form.level.$error.required" class="help-block">Access level is required</span>
               </div>              

@@ -9,18 +9,18 @@
     function AdminCompanyService($http) {
         var service = {};
 
-        service.GetById    = GetById;
-        service.Update     = Update;
+        service.GetAdminCompanyById = GetAdminCompanyById;
+        service.UpdateAdminCompany  = UpdateAdminCompany;
 
         return service;
 
-        function GetById(id) {
-//            return $http({ method: 'GET', url: '/api/getById/' + id, cache: true }).then(handleSuccess, handleError('Error getting customer by id'));
-            return $http.get('/api/getAdminCompanyById/' + id).then(handleSuccess, handleError('Error getting customer by id'));
+        function GetAdminCompanyById(data) {
+//            return $http({ method: 'POST', url: '/api/getById/' + id, data: data, cache: true }).then(handleSuccess, handleError('Error getting customer by id'));
+            return $http.post('/api/getAdminCompanyById', data).then(handleSuccess, handleError('Error getting customer by id'));
         }    
 
-        function Update(company) {
-            return $http.post('/api/updateAdminCompany/' + company.id, company).then(handleSuccess, handleError('Error updating customer'));
+        function UpdateAdminCompany(data) {
+            return $http.post('/api/updateAdminCompany', data).then(handleSuccess, handleError('Error updating customer'));
         }
 
 

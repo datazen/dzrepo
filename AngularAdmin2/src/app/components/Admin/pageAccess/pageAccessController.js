@@ -3,13 +3,7 @@
 
     angular
         .module('app')
-        .controller('AdminPageAccessController', AdminPageAccessController)
-        .filter('startFrom', function() {
-                    return function(input, start) {
-                        start = +start; //parse to int
-                        return input.slice(start);
-                    }
-                });           
+        .controller('AdminPageAccessController', AdminPageAccessController);          
 
     AdminPageAccessController.$inject = ['AdminAccessLevelsService', 'AdminPageAccessService', 'AdminFlashService', '$rootScope', '$scope', '$location', '$timeout', '$uibModal', '$log', '$route'];
     function AdminPageAccessController(AdminAccessLevelsService, AdminPageAccessService, AdminFlashService, $rootScope, $scope, $location, $timeout, $uibModal, $log, $route) {
@@ -18,7 +12,7 @@
         vm.pages = [];
         vm.page = null;
     //    vm.accessLevels = [];
-        vm.updatePage = updatePage;
+        vm.updateAdminPageAccess = updateAdminPageAccess;
         vm.showForm = showForm;
 
         vm.routes = $route.routes;
@@ -36,36 +30,36 @@
         };         
 
         function initController() {
-            loadAllPages(); 
-            loadAllAccessLevels();          
+            loadAllAdminPageAccess(); 
+            loadAllAdminAccessLevels();          
         }
 
-        function loadAllAccessLevels() {
-            AdminAccessLevelsService.GetAllAccessLevels()
+        function loadAllAdminAccessLevels() {
+            AdminAccessLevelsService.GetAllAdminAccessLevels({ cID: $rootScope.globals.currentUser.cID })
                 .then(function (levels) {
                     vm.accessLevels = levels.data;
                 });
         }         
 
-        function loadAllPages() {
-            AdminPageAccessService.GetAllPages(vm.routes)
+        function loadAllAdminPageAccess() {
+            AdminPageAccessService.GetAllAdminPageAccess({ cID: $rootScope.globals.currentUser.cID, routes: vm.routes })
                 .then(function (pages) {
                     vm.pages = pages.data;
                 });
         } 
 
-        function loadPage(id) {
-            AdminPageAccessService.GetPageById(id)
+        function loadAdminPageAccess(id) {
+            AdminPageAccessService.GetAdminPageAccessById({ cID: $rootScope.globals.currentUser.cID, id: id })
                 .then(function (page) {
                     vm.page = page.data;
                 });
         }               
 
-        function updatePage() {
+        function updateAdminPageAccess() {
             vm.dataLoading = true;
             $scope.hidethis = false;
             $scope.startFade = false;              
-            AdminPageAccessService.UpdatePage(vm.page)
+            AdminPageAccessService.UpdateAdminPageAccess(vm.page)
                 .then(function (response) {
                     if (response.rpcStatus == 1) {
                         AdminFlashService.Success('Update page access successful', true);
@@ -87,7 +81,7 @@
             $scope.message = "Show form button clicked";
             console.log($scope.message);
 
-            loadPage(id);
+            loadAdminPageAccess(id);
 
          //   $timeout(function(){  
                 var modalInstance = $uibModal.open({
@@ -117,8 +111,8 @@
                     console.log('Page access form is in scope');
                     $uibModalInstance.close('closed');
 
-                    updatePage();
-                    $timeout(function(){ loadAllPages(); }, 200);
+                    updateAdminPageAccess();
+                    $timeout(function(){ loadAllAdminPageAccess(); }, 200);
                 } else {
                     console.log('Page access form is NOT in scope');
                 }

@@ -36,10 +36,10 @@
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
 
     <!-- Translations -->
-    <script src="i18n/en/Admin/translations.en.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
-    <script src="i18n/es/Admin/translations.es.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
-    <script src="i18n/fr/Admin/translations.fr.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
-    <script src="i18n/de/Admin/translations.de.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="i18n/en/Store/translations.en.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="i18n/es/Store/translations.es.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="i18n/fr/Store/translations.fr.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
+    <script src="i18n/de/Store/translations.de.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>
 
     <!-- Routes -->
     <script src="app/routes/app.routes.Admin.js?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>"></script>

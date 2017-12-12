@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/app.Admin.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/utility.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/media.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/ie10-viewport-bug-workaround.css?v=<?php echo rand(1000000000000000000000, 9000000000000000000000) ?>" rel="stylesheet" />
     <link rel="shortcut icon" href="assets/img/Admin/favicon.ico" type="image/x-icon" />    
 </head>

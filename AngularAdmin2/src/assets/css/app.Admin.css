@@ -29,24 +29,6 @@ a {
   color:white; text-decoration:underline; 
 }
 
-.header-avatar {
-  cursor: pointer;
-  margin: 6px;  
-}
-.header-avatar_img-container {
-  text-align: right;
-}
-.img-circle {
-    border: 1px solid #e6e9ed;
-}
-.img-circle.header-avatar_img {
-    background: #fff none repeat scroll 0 0;
-    border: 1px solid rgba(52, 73, 94, 0.44);
-    position: inherit;
-    width: 29%;
-    z-index: 1000;
-}
-
 /*
  * SideBar 
  */

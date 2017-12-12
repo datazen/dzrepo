@@ -41,6 +41,7 @@
 
             if($rootScope.currentState.site && $rootScope.currentState.site == 'Admin') {  
                 // redirect to login page if not logged in and trying to access a restricted page
+                var thisStates = $state.get();
                 var thisRoute = [];
                 //var restrictedPage = $.inArray($location.path(), ['/Admin/login']) === -1;
                 var restrictedPage = ($rootScope.currentState.module && $rootScope.currentState.module == 'private') ? true : false;

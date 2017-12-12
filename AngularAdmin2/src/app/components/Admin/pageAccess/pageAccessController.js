@@ -5,8 +5,8 @@
         .module('app')
         .controller('AdminPageAccessController', AdminPageAccessController);          
 
-    AdminPageAccessController.$inject = ['AdminAccessLevelsService', 'AdminPageAccessService', 'AdminFlashService', '$rootScope', '$scope', '$location', '$timeout', '$uibModal', '$log', '$route'];
-    function AdminPageAccessController(AdminAccessLevelsService, AdminPageAccessService, AdminFlashService, $rootScope, $scope, $location, $timeout, $uibModal, $log, $route) {
+    AdminPageAccessController.$inject = ['AdminAccessLevelsService', 'AdminPageAccessService', 'AdminFlashService', '$rootScope', '$scope', '$location', '$timeout', '$uibModal', '$log', '$route', '$state'];
+    function AdminPageAccessController(AdminAccessLevelsService, AdminPageAccessService, AdminFlashService, $rootScope, $scope, $location, $timeout, $uibModal, $log, $route, $state) {
         var vm = this;
 
         vm.pages = [];
@@ -15,7 +15,7 @@
         vm.updateAdminPageAccess = updateAdminPageAccess;
         vm.showForm = showForm;
 
-        vm.routes = $route.routes;
+        vm.states = $state.get();
 
         initController();
 
@@ -42,7 +42,7 @@
         }         
 
         function loadAllAdminPageAccess() {
-            AdminPageAccessService.GetAllAdminPageAccess({ cID: $rootScope.globals.currentUser.cID, routes: vm.routes })
+            AdminPageAccessService.GetAllAdminPageAccess({ cID: $rootScope.globals.currentUser.cID, states: vm.states })
                 .then(function (pages) {
                     vm.pages = pages.data;
                 });

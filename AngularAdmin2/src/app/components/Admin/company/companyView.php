@@ -1,9 +1,9 @@
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main relative">
-	<h2 class="no-margin-top margin-bottom">My Company</h2>
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 relative">
+	<h2 class="page-header margin-top no-margin-bottom">My Company</h2>
 	<div class="col-sm-12 no-padding-left no-padding-right small-margin-top">
         <div class="default margin-left margin-right" ng-hide="hidethis" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error', fade: startFade }" ng-if="flash" ng-bind="flash.message"></div>    
 	    <form name="form" ng-submit="vm.updateCompany()" role="form">
-		    <div class="col-sm-6">
+		    <div class="col-sm-6 no-padding-left no-padding-right">
 	        	<div class="well">
 	            <fieldset class="fieldset">
 	                <legend class="legend">Company Information</legend>
@@ -47,7 +47,7 @@
 			    </fieldset>
 			    </div>
 	        </div>
-	        <div class="col-sm-6">
+	        <div class="col-sm-6 no-padding-left no-padding-right">
 	        	<div class="well">
 		            <fieldset class="fieldset">
 		                <legend class="legend">Company Contact</legend>

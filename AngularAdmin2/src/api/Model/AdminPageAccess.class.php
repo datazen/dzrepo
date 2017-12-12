@@ -3,10 +3,10 @@ class AdminPageAccess {
 
     public static function getAllAdminPageAccess($request) {
         $postData = $request->getParsedBody(); 
-        $routes = (isset($postData['routes'])) ? $postData['routes'] : array();
+        $states = (isset($postData['states'])) ? $postData['states'] : array();
         $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;      
 
-        self::_syncRoutes($routes);
+        self::_syncRoutes($states);
 
 	    $sql = "SELECT * FROM pageAccess WHERE cID = :cID ORDER BY id";
 	    try {
@@ -67,7 +67,7 @@ class AdminPageAccess {
 	}
 
 	public static function getAdminPageAccessByRoute($request) {
-		$postData = $request->getParsedBody();
+		$postData = $request->getParsedBody();;		
         $route = (isset($postData['route'])) ? $postData['route'] : '';
         $cID = (isset($postData['cID'])) ? $postData['cID'] : 0;
 
@@ -135,19 +135,21 @@ class AdminPageAccess {
 		}
 	}	
 
-	private static function _syncRoutes($routes) {
+	private static function _syncRoutes($states) {
 
         $routeArr = array();
         $prev = '';
 
-		foreach($routes as $route => $data) {
-
-			$route = str_replace("/Admin/", "", $route);
-			$route = str_replace("/", "", $route);
-			if (strpos($route, ":")) $route = substr($route, 0, strpos($route, ":"));
-			if ($route == 'null' || trim($route) == '' || $route == $prev) continue;
-			$routeArr[] = $route;
-			$prev = $route;
+		foreach($states as $key => $data) {
+			if (isset($data['site']) && $data['site'] == 'Admin') {
+	            $route = (isset($data['url'])) ? $data['url'] : '';
+				$route = str_replace("/Admin/", "", $route);
+				$route = str_replace("/", "", $route);
+				if (strpos($route, ":")) $route = substr($route, 0, strpos($route, ":"));
+				if ($route == 'null' || trim($route) == '' || $route == $prev) continue;
+				$routeArr[] = $route;
+				$prev = $route;
+		   }
 		}	
 
         // add routes that do not exist in the database

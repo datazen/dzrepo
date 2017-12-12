@@ -1,19 +1,56 @@
   <div ng-controller="AdminHeaderController">
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<style>
+.btn-avatar { width:30%; margin: 6px -60px 0 0; cursor: pointer; }
+.btn-avatar-list { margin:6px 0 0 -112px; }
+.btn-avatar-list-email { margin-left:8px; }
+.img-circle { border: 1px solid #e6e9ed; }
+.img-circle.header-avatar_img { width: 36%; background: #fff none repeat scroll 0 0; border: 1px solid rgba(52, 73, 94, 0.44); position: inherit; z-index: 1000; }
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+  .img-circle.header-avatar_img { width: 22%; } 
+  .btn-avatar { margin: 4px -136px 0 0; }  
+  .btn-avatar-list { margin: 6px 0 0 -118px; }  
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  .img-circle.header-avatar_img { width: 17%; }
+  .btn-avatar { margin: 6px -183px 0 0; }   
+  .btn-avatar-list { margin:6px 0 0 -113px; }
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+  .img-circle.header-avatar_img { width: 13%; }
+  .btn-avatar { margin: 5px -260px 0 0; }   
+  .btn-avatar-list { margin:6px 0 0 -112px; }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+  .img-circle.header-avatar_img { width: 11%; }
+  .btn-avatar { margin: 5px -331px 0 0; }   
+  .btn-avatar-list { margin:6px 0 0 -112px; }
+
+}
+
+
+</style>
 
       <!-- Top Menu Items -->
-      <div class="btn-group float-right" uib-dropdown is-open="status.isopen">
-        <!-- button id="single-button" type="button" class="btn btn-black" uib-dropdown-toggle ng-disabled="disabled" -->
-            
-        <div class="header-avatar" uib-dropdown-toggle ng-disabled="disabled">    
+      <div class="btn-avatar btn-group float-right" uib-dropdown is-open="status.isopen">
+        <div uib-dropdown-toggle ng-disabled="disabled">    
           <div class="header-avatar_img-container">
             <img class="header-avatar_img img-circle" src="{{globals.config.IMAGES_PATH}}Admin/{{((globals.currentUser.avatar) ? globals.currentUser.avatar : 'na.png')}}" alt="{{globals.currentUser.firstName}} {{globals.currentUser.lastName}}">
           </div>
         </div>
 
         <!-- Profile -->
-        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-          <li role="menuitem" class="margin-left">{{globals.currentUser.firstName}} {{globals.currentUser.lastName}} <br />@{{globals.currentUser.username}}</li>
+        <ul class="btn-avatar-list" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+          <li role="menuitem" class="btn-avatar-list-email">{{globals.currentUser.firstName}} {{globals.currentUser.lastName}} <br />{{globals.currentUser.email}}</li>
           <li role="separator" class="divider"></li>
           <li role="menuitem"><a ng-href="#!/Admin/profile"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
           <li role="separator" class="divider"></li>
@@ -24,7 +61,7 @@
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
 
-        <button type="button" class="navbar-toggle pull-left no-margin-right" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+        <button type="button" class="navbar-toggle pull-left no-margin-right small-margin-left" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>

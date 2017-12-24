@@ -58,6 +58,7 @@
         $stateProvider                    
             .state('Admin', {
                 abstract: true,
+                site: 'Admin',
                 module: 'private'
             })
             .state('Admin.dashboard', {

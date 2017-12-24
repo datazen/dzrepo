@@ -1,0 +1,134 @@
+.dashboard_main {
+    border: 0px solid #909090;
+    padding: 5px;
+    margin-top: 0px;
+    min-height: 300px;
+}
+
+.dashboard_area {
+    overflow: hidden;
+    position: relative;
+    height: 200px;
+    border: 1px solid #c0c0c0;
+    padding: 10px;
+    margin: 0px;
+    background: url('../images/box_background.png') repeat-x #ffffff;
+    font-size: 11px;
+}
+
+.dashboard_area  #WidgetTitle {
+    font-family: Trebuchet MS, Arial;
+    font-size: 14px;
+    font-weight: bold;
+    color: #363636;
+}
+
+.dashboard_area #WidgetSubTitle {
+    font-family: Trebuchet MS;
+    font-size: 11px;
+    font-weight: normal;
+    color: #898989;
+}
+
+.dashboard_area_empty {
+    overflow: hidden;
+    position: relative;
+    height: 200px;
+    border: 1px dotted #c0c0c0;
+    padding: 10px;
+    margin: 0px;
+    color: #c0c0c0;
+    background-color: #fcfcfc;
+    margin: auto;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.dashboard_area_empty_content {
+    position: absolute;
+    width: 100%;
+    top: 40%;
+}
+
+.dashboard_area_empty a {
+    color: #c0c0c0;
+}
+
+div.mb_inline_msg {
+    font-family: 'Helvetica', 'Arial';
+    font-size: 12px;
+    padding-bottom: 18px;
+    padding-left: 20px;
+    padding-right: 10px;
+    padding-top: 16px;
+    margin: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+div.mb_inline_msg {
+    font-family: 'Helvetica', 'Arial';
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+div.mb_inline_msg a {
+    font-family: 'Helvetica', 'Arial';
+    font-size: 12px;
+    font-weight: bold;
+    color: #303030;
+}
+
+div.mb_inline_msg.msg {
+    font-weight: normal;
+    border: 1px solid #c0c0c0;
+    color: #303030;
+    background: #ffffff; /* old browsers */
+    background-attachment: scroll;
+    background-color: transparent;
+    background-image: -moz-linear-gradient(center top, #FFFFFF, #f0f0f0);
+    background-position: 0 0;
+    background-repeat: repeat;
+
+}
+
+div.mb_inline_msg.img {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 3px;
+    display: block;
+    height: 0px;
+}
+
+div.mb_inline_msg.text {
+    margin: 0px;
+    margin-left: 45px;
+    padding: 0px;
+    min-height: 30px;
+    display: block;
+
+}
+
+/*
+div.mb_inline_msg.msg {
+  font-weight: normal;
+  border: 2px solid #70b0e0;
+  color: #2E6E9E;
+  background: #c0c0c0;
+}
+
+div.mb_inline_msg.new_modules {
+font-weight: bold;
+border: 1px solid #c0c0c0;
+color: #2E6E9E;
+background: #fff;
+}
+div.mb_inline_msg.new_modules a {
+font-family: 'Helvetica','Arial';
+font-size: 12px;
+font-weight: bold;
+-color: #fff;
+} */

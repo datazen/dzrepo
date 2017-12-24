@@ -1,0 +1,72 @@
+ul.intros {
+	width: 97%;
+	position: absolute;
+	list-style: none; 
+	list-style-type: none;		
+	margin:0px; 
+	margin-top: 15px;
+	padding:0px;
+	font-weight: bold;
+}
+
+li.intros_item {  
+	position: relative;
+	text-indent:0px;
+	z-index: 5;
+	float: left;
+	width: 49%;
+	height: 75px;
+	margin: 0px;
+	margin-left: 0px;
+	padding-left: 0px;
+	-border: 1px solid red;
+}
+
+div.intros_item {
+	position: relative;
+	display: inline-block;
+	z-index: -10;
+	top: -48px;
+	left: 30px;
+	width: 70%;
+	height: 32px;
+	margin: 0px;
+	margin-left: 0px;
+	padding-left: 26px;
+	-border: 1px solid red;
+    font-family: Trebuchet MS;
+    font-size: 11px;
+    font-weight: normal;
+    color: #363636;
+}
+
+
+div.intros_item_img {
+	z-index: 10;
+	width: 48px;
+	height: 48px;
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+}
+
+
+.item_tutorials div.intros_item_img {
+	background: url('tutorials.png') no-repeat 0px 0px;	
+}
+
+.item_support div.intros_item_img{
+	background: url('support.png') no-repeat 0px 0px;	
+}
+
+.item_twitter div.intros_item_img{
+	background: url('twitter.png') no-repeat 0px 0px;	
+}
+
+.item_facebook div.intros_item_img{
+	background: url('facebook.png') no-repeat 0px 0px;	
+}
+
+
+.intros_item a:hover{
+    text-decoration:none;

@@ -1,0 +1,20 @@
+.install_main {
+	border: 0px solid #909090; 
+	padding: 5px; 
+	margin-top: 0px;  
+	min-height: 300px;
+	margin: auto;
+}
+
+.install_area {
+	overflow:hidden; 
+	position: relative;
+	height: 200px; 
+	width: 40%;
+	float:left;
+	border: 1px solid #c0c0c0; 
+	padding: 10px; 
+	margin: 10px;
+	background: url('../images/box_background.png') repeat-x;
+	background-color: #fcfcfc;
+}

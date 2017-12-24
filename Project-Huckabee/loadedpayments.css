@@ -1,0 +1,577 @@
+/* LOADEDPAYMENTS MODULE IFRAME CSS
+---------------------------------- */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td
+{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    font-family: inherit;
+    vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus
+{
+    outline: 0;
+}
+body.bodyStyle
+{
+    margin: 20px 0;
+    font-family: Verdana,Arial,sans-serif;
+    font-size: 11px;
+    background: transparent;
+}
+ol, ul
+{
+    list-style: none;
+}
+/* Default style for controls input ,select */
+input, select
+{
+    padding: 3px;
+    background: #F0F0F0 url(../images/input-select-textarea.gif) repeat-x 0 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #999;
+    font: 12px Arial, Helvetica, sans-serif;
+}
+select
+{
+    background-image: none;
+}
+input.button
+{
+    cursor: pointer;
+    width: 120px !important;
+    background-color: #0B5286 !important;
+    background-image: none !important;
+    border-style: inset;
+    border-width: 1px;
+    color: #FFF;
+}
+fieldset li, fieldset p
+{
+    font-size: 14px;
+}
+.subsection-header
+{
+    border-bottom: dotted 1px #ccc;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    margin-top: 15px;
+    display: block;
+    position: absolute;
+    top: -30px;    
+}
+.PLImage
+{
+    display: block;
+    text-align: right;
+    padding-right: 30px;
+}
+.viewamount
+{
+    font-size: 20px;
+    font-weight: 600;
+    color: #f3981f;
+}
+/* To control total size width of the form*/
+.divMain
+{
+    position: relative;
+    background: transparent; /*background: #FFF url(../images/form.gif) repeat-y 0 0;*/
+    float: left;
+    width: 600px;
+}
+.divMain input.button
+{
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 109px;
+    margin-right: 20px;
+}
+.divMain div.error
+{
+    color: #F03333;
+    margin-bottom: 10px;
+}
+.divMain div.error div
+{
+    line-height: 1.4;
+}
+.divMain div.error li
+{
+    background: url(../images/error-li.gif) no-repeat 0 3px;
+    height: auto;
+    padding-left: 20px;
+}
+.divMain fieldset
+{
+    margin: 0;
+}
+.divMain label
+{
+    font-size: 14px;
+}
+/* To control the size and position of all fields */
+.divMain ol
+{
+    position: relative;
+    width: 100%;
+}
+.divMain li
+{
+    position: relative;
+    height: 2.5em;
+}
+.divMain li input, .divMain li select
+{
+    position: absolute;
+    top: -3px;
+    left: 140px;
+    width: 150px;
+}
+.divMain span.pointout
+{
+    color: #007000;
+    font-size: 19px;
+    position: absolute;
+    left: -21px;
+    top: -3px;
+}
+
+/* Fields */
+
+.fieldLayout li#LName
+{
+    position: absolute;
+    top: 0em;
+    left: 320px;
+}
+
+.fieldLayout li#LName input
+{
+    position: absolute;
+    left: 90px;
+}
+
+.fieldLayout li#FirstLastReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 120px;
+}
+.fieldLayout li#Phone
+{
+    position: absolute;
+    top: 0em;
+    left: 340px;
+}
+.fieldLayout li#Phone input
+{
+    position: absolute;
+    left: 130px;
+}
+.fieldLayout li#PO
+{
+    position: absolute;
+    top: 0em;
+    left: 340px;
+}
+.fieldLayout li#PO input
+{
+    position: absolute;
+    left: 130px;
+}
+.fieldLayout li#InvoiceReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 120px;
+}
+.fieldLayout li#POCaptionReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 340px;
+}
+.fieldLayout li#POReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 420px;
+}
+/*Email Phone*/
+.fieldLayout li#EmailReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 120px;
+}
+.fieldLayout li#PhoneCaptionReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 340px;
+}
+.fieldLayout li#PhoneReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 420px;
+}
+.fieldLayout li#Phone
+{
+    position: absolute;
+    top: 0em;
+    left: 340px;
+}
+
+/*address readOnly*/
+
+.fieldLayout li#Address1ReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 120px;
+}
+
+.fieldLayout li#Address2CaptionReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 340px;
+}
+.fieldLayout li#Address2ReadOnly
+{
+    position: absolute;
+    top: 0em;
+    left: 420px;
+}
+.fieldLayout li#CityReadOnly
+{
+    position: absolute;
+    top: 2.5em;
+    left: 120px;
+}
+
+.fieldLayout li#ZipCaptionReadOnly
+{
+    position: absolute;
+    top: 2.5em;
+    left: 340px;
+}
+.fieldLayout li#ZipReadOnly
+{
+    position: absolute;
+    top: 2.5em;
+    left: 420px;
+}
+.fieldLayout li#CountryReadOnly
+{
+    position: absolute;
+    top: 5em;
+    left: 120px;
+}
+.fieldLayout li#StateCaptionReadOnly
+{
+    position: absolute;
+    top: 5em;
+    left: 340px;
+}
+.fieldLayout li#StateReadOnly
+{
+    position: absolute;
+    top: 5em;
+    left: 420px;
+}
+
+/* Address */
+
+.fieldLayout li#address2
+{
+    position: absolute;
+    top: 0em;
+    left: 340px;
+}
+.fieldLayout li#address2 input
+{
+    position: absolute;
+    left: 130px;
+}
+.fieldLayout li#postalCode
+{
+    position: absolute;
+    top: 2.5em;
+    left: 340px;
+}
+.fieldLayout li#postalCode input
+{
+    position: absolute;
+    left: 130px;
+}
+.fieldLayout li#province
+{
+    position: absolute;
+    top: 5em;
+    left: 340px;
+}
+.fieldLayout li#province select
+{
+    position: absolute;
+    left: 130px;
+}
+.fieldLayout li#state
+{
+    position: absolute;
+    top: 5em;
+    left: 340px;
+}
+.fieldLayout li#state select
+{
+    position: absolute;
+    left: 130px;
+}
+.fieldLayout li#otherState
+{
+    position: absolute;
+    top: 5em;
+    left: 340px;
+}
+.fieldLayout li#otherState select
+{
+    position: absolute;
+    left: 130px;
+}
+.fieldLayout li#liTimeZone
+{
+    position: absolute;
+    top: 7.5em;
+    left: 340px;
+}
+.fieldLayout li#ShippingProvince
+{
+    position: absolute;
+    top: 5em;
+    left: 340px;
+}
+.fieldLayout li#ShippingState
+{
+    position: absolute;
+    top: 5em;
+    left: 340px;
+}
+.fieldLayout li#otherShippingState
+{
+    position: absolute;
+    top: 5em;
+    left: 340px;
+}
+.fieldLayout li#liShippingTimeZone
+{
+    position: absolute;
+    top: 12.5em;
+    left: 340px;
+}
+/*account details */
+
+.fieldLayout li#ExpirationDate input
+{
+    position: absolute;
+    left: 140px;
+    width: 50px;
+}
+.fieldLayout li#CVV
+{
+    position: absolute;
+    top: 2.5em;
+    left: 320px;
+}
+.fieldLayout li#CVV input
+{
+    position: absolute;
+    left: 90px;
+    width: 50px;
+}
+.fieldLayout li#CVV
+{
+    z-index: 4000;
+}
+.fieldLayout li#CVV a
+{
+    position: absolute;
+    top: 0;
+    left: 14em;
+    display: block;
+    background: url(../images/question.gif) no-repeat 0 0;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px;
+    z-index: 8000;
+}
+.fieldLayout li#CVV a:link, li#cv2 a:visited, li#cv2 a:active
+{
+    text-decoration: none;
+    color: #000;
+}
+.fieldLayout li#CVV a span
+{
+    display: none;
+    position: absolute;
+    background: #FFF;
+    text-indent: 0;
+    top: 28px;
+    left: -120px;
+    z-index: 9000;
+    width: 220px;
+    border: #CCC solid 1px;
+    padding: 12px;
+    font-size: 11px;
+    line-height: 1.4;
+}
+.fieldLayout li#CVV a span img
+{
+    display: block;
+}
+.fieldLayout li#CVV a:hover span
+{
+    cursor: default;
+    display: block;
+    color: #000;
+}
+.fieldLayout li#ccType
+{
+    position: absolute;
+    top: 0em;
+    left: 340px;
+}
+.fieldLayout li#ccType input
+{
+    position: absolute;
+    left: 130px;
+}
+.fieldLayout li#totalAmount span
+{
+    visibility: hidden;
+    /* position: absolute;
+    right: 0px;
+    top: -75px; */
+}
+
+.fieldLayout li#totalAmount label {
+    visibility: hidden;
+    /* position: absolute;
+    right: 100px;
+    top: -146px; */
+}
+
+.fieldLayout li#process
+{
+    position: absolute;
+    top: -20px;
+    left: 290px;
+}
+.fieldLayout li#Cancel
+{
+    position: absolute;
+    top: -20px;
+    left: 170px;
+}
+.fieldLayout li#thankMessage span
+{
+    position: absolute;
+}
+
+.fieldLayout li#returnPageURL a
+{
+    position: absolute;
+    left: 500px;
+}
+/* For CheckOut PaymentForm  Receipt */
+.fieldLayout li#receiptDate
+{
+    position: absolute;
+    top: 0em;
+    left: 120px;
+}
+.fieldLayout li#receiptPNRef
+{
+    position: absolute;
+    top: 2.5em;
+    left: 120px;
+}
+.fieldLayout li#receiptAuthCodeCaption
+{
+    position: absolute;
+    top: 2.5em;
+    left: 340px;
+}
+.fieldLayout li#receiptAuthCode
+{
+    position: absolute;
+    top: 2.5em;
+    left: 420px;
+}
+.fieldLayout li#receiptAccount
+{
+    position: absolute;
+    top: 5em;
+    left: 120px;
+}
+.fieldLayout li#receiptExpirationDateCaption
+{
+    position: absolute;
+    top: 5em;
+    left: 340px;
+}
+.fieldLayout li#receiptExpirationDate
+{
+    position: absolute;
+    top: 5em;
+    left: 420px;
+}
+.fieldLayout li#ReceiptAuthAmount
+{
+    position: absolute;
+    top: 7.5em;
+    left: 120px;
+}
+
+.fieldLayout li#ReceiptInvoice
+{
+    position: absolute;
+    top: 10em;
+    left: 120px;
+}
+.fieldLayout li#ReceiptPOCaption
+{
+    position: absolute;
+    top: 10em;
+    left: 340px;
+}
+.fieldLayout li#ReceiptPO
+{
+    position: absolute;
+    top: 10em;
+    left: 420px;
+}
+#divName 
+{
+    margin-top: 35px;
+}
+#vsPF 
+{
+    margin: 15px 0 0 -20px;
+}
+#btnCancel 
+{
+    border: 0;
+    color: blue;
+    background-color: #fff !important;
+}

@@ -1,0 +1,74 @@
+ul.versioncheck {
+	width: 97%;
+	position: absolute;
+	list-style: none; 
+	list-style-type: none;		
+	list-style-position: none;
+	margin:0px; 
+	margin-top: 15px;
+	padding:0px;
+	font-weight: bold;
+	border: 0px solid red;
+}
+
+li.versioncheck_item {  
+	position: relative;
+	text-indent:0px;
+	z-index: 5;
+	float: left;
+	width: 35%;
+	height: 80px;
+	margin: 0px;
+	padding: 15px;
+	margin-left: 0px;
+	padding-left: 30px;
+	-border: 1px solid red;
+	font-weight: normal;
+}
+
+.versioncheck_item.result {
+	margin-left: 30px;
+	padding-left: 20px;
+	border: 1px solid #909090;
+	background-color: #fff;
+
+	border-radius: 10px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;			
+	-moz-box-shadow: -0.5px 1px 4px #909090;
+	-webkit-box-shadow: -0.5px 1px 4px #909090;
+	box-shadow: -0.5px 1px 4px #909090;
+	/* For IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+	/* For IE 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');		
+	text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 0px;	
+
+
+}
+
+.versioncheck_item.result.inactive {
+	filter:alpha(opacity=40); /* Internet Explorer */
+	-moz-opacity: 0.40; /* Mozilla Browser */
+	opacity: 0.40; /* Opera */	
+	-border: 1px solid red;
+}
+
+
+.versioncheck_item a:hover{
+    text-decoration:none;
+}
+		
+
+.upd_cnt.db, .new_cnt.db {
+	top: 0px;
+}
+
+.upd_cnt.db.ok, .new_cnt.db.ok {
+	background-color:#44dd44;
+	background-image: -moz-linear-gradient(top, #44dd44, #00aa00); /* FF3.6 */
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #44dd44),color-stop(1, #00aa00)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(#44dd44, #00aa00); /* Chrome 10+, Saf6 */
+	background-image: linear-gradient(top, #44dd44, #00aa00);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#44dd44', EndColorStr='#00aa00'); /* IE6–IE9 */	
+}

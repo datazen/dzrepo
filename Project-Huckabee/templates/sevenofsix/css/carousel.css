@@ -1,0 +1,150 @@
+
+/* display none until init */
+.product-carousel{
+	display: none;
+	opacity:1!important;
+	position: relative;
+	width: 100%;
+	-ms-touch-action: pan-y;
+}
+#column-left .product-carousel, #column-right .product-carousel { display:block;}
+#column-left .customNavigation, #column-right .customNavigation { display:none;}
+
+#column-left .banners-slider-carousel .customNavigation,
+#column-right .banners-slider-carousel .customNavigation{ display:block;}
+
+.product-carousel .slider-wrapper{
+	display: none;
+	position: relative;
+	-webkit-transform: translate3d(0px, 0px, 0px);
+	-webkit-perspective: 1000;
+}
+.product-carousel .slider-wrapper-outer{
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
+.product-carousel .slider-wrapper-outer.autoHeight{
+	-webkit-transition: height 500ms ease-in-out;
+	-moz-transition: height 500ms ease-in-out;
+	-ms-transition: height 500ms ease-in-out;
+	-o-transition: height 500ms ease-in-out;
+	transition: height 500ms ease-in-out;
+}
+
+.product-carousel .slider-item{
+	float: left;
+}
+.slider-controls .slider-page,
+.slider-controls .slider-buttons div{
+	cursor: pointer;
+}
+.slider-controls {
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* mouse grab icon */
+
+
+
+
+/* fix */
+.product-carousel  .slider-wrapper,
+.product-carousel  .slider-item{
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility:    hidden;
+	-ms-backface-visibility:     hidden;
+}
+.product-image .customNavigation a.prev {left:0; color:#000000; width:20px;}
+.product-image .customNavigation a.next {right:0; color:#000000; width:20px;}
+.product-image  .customNavigation a {top:40px;}
+
+.customNavigation    { text-align: center; position:relative;width:100%}
+.customNavigation a{
+
+	-webkit-tap-highlight-color:transparent;
+	display: block;
+    float: right;
+    position: absolute;
+	top: -50px;
+    width: 30px;
+	height:30px;
+	padding:7px 0 0;
+}
+#testimonialblog .customNavigation a{top: -42px;}
+.customNavigation a.prev {
+	background: url("../../image/megnor/sprite.png") no-repeat scroll 0 0 transparent;
+	right:26px;
+	cursor:pointer;
+}
+.customNavigation a.prev:hover 	{ background-position:0 -31px; text-decoration:none;}
+.customNavigation a.next {
+    background: url("../../image/megnor/sprite.png") no-repeat scroll -29px 0 transparent;
+    right: 0;
+	cursor:pointer;
+}
+.customNavigation a.next:hover 	{  background-position:-29px -31px; text-decoration:none;}
+
+.banners-slider-carousel .product-carousel{  width:auto; margin:0 15px; }
+
+.banners-slider-carousel .customNavigation a.prev {
+    left:0px;
+	top:45px;
+	z-index:999;
+	cursor:pointer;
+	color:#000000;
+	background:none;
+	 color: #a8a8a8;
+    font-size: 32px;
+	padding:0;
+}
+.banners-slider-carousel .customNavigation a.prev:hover {text-decoration:none; z-index:999;}
+.banners-slider-carousel .customNavigation a.next {
+    right:0px;
+	top:45px;
+	cursor:pointer;
+	z-index:999;
+	color:#000000;
+	left:auto;
+	background:none;
+	 color: #a8a8a8;
+    font-size: 34px;
+	padding:0;
+}
+.banners-slider-carousel .customNavigation a.next:hover 	{text-decoration:none; z-index:999;}
+.banners-slider-carousel .customNavigation a.prev:hover, .banners-slider-carousel .customNavigation a.next:hover{color:#313131;;}
+
+.product-info .product-image .customNavigation    { text-align: center; width:100%; z-index:9;}
+.product-info .product-image .customNavigation a{
+	-webkit-tap-highlight-color: transparent;
+	display: block;
+    float: right;
+    height: 20px;
+    position: absolute;
+    top: -34px;
+    width: 16px;
+}
+
+.product-info .product-image .customNavigation span.prev {
+    color: #2fb991;
+    cursor: pointer;
+    display: none;
+    font-size: 18px;
+    left: -2px;
+    position: absolute;
+    top:40px;
+}
+.product-info .product-image .customNavigation span.prev:hover { color: #696969; text-decoration: none;}
+.product-info .product-image .customNavigation span.next {
+    color: #2fb991;
+    cursor: pointer;
+    display: none;
+    font-size: 18px;
+    position: absolute;
+    right: -5px;
+    top:40px;
+	left:auto;
+}
+.product-info .product-image .customNavigation span.next:hover {color: #696969; text-decoration:none;}
+
+

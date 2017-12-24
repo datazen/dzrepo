@@ -1,0 +1,173 @@
+.pro {
+    border: 1px solid #c0c0c0;
+    background: url(../images/tippbee_48.png) 10px 10px no-repeat #f0f0f0;
+    padding: 15px;
+    padding-left: 74px;
+    min-height: 44px;
+    margin-top: 10px;
+}
+
+.pro a {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.tipp {
+    border: 1px solid #c0c0c0;
+    background-color: #f0f0f0;
+    padding: 15px;
+    min-height: 44px;
+    margin-top: 10px;
+}
+
+div.mb_inline_msg {
+    font-family: 'Helvetica', 'Arial';
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+
+div.mb_inline_msg a {
+    font-family: 'Helvetica', 'Arial';
+    font-size: 12px;
+    font-weight: bold;
+    color: #303030;
+}
+
+div.mb_inline_msg.msg {
+    font-weight: normal;
+    border: 1px solid #c0c0c0;
+    color: #303030;
+    background: #ffffff; /* old browsers */
+    background-attachment: scroll;
+    background-color: transparent;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-image: -moz-linear-gradient(center top, #FFFFFF, #f0f0f0);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #f0f0f0)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient(#FFFFFF, #f0f0f0); /* Chrome 10+, Saf6 */
+    background-image: linear-gradient(top, #FFFFFF, #f0f0f0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#FFFFFF', EndColorStr = '#f0f0f0'); /* IE6�IE9 */
+
+}
+
+div.mb_inline_msg.img {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 3px;
+    display: block;
+    height: 0px;
+}
+
+div.mb_inline_msg.text {
+    margin: 0px;
+    margin-left: 45px;
+    padding: 0px;
+    min-height: 30px;
+    display: block;
+
+}
+
+div.mb_inline_msg.new_modules {
+    font-weight: bold;
+    border: 1px solid #70b0e0;
+    color: #2E6E9E;
+    background: #79B7E7; /* old browsers */
+    background-attachment: scroll;
+    background-color: transparent;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-image: -moz-linear-gradient(center top, #a0cbec, #79B7E7);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #a0cbec), color-stop(1, #79B7E7)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient(#a0cbec, #79B7E7); /* Chrome 10+, Saf6 */
+    background-image: linear-gradient(top, #a0cbec, #79B7E7);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#a0cbec', EndColorStr = '#79B7E7'); /* IE6�IE9 */
+
+}
+
+div.mb_inline_msg.new_modules a {
+    font-family: 'Helvetica', 'Arial';
+    font-size: 11px;
+    font-weight: normal;
+    color: #303030;
+}
+
+td.mb_inline_msg_td {
+    color: #2E6E9E;
+}
+
+div.mb_inline_msg_inner.item {
+    float: left;
+    width: 33%;
+    padding: 0px;
+    margin: 0px;
+}
+
+div.mb_inline_msg_inner.item_content {
+    border: 1px solid #79B7E7;
+    margin: 5px;
+    padding: 5px;
+    background-color: #a0cbec;
+}
+
+div.mb_inline_msg_inner.item_content.premium {
+    border: 1px solid #c0c0c0;
+    margin: 5px;
+    padding: 5px;
+    background-attachment: scroll;
+    background-color: transparent;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-image: -moz-linear-gradient(center top, #FFFFFF, #e0e0e0);
+    background-image: -moz-linear-gradient(center top, #FFFFFF, #e0e0e0);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #e0e0e0)); /* Saf4+, Chrome */
+    background-image: -webkit-linear-gradient(#FFFFFF, #e0e0e0); /* Chrome 10+, Saf6 */
+    background-image: linear-gradient(top, #FFFFFF, #e0e0e0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#FFFFFF', EndColorStr = '#e0e0e0'); /* IE6�IE9 */
+    min-height: 65px;
+}
+
+div.mb_inline_msg_inner.item_img {
+    width: 0px;
+    height: 0px;
+    display: none;
+}
+
+div.mb_inline_msg_inner.item_img.premium {
+    display: block;
+    float: left;
+    height: 0px;
+    margin-top: 3px;
+    margin-left: 7px;
+}
+
+div.mb_inline_msg_inner.item_text {
+    margin-left: 0px;
+}
+
+div.mb_inline_msg_inner.item_text.premium {
+    margin-left: 50px;
+}
+
+div.mb_inline_msg_inner.item_text h1 {
+    font-size: 12px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 18px;
+    background: url(../images/icon_module.png) 0px 0px no-repeat;
+    font-weight: normal;
+    border: none;
+}
+
+div.mb_inline_msg_inner.item_text.premium h1 {
+    font-size: 16px;
+    margin-top: 3px;
+    margin-bottom: 5px;
+    letter-spacing: -1px;
+    background: none;
+    padding-left: 0px;
+    font-weight: bold;
+    border: none;
+}

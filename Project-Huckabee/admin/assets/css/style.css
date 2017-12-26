@@ -419,7 +419,7 @@ label {
         top:-2px;
     }
     .navbar-fixed-top {
-        min-height: 54px;
+      /*  min-height: 54px; */
     }    
 }
 
@@ -982,31 +982,6 @@ label {
 .breadcrumb > li a {
     color: #333;
 }
-
-.dark,
-.tr-dark > th { 
-  background-color: #242a30 !important;
-  color: #FFF !important;
-}
-.md-dark {
-  background-color: #6a7b8c !important;
-  color: #FFF !important;    
-}
-
-.table-row {
-  cursor: pointer;
-}
-
-.dataTableRowBoxes,  
-.dataTableRowBoxes > td {  
-  background-color: #fff3cd !important;
-  color: #856404 !important;
-  border: 1px solid #ffeeba !important;
-}
-
-.infoBoxHeading {}
-.info-box-head {}
-.info-box-table { border:1px solid #ccc; }
 
 /* 2.6 Footer & footer elements */
 

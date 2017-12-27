@@ -30,9 +30,9 @@
     }
 
     function showSidebar($heading, $contents) {
-       $output  = '<div class="sidebar-container">';
-       $output .= '  <div class="sidebar-heading mt-2">';
-       $output .= '    <span class="align-middle">' . $heading[0]['text'] . '</span>';
+       $output  = '<div class="sidebar-container p-4">';
+       $output .= '  <div class="sidebar-heading">';
+       $output .= '    <span>' . $heading[0]['text'] . '</span>';
        $output .= '  </div>';
        foreach ($contents as $key => $value) {
          $align = 'text-left';
@@ -40,9 +40,13 @@
             if ($value['align'] == 'center') $align = 'text-center';
             if ($value['align'] == 'right') $align = 'text-right';
             if ($value['align'] == 'left') $align = 'text-left';
-         } 
+         }
 
-         $output .= '<div class="sidebar-row ' . $align . '">' . $value['text'] . '</div>';
+         if (isset($value['form'])) {
+           $output .= $value['form'];
+         } else {
+           $output .= '<div class="sidebar-row ' . $align . '">' . $value['text'] . '</div>';
+         }
        }
 
        return $output;

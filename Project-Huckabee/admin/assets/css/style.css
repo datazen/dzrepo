@@ -922,11 +922,6 @@ label {
 .page-sidebar-minified .sidebar.sidebar-right .slimScrollBar {
     display: block !important;
 }
-.sidebar-heading {
-  height:36px !important; 
-  padding:10px 0 9px 0 !important;
-}
-
 
 /* 2.5 Content & content elements */
 
@@ -7680,14 +7675,3 @@ body .bootstrap-datetimepicker-widget table td {
 	border-style: solid;
 }
 
-/* Pro Upsell */
-.popover-title { 
-  margin-top:0 !important; 
-  background-color: #f8d7da !important;
-  color: #721c24 !important;
-  border: 1px solid #f5c6cb !important;
-
-}
-.popover {
-  border: 1px solid #f5c6cb !important;
-}

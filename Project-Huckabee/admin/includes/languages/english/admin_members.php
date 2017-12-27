@@ -41,9 +41,9 @@ define('TEXT_INFO_HEADING_EDIT', 'Edit Admin Member ');
 define('TEXT_INFO_HEADING_NEW', 'New Admin Member ');
 
 define('TEXT_INFO_DEFAULT_INTRO', 'Member Group');
-define('TEXT_INFO_DELETE_INTRO', 'Remove <nobr><b>%s</b></nobr> from <nobr>Admin Members?</nobr>');
+define('TEXT_INFO_DELETE_INTRO', 'Remove <b>%s</b>?');
 define('TEXT_INFO_DELETE_MAIN_ADMIN', 'You can not delete the Store Owner Admin!');
-define('TEXT_INFO_DELETE_INTRO_NOT', 'You can not delete <nobr>%s group!</nobr>');
+define('TEXT_INFO_DELETE_INTRO_NOT', 'You can not delete %s group!');
 define('TEXT_INFO_EDIT_INTRO', 'Set permission level here: ');
 
 define('TEXT_INFO_FULLNAME', 'Name: ');
@@ -78,17 +78,16 @@ define('TEXT_INFO_HEADING_DELETE_GROUPS', 'Delete Group ');
 define('TEXT_INFO_DEFAULT_GROUPS_INTRO', '<b>NOTE:</b><ul><li><b>Edit:</b> edit group name.</li><li><b>Delete:</b> delete group.</li><li><b>File Permissions:</b> define and change group access.</li></ul>');
 define('TEXT_INFO_DELETE_GROUPS_INTRO', 'This will also delete <b>ALL</b> members of this group.  Are you sure want to delete <nobr><b>%s</b> group?</nobr>');
 define('TEXT_INFO_DELETE_GROUPS_INTRO_NOT', 'Oops sorry, you can not delete this group.');
-define('TEXT_INFO_GROUPS_INTRO', 'Give an unique group name. Click next to submit.');
 
 define('TEXT_INFO_HEADING_GROUPS', 'New Group');
-define('TEXT_INFO_GROUPS_NAME', ' <b>Group Name:</b><div class="mt-2">Give an unique group name. Click next to submit.</div>');
+define('TEXT_INFO_GROUPS_NAME', 'Unique Group Name:');
 define('TEXT_INFO_GROUPS_NAME_FALSE', 'Group Name must have at least 5 characters!');
 define('TEXT_INFO_GROUPS_NAME_USED', 'Group Name has already been used!');
 define('TEXT_INFO_GROUPS_LEVEL', 'Group Level: ');
 define('TEXT_INFO_GROUPS_BOXES', '<b>Boxes Permission:</b><br>Give access to selected boxes.');
 define('TEXT_INFO_GROUPS_BOXES_INCLUDE', 'Include files stored in: ');
 
-define('TEXT_INFO_EDIT_GROUP_INTRO', 'Edit Group Name: ');
+define('TEXT_INFO_EDIT_GROUP_INTRO', 'Unique Group Name: ');
 
 define('TEXT_INFO_HEADING_DEFINE', 'Set Menu and File Access by Group');
 define('TEXT_INFO_DEFINE_INTRO_1', 'Oops sorry, you can not change file permissions for <b>%s</b> group.');

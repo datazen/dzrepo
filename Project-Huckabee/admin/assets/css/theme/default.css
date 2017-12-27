@@ -90,3 +90,16 @@ Website: http://www.seantheme.com/color-admin-v3.0/admin/html/
 .top-menu .nav > li.active > a:hover {
     background: #00acac;
 }
+
+/* DZ added */
+.dark select:focus,
+.dark input:focus {
+  border:1px solid #00acac;
+}
+.dark table tr,
+.dark table th {
+  border-color: #00acac;
+}
+.fa-long-arrow-right {
+    color: #00acac !important;
+}

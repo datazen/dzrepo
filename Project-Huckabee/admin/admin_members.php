@@ -70,7 +70,6 @@ if ($_GET['action'] != '') {
       }
       break;
     case 'member_delete':
-die('delete');    
       $admin_id = tep_db_prepare_input($_POST['admin_id']);
       tep_db_query("DELETE FROM " . TABLE_ADMIN . " WHERE admin_id = '" . $admin_id . "'");
       tep_redirect(tep_href_link(FILENAME_ADMIN_MEMBERS, setPage(false)));
@@ -267,19 +266,27 @@ include(DIR_WS_INCLUDES . 'column_left.php');
     .dark input:focus {
       background-color: #000;
       color: #fff;
-
     }
 
-    /* Theme styles (default) */
-    .dark select:focus,
-    .dark input:focus {
-      border:1px solid #00acac;
+    .dark .btn.btn-default {
+      color: #fff;
+      background: #0f0e0e;
+      border-color: #0f0e0e;
     }
-    .dark table tr,
-    .dark table th {
-      border-color: #00acac;
-    } 
-
+    .dark .btn-default:hover, 
+    .dark .btn-default:focus, 
+    .dark .btn-default:active, 
+    .dark .btn-default.active, 
+    .dark .open > .dropdown-toggle.btn-default,
+    .dark .open > .dropdown-toggle.btn-default:hover,
+    .dark .open > .dropdown-toggle.btn-default:focus {
+      background: #151617;
+      border-color: #151617;
+    }
+    .dark .btn-group .btn.btn-default:not(.active) + .btn.btn-default,
+    .dark .input-group-btn .btn.btn-default:not(.active) + .btn.btn-default {
+      border-left-color: #151617;
+    }
 
     /* Pro Upsell */
     .popover-header { 

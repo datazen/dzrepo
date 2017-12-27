@@ -93,3 +93,58 @@ body {
 .top-menu .nav > li.active > a:hover {
     background: #ff5b57;
 }
+
+/* DZ added */
+
+.dark select:focus,
+.dark input:focus {
+  border:1px solid #f74c4f !important;
+}
+.dark table tr,
+.dark table th {
+  border-color: #f74c4f !important;
+} 
+.fa-long-arrow-right {
+    color: #f74c4f !important;
+}
+.btn.btn-success {
+    color: #fff;
+    background: #f74c4f;
+    border-color: #f74c4f;
+}
+.btn.btn-success:hover, 
+.btn.btn-success:focus, 
+.btn.btn-success:active, 
+.btn.btn-success.active, 
+.open > .dropdown-toggle.btn-success,
+.open > .dropdown-toggle.btn-success:hover,
+.open > .dropdown-toggle.btn-success:focus {
+    background: #d64144;
+    border-color: #d64144;
+}
+.btn-group .btn.btn-success:not(.active) + .btn.btn-success,
+.input-group-btn .btn.btn-success:not(.active) + .btn.btn-success {
+    border-left-color: #d64144;
+}
+
+.btn.btn-danger {
+    color: #fff;
+    background: #0f0e0e !important;
+    border-color: #0f0e0e !important;
+    border-width: 2px !important;
+}
+.btn.btn-danger:hover, 
+.btn.btn-danger:focus, 
+.btn.btn-danger:active, 
+.btn.btn-danger.active, 
+.open > .dropdown-toggle.btn-danger,
+.open > .dropdown-toggle.btn-danger:hover,
+.open > .dropdown-toggle.btn-danger:focus {
+    background: #151617 !important;
+    border-color: #151617 !important;
+    border-width: 2px !important;
+}
+.btn-group .btn.btn-danger:not(.active) + .btn.btn-danger,
+.input-group-btn .btn.btn-danger:not(.active) + .btn.btn-danger {
+    border-left-color: #151617 !important;
+}

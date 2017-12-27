@@ -95,3 +95,37 @@ body {
 .top-menu .nav > li.active > a:hover {
     background: #f59c1a;
 }
+
+/* DZ added */
+
+.dark select:focus,
+.dark input:focus {
+  border:1px solid #ef9021 !important;
+}
+.dark table tr,
+.dark table th {
+  border-color: #ef9021 !important;
+} 
+.fa-long-arrow-right {
+    color: #ef9021 !important;
+}
+
+.btn.btn-success {
+    color: #fff;
+    background: #ef9021;
+    border-color: #ef9021;
+}
+.btn.btn-success:hover, 
+.btn.btn-success:focus, 
+.btn.btn-success:active, 
+.btn.btn-success.active, 
+.open > .dropdown-toggle.btn-success,
+.open > .dropdown-toggle.btn-success:hover,
+.open > .dropdown-toggle.btn-success:focus {
+    background: #c5771d;
+    border-color: #c5771d;
+}
+.btn-group .btn.btn-success:not(.active) + .btn.btn-success,
+.input-group-btn .btn.btn-success:not(.active) + .btn.btn-success {
+    border-left-color: #c5771d;
+}

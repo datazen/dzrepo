@@ -318,12 +318,12 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 echo tep_draw_hidden_field('admin_groups_id', $_GET['gPath']);
               }
               ?>
-              <table class="table w-100">
+              <table class="table table-hover w-100 mt-2">
                 <thead>
-                  <tr>
-                    <th colspan="2" scope="col" class="text-left">GG<?php echo TABLE_HEADING_GROUPS_DEFINE; ?></th>
+                  <tr class="th-row">
+                    <th scope="col" colspan="2" class="th-col dark text-left"><?php echo TABLE_HEADING_GROUPS_DEFINE; ?></th>
                   </tr>
-                </thead>
+                </thead>              
                 <tbody>
                 <?php
                 $db_boxes_query = tep_db_query("select admin_files_id as admin_boxes_id, admin_files_name as admin_boxes_name, admin_groups_id as boxes_group_id, admin_files_is_boxes from " . TABLE_ADMIN_FILES . " where (admin_files_is_boxes = '1' or  admin_files_is_boxes = '3' ) order by admin_files_name");
@@ -349,7 +349,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                     $checked = false;
                   }
                 ?>
-                <tr class="dataTableRowBoxes">
+                <tr class="table-rowBoxes">
                   <?php
                   if ($group_boxes['admin_files_is_boxes'] == '1') {
                     ?>
@@ -364,9 +364,9 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                   }
                   ?>
                 </tr>
-                <tr class="dataTableRow">
-                  <td class="dataTableContent">&nbsp;</td>
-                  <td class="dataTableContent">
+                <tr class="table-row">
+                  <td class="table-col">&nbsp;</td>
+                  <td class="table-col">
                     <table class="w-100">
                       <?php
                       //$group_boxes_files_query = tep_db_query("select admin_files_id, admin_files_name, admin_groups_id from " . TABLE_ADMIN_FILES . " where admin_files_is_boxes = '0' and admin_files_to_boxes = '" . $group_boxes['admin_boxes_id'] . "' order by admin_files_name");
@@ -394,13 +394,13 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                           <?php
                           if ($group_boxes['admin_files_is_boxes'] == '1') {
                             ?>
-                            <td class="dataTableContent" width="20"><?php echo tep_draw_checkbox_field('groups_to_boxes[]', $group_boxes_files['admin_files_id'], $checked, '', 'id="subgroups_' . $group_boxes['admin_boxes_id'] . '" onClick="checkSub(this)"'); ?></td>
-                            <td class="dataTableContent"><?php echo $group_boxes_files['admin_files_name'] . ' ' . tep_draw_hidden_field('checked_' . $group_boxes_files['admin_files_id'], $checkedBox) . tep_draw_hidden_field('unchecked_' . $group_boxes_files['admin_files_id'], $uncheckedBox);?></td>
+                            <td class="table-col" width="20"><?php echo tep_draw_checkbox_field('groups_to_boxes[]', $group_boxes_files['admin_files_id'], $checked, '', 'id="subgroups_' . $group_boxes['admin_boxes_id'] . '" onClick="checkSub(this)"'); ?></td>
+                            <td class="table-col"><?php echo $group_boxes_files['admin_files_name'] . ' ' . tep_draw_hidden_field('checked_' . $group_boxes_files['admin_files_id'], $checkedBox) . tep_draw_hidden_field('unchecked_' . $group_boxes_files['admin_files_id'], $uncheckedBox);?></td>
                             <?php 
                           } else {  
                             ?>
-                            <td class="dataTableContentBlue" width="20"><?php echo tep_draw_checkbox_field('groups_to_boxes[]', $group_boxes_files['admin_files_id'], $checked, '', 'id="subgroups_' . $group_boxes['admin_boxes_id'] . '" onClick="checkSub(this)"'); ?></td>
-                            <td class="dataTableContentBlue"><?php echo $group_boxes_files['admin_files_name'] . ' ' . tep_draw_hidden_field('checked_' . $group_boxes_files['admin_files_id'], $checkedBox) . tep_draw_hidden_field('unchecked_' . $group_boxes_files['admin_files_id'], $uncheckedBox);?></td>
+                            <td class="table-col" width="20"><?php echo tep_draw_checkbox_field('groups_to_boxes[]', $group_boxes_files['admin_files_id'], $checked, '', 'id="subgroups_' . $group_boxes['admin_boxes_id'] . '" onClick="checkSub(this)"'); ?></td>
+                            <td class="table-col"><?php echo $group_boxes_files['admin_files_name'] . ' ' . tep_draw_hidden_field('checked_' . $group_boxes_files['admin_files_id'], $checkedBox) . tep_draw_hidden_field('unchecked_' . $group_boxes_files['admin_files_id'], $uncheckedBox);?></td>
                             <?php 
                           } 
                           ?>
@@ -437,8 +437,6 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                   if ( ( ( ! isset($_GET['gID']) ) || ( isset($_GET['gID']) && $_GET['gID'] == $groups['admin_groups_id'] ) || ( isset($_GET['gID']) && $_GET['gID'] == 'groups') ) && ( ! isset($gInfo) ) ) {
                     $gInfo = new objectInfo($groups);
                   }
-
-
                   $selected =  (is_object($gInfo)) && ($groups['admin_groups_id'] == $gInfo->admin_groups_id) ? true : false;
                   if ($selected) {
                     echo '<tr class="table-row dark selected" onclick="document.location.href=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'action=edit_group' . '&gID=' . $groups['admin_groups_id']) . '\'">' . "\n";
@@ -550,7 +548,6 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 }
                 $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_GROUP . '</div><div>' . tep_draw_pull_down_menu('admin_groups_id', $groups_array, '0', 'class="form-control"') . '</div>');
                 $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-default btn-sm mt-3 mb-3 mr-1" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'mID=' . $mInfo->admin_id . setPage()) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-success btn-sm mt-3 mb-3" type="submit">' . IMAGE_SAVE . '</button>');
-                $contents[] = array('text' => '</form>');                  
                 break;
               case 'edit_member':
                 $heading[] = array('text' => TEXT_INFO_HEADING_EDIT);
@@ -574,8 +571,9 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-default btn-sm mt-3 mb-3 mr-1" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'mID=' . $_GET['mID'] . setPage()) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-success btn-sm mt-3 mb-3" type="submit">' . IMAGE_UPDATE . '</button>');
                 break;
               case 'del_member':
-                $heading[] = array('text' => '<div class="sidebar-heading md-dark">' . TEXT_INFO_HEADING_DELETE . '</div>');
+                $heading[] = array('text' => TEXT_INFO_HEADING_DELETE);
                 if ($mInfo->admin_id == $_SESSION['login_id'] || $mInfo->admin_email_address == STORE_OWNER_EMAIL_ADDRESS) {
+
                   $contents[] = array('text' => '<div class="alert bg-danger text-white mt-3 mb-2"><i class="fa fa-warning text-white fa-lg"></i><span class="ml-1">' . TEXT_INFO_DELETE_MAIN_ADMIN . '</span></div>');                
                   $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-success btn-sm mt-2 mb-2" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'mID=' . $mInfo->admin_id . setPage()) . '\'">' . IMAGE_BACK . '</button>');
                 } else {
@@ -583,7 +581,6 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                   $contents[] = array('text' => tep_draw_hidden_field('admin_id', $mInfo->admin_id));
                   $contents[] = array('text' => '<div class="alert bg-danger text-white mt-3 mb-2"><i class="fa fa-warning text-white fa-lg"></i><span class="ml-2">' . sprintf(TEXT_INFO_DELETE_INTRO, $mInfo->admin_firstname . ' ' . $mInfo->admin_lastname)  . '</span></div>');                
                   $contents[] = array('align' => 'center', 'text' => '<button type="button" class="btn btn-success btn-sm mr-2 mt-2 mb-4" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'mID=' . $mInfo->admin_id . setPage()) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-danger btn-sm mt-2 mb-4" type="submit">' . IMAGE_CONFIRM_DELETE . '</button>');
-                  $contents[] = array('text' => '</form>');                  
                 }
                 break;
               case 'new_group':
@@ -598,7 +595,6 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 $contents[] = array('text' => '<div class="form-label mt-2 mb-2">' . TEXT_INFO_GROUPS_NAME . '</div>');
                 $contents[] = array('text' => '<div>' . tep_draw_input_field('admin_groups_name') . '</div>');
                 $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-default btn-sm mt-3 mb-3 mr-1" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'gID=' . $gInfo->admin_groups_id) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-success btn-sm mt-3 mb-3" type="submit">' . IMAGE_SAVE . '</button>');
-                $contents[] = array('text' => '</form>');                                 
                 break;
               case 'edit_group':
                 $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_GROUP);            
@@ -612,8 +608,8 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-default btn-sm mt-3 mb-3 mr-2" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'gID=' . $gInfo->admin_groups_id) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-success btn-sm mt-3 mb-3" type="submit">' . IMAGE_UPDATE . '</button>');              
                 break;
               case 'del_group':
-                $heading[] = array('text' => '<div class="sidebar-heading md-dark">' . TEXT_INFO_HEADING_DELETE_GROUPS . '</div>');            
-                $contents = array('form' => tep_draw_form('deletegroup', FILENAME_ADMIN_MEMBERS, 'action=group_delete&gID=' . $gInfo->admin_groups_id, 'post', 'id="deletegroup" role="form"'));
+                $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_GROUPS);            
+                $contents[] = array('form' => tep_draw_form('deletegroup', FILENAME_ADMIN_MEMBERS, 'action=group_delete&gID=' . $gInfo->admin_groups_id, 'post', 'id="deletegroup" role="form"'));
                 if ($gInfo->admin_groups_id == 1) {
                   $contents[] = array('text' => '<div class="text-white mt-2 p-4 bg-danger">' . sprintf(TEXT_INFO_DELETE_GROUPS_INTRO_NOT, $gInfo->admin_groups_name) . '</div>');
                   $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-default btn-sm mt-3 mb-3 mr-2" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'gID=' . $_GET['gID']) . '\'">' . IMAGE_BACK . '</button>');            
@@ -624,7 +620,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 }
                 break;
               case 'define_group':
-                $heading[] = array('text' => '<div class="sidebar-heading md-dark"><span class="align-middle ml-2">' . TEXT_INFO_HEADING_DEFINE . '</span></div>');            
+                $heading[] = array('text' => TEXT_INFO_HEADING_DEFINE);            
                 if ($_GET['gPath'] == 1) {
                   $contents[] = array('text' => '<div class="text-white mt-2 mb-2 p-4 bg-danger">' . sprintf(TEXT_INFO_DEFINE_INTRO_1, $group_name['admin_groups_name']) . '</div>');
                   $contents[] = array('text' => '<div>' . TEXT_INFO_DEFINE_TYPE . '</div>');
@@ -633,10 +629,10 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                   $contents[] = array('text' => '<div class="mt-2 mb-2">' . sprintf(TEXT_INFO_DEFINE_INTRO, $group_name['admin_groups_name']) . '</div>');
                   $contents[] = array('text' => '<div class="mb-2">' . TEXT_INFO_DEFINE_TYPE . '</div>');
                   $contents[] = array('align' => 'center', 'text' => ($_GET['gPath'] != 1) ? '<button class="btn btn-default btn-sm mt-3 mb-3 mr-2" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'gID=' . $_GET['gPath']) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-success btn-sm mt-3 mb-3" type="submit">' . IMAGE_UPDATE . '</button>' : '<button class="btn btn-default btn-sm mt-3 mb-3 mr-2" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'gID=' . $_GET['gPath']) . '\'">' . IMAGE_CANCEL . '</button>');                 
-               }
+                }                
                 break;
               case 'show_group':
-                $heading[] = array('text' => '<div class="sidebar-heading md-dark"><span class="align-middle ml-2">' . TEXT_INFO_HEADING_EDIT_GROUP . '</span></div>');            
+                $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_GROUP);            
                 $check_email_query = tep_db_query("SELECT admin_email_address FROM " . TABLE_ADMIN . "");
                 //$stored_email[];
                 while ($check_email = tep_db_fetch_array($check_email_query)) {
@@ -663,7 +659,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                   $contents[] = array('text' => '<div class="sidebar-title">' . TEXT_INFO_LOGNUM . '</div><div class="sidebar-text">' . $mInfo->admin_lognum . '</div>');
                   $contents[] = array('text' => '<br>');
                 } elseif ( isset($gInfo) && is_object($gInfo) ) {
-                  $heading[] = array('text' => '<div class="sidebar-heading md-dark"><span class="align-middle ml-2">' . TEXT_INFO_HEADING_DEFAULT_GROUPS . '</span></div>');
+                  $heading[] = array('text' => TEXT_INFO_HEADING_DEFAULT_GROUPS);
                   $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-success btn-sm mr-2 mt-2" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'gID=' . $gInfo->admin_groups_id . '&action=edit_group') . '\'">' . IMAGE_EDIT . '</button><button class="btn btn-danger btn-sm mt-2" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'gID=' . $gInfo->admin_groups_id . '&action=del_group') . '\'">' . IMAGE_DELETE . '</button>');
                   $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-success btn-sm mt-2" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'gPath=' . $gInfo->admin_groups_id . '&action=define_group') . '\'">' . IMAGE_FILE_PERMISSIONS . '</button>');
                   $contents[] = array('text' => '<div class="mt-2">' . TEXT_INFO_DEFAULT_GROUPS_INTRO . '</div>');

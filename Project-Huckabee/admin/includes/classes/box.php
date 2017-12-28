@@ -30,6 +30,7 @@
     }
 
     function showSidebar($heading, $contents) {
+       $isForm = false;
        $output  = '<div class="sidebar-container p-4">';
        $output .= '  <div class="sidebar-heading">';
        $output .= '    <span>' . $heading[0]['text'] . '</span>';
@@ -44,10 +45,12 @@
 
          if (isset($value['form'])) {
            $output .= $value['form'];
+           $isForm = true;
          } else {
            $output .= '<div class="sidebar-row ' . $align . '">' . $value['text'] . '</div>';
          }
        }
+       if ($isForm) $output .= '</form>';
 
        return $output;
     }

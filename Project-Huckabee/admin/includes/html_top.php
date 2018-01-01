@@ -25,15 +25,22 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="Create Great Looking Mobile Responsive E-commerce Sites. Designed not just for the challenges of today, but tomorrow. Open source. Unlimited Free Edition." name="description" />
     <meta content="Loaded Commerce" name="author" />
-
     <?php
     // themes: black, blue, default, red, orange, purple
     if (!isset($_SESSION['theme'])) $_SESSION['theme'] = (defined('ADMIN_THEME') && in_array(ADMIN_THEME, array("red","blue","default","black","purple","orange"))) ? ADMIN_THEME : 'default';
     if (isset($_GET['theme']) && in_array($_GET['theme'], array("red","blue","default","black","purple","orange"))) {
       $_SESSION['theme'] = $_GET['theme'];
     }
-    ?>
+    // modes: dark, light
+    $_SESSION['theme_mode'] = getThemeMode();
 
+    function getThemeMode() {
+      $query = tep_db_query("SELECT * FROM " . TABLE_CONFIGURATION . " WHERE configuration_key = 'ADMIN_THEME_MODE'");
+      $cArr = tep_db_fetch_array($query);
+
+      return $cArr['configuration_value'];
+    }    
+    ?>
     <!-- ================== BEGIN BASE CSS STYLE ================== -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link href="assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
@@ -46,6 +53,8 @@
     <link href="assets/css/style-bs4.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
     <link href="assets/css/style-responsive.css" rel="stylesheet" />
+    <link href="assets/css/dark.css" rel="stylesheet" />
+    <link href="assets/css/light.css" rel="stylesheet" />
     <link href="assets/css/theme/<?php echo $_SESSION['theme']; ?>.css" rel="stylesheet" id="theme" />
     <!-- ================== END BASE CSS STYLE ================== -->
     

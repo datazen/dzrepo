@@ -39,7 +39,7 @@
   if  (isset($_GET['login']) && $_GET['login'] == 'success' ) {
     $success_message = TEXT_FORGOTTEN_SUCCESS;
   } elseif  (isset($_GET['login']) && $_GET['login'] == 'fail' ) {
-    $info_message = TEXT_FORGOTTEN_ERROR;
+    $info_message = sprintf(TEXT_FORGOTTEN_ERROR, $log_times);
   }
 ?>
 <!DOCTYPE html>
@@ -73,7 +73,7 @@
   <meta content="Loaded Commerce" name="author" />
   <?php
   // themes: black, blue, default, red, orange, purple
-  $theme = (isset($_SESSION['theme']) && $_SESSION['theme'] != '') ? $_SESSION['theme'] : 'blue';
+  $theme = (defined('ADMIN_THEME') && ADMIN_THEME != '') ? ADMIN_THEME : 'default';
   ?>  
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
   <link href="assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
@@ -119,53 +119,49 @@
       <!-- end brand -->
 
 
-      <div class="login-content">
-        <div class="login-content-heading"><?php echo HEADING_TITLE_FORGOTTEN; ?></div>        
+      <div class="login-content pt-3">
+        <div class="login-content-heading mt-1 mb-2"><?php echo HEADING_TITLE_FORGOTTEN; ?></div>        
 
-        <?php echo tep_draw_form('login', FILENAME_PASSWORD_FORGOTTEN, 'action=process', 'post', 'class="margin-bottom-0"', 'SSL') . tep_draw_hidden_field("action","process");
-        if (isset($_SESSION['password_forgotten'])) {
-          ?>
-          <div class="form-group m-b-20"><?php echo TEXT_FORGOTTEN_FAIL; ?></div>
-          <?php
-          $success_message = '';
-        } elseif (isset($success_message)) {
-          $success_message = TEXT_FORGOTTEN_SUCCESS . '<br><br><a href="' . tep_href_link(FILENAME_LOGIN, '' , 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>';
-        } else {
-          if (isset($info_message)) {
-            echo '<tr><td colspan="2"><div class="message">' . $info_message . '</div></td></tr>' . tep_draw_hidden_field('log_times', $log_times);
+          <?php echo tep_draw_form('login', FILENAME_PASSWORD_FORGOTTEN, 'action=process', 'post', 'class="margin-bottom-0"', 'SSL') . tep_draw_hidden_field("action","process");
+          if (isset($_SESSION['password_forgotten'])) {
+            ?>
+            <div class="form-group m-b-20"><?php echo TEXT_FORGOTTEN_FAIL; ?></div>
+            <?php
+            $success_message = '';
+          } elseif (isset($success_message)) {
+            $success_message = '<div class="login-user-message mb-4 mt-3">' . TEXT_FORGOTTEN_SUCCESS . '</div>';
+            $success_message .= '<div class="checkbox m-b-20"><button class="btn btn-success btn-block btn-lg" onClick="location.href=\'' . HTTP_CATALOG_SERVER . DIR_WS_HTTP_CATALOG . '\'">' . TEXT_VISIT_CATALOG . '</button><button class="btn btn-primary btn-block btn-lg" type="button" onClick="document.location=\'' . tep_href_link(FILENAME_LOGIN, '' , 'SSL') . '\'">' . TEXT_BACK_TO_LOGIN . '</button>';
           } else {
-            echo tep_draw_hidden_field('log_times', '0');
+            if (isset($info_message)) {
+              echo '<div class="row errmsg"><div class="col p-0 mb-1 mt-1 ml-2 mr-2"><div class="note note-danger m-0"><h4 class="m-0">' . TEXT_ERROR . '</h4><p class="mb-0 mt-2">' . $info_message . tep_draw_hidden_field('log_times', $log_times) . '</p></div></div></div>';     
+            } else {
+              echo tep_draw_hidden_field('log_times', '0');
+            }
           }
-        }
-
-
-        if (!isset($success_message) && !isset($_SESSION['password_forgotten'])){
-          ?>                        
-          <div class="m-t-20">
-            <div class="login-user-message text-justify mb-4"><?php echo TEXT_FORGOTTEN_USER_MESSAGE;?></div>
-          </div>
-          <div class="form-group m-b-20">
-            <input name="email_address" id="email_address" type="text" class="form-control input-lg" placeholder="Email Address" />
-          </div>
-
-        <div class="checkbox m-b-20">
-          <button class="btn btn-success btn-block btn-lg" type="submit"><?php echo TEXT_SEND_PASSWORD; ?></button>
-          <button class="btn btn-primary btn-block btn-lg" type="button" onClick="parent.location='<?php echo tep_href_link(FILENAME_LOGIN, '' , 'SSL'); ?>'"><?php echo TEXT_BACK_TO_LOGIN; ?></button>
-        </div>
-
-
-          <div class="form-group m-b-20">
-            <?php echo '<div class="text-justify mt-3 mb-2">' . TEXT_FORGOTTEN_SUPPORT_MESSAGE . '</div>'; ?>
-          </div>          
-          <?php 
-        } else {
+          if (!isset($success_message) && !isset($_SESSION['password_forgotten'])){
+            ?>                        
+            <div class="m-t-10">
+              <div class="login-user-message mb-3"><?php echo TEXT_FORGOTTEN_USER_MESSAGE;?></div>
+            </div>
+            <div class="form-group m-b-20">
+              <input name="email_address" id="email_address" type="text" class="form-control input-lg" placeholder="Email Address" />
+            </div>
+            <div class="checkbox m-b-20">
+              <button class="btn btn-success btn-block btn-lg" type="submit"><?php echo TEXT_SEND_PASSWORD; ?></button>
+              <button class="btn btn-primary btn-block btn-lg" type="button" onClick="document.location='<?php echo tep_href_link(FILENAME_LOGIN, '' , 'SSL'); ?>'"><?php echo TEXT_BACK_TO_LOGIN; ?></button>
+            </div>
+            <div class="form-group m-b-20">
+              <?php echo '<div class="mt-3 mb-2">' . TEXT_FORGOTTEN_SUPPORT_MESSAGE . '</div>'; ?>
+            </div>          
+            <?php 
+          } else {
+            ?>
+            <div class="m-t-20">
+              <?php echo $success_message; ?>
+            </div>
+            <?php
+          }
           ?>
-          <div class="m-t-20">
-            <?php echo $success_message; ?>
-          </div>
-          <?php
-        }
-        ?>
         </form>
       </div>
         <!-- end login -->
@@ -189,6 +185,7 @@
 <script>
 $(document).ready(function() {
   App.init();
+  setTimeout(function(){ $('.errmsg').delay(3000).fadeOut('slow'); }, 5000);
 });
 </script>
 <?php

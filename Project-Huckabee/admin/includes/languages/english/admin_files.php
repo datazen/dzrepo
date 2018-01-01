@@ -20,6 +20,7 @@ define('TABLE_HEADING_STATUS', 'Status');
 
 define('TEXT_COUNT_BOXES', 'Boxes: ');
 define('TEXT_COUNT_FILES', 'File(s): ');
+define('TEXT_BOX', 'Box');
 
 //categories access
 define('TEXT_INFO_HEADING_DEFAULT_BOXES', 'Boxes: ');

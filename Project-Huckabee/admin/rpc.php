@@ -7,8 +7,8 @@
   @license    https://github.com/loadedcommerce/loaded7/blob/master/LICENSE.txt
   @version    $Id: rpc.php v1.0 2013-08-08 datazen $
 */
-header('Cache-Control: no-cache, must-revalidate');
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+//header('Cache-Control: no-cache, must-revalidate');
+//header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 
 //ini_set('display_errors', 0);
 //ini_set('error_reporting', 0);
@@ -40,7 +40,7 @@ $rpcStatus = 0;
 $action = (isset($_GET['action']) && $_GET['action'] != '') ? $_GET['action'] : '';
 
 switch ($action) {
-  case 'checkAdminEmailExists' :
+  case 'checkAdminEmailExists':
     $new_email = (isset($_GET['email']) && $_GET['email'] != '') ? $_GET['email'] : '';
     $stored_email = array();
     $check_email_query = tep_db_query("SELECT admin_email_address FROM " . TABLE_ADMIN . "");
@@ -51,7 +51,11 @@ switch ($action) {
     $exists = (in_array($new_email, $stored_email)) ? true : false;
     $result = array('rpcStatus' => 1, 'result' => $exists);
     break;
-
+  case 'changeThemeMode':
+    $mode = isset($_GET['mode']) ? $_GET['mode'] : 'dark';
+    $updateMode = tep_db_query("UPDATE " . TABLE_CONFIGURATION . " SET configuration_value = '" . $mode . "' WHERE configuration_key = 'ADMIN_THEME_MODE'");
+    $result = array('rpcStatus' => 1, 'result' => $updateMode);
+    break;
 
 }
 

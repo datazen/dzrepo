@@ -181,6 +181,7 @@ define('TEXT_PRODUCT_IMAGES', 'Product Images');
 define('TEXT_EXTRA_FIELDS', 'Extra Fields');
 define('TEXT_EXTRA_IMAGES', 'Extra Images');
 define('TEXT_ACTIVE_ATTRIBUTES', 'Active Attributes');
+define('IMAGE_COPY_ATTRIBUTES', 'Copy Attributes');
 define('TEXT_COPY_ATTRIBUTES_TO_ANOTHER_PRODUCT', 'Copy Attributes to another product');
 define('TEXT_COPYING_ATTRIBUTES_FROM', 'Copying Attributes from');
 define('TEXT_COPYING_ATTRIBUTES_TO', 'Copying Attributes to');

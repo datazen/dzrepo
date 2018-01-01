@@ -129,3 +129,17 @@ body {
 .input-group-btn .btn.btn-success:not(.active) + .btn.btn-success {
     border-left-color: #c5771d;
 }
+.btn-success.disabled, .btn-success:disabled {
+  background-color: #ef9021;
+  border-color: #ef9021;
+}
+.btn-success:not([disabled]):not(.disabled):active, .btn-success:not([disabled]):not(.disabled).active,
+.show > .btn-success.dropdown-toggle {
+  color: #fff;
+  background-color: #ef9021;
+  border-color: #ef9021;
+}
+.btn-success:not([disabled]):not(.disabled):active:focus, .btn-success:not([disabled]):not(.disabled).active:focus,
+.show > .btn-success.dropdown-toggle:focus {
+  box-shadow: none;
+}

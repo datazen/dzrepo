@@ -17,8 +17,11 @@
   include(DIR_WS_INCLUDES . 'column_left.php'); 
 
   ?>
-  <div id="content" class="content">         
+  <div id="content" class="content p-relative">         
     <h1 class="page-header"><i class="fa fa-laptop"></i> Dashboard</h1>
+
+    <?php if (file_exists(DIR_WS_INCLUDES . 'toolbar.php')) include(DIR_WS_INCLUDES . 'toolbar.php'); ?>
+
     <div class="row">
       <!-- begin col-3 -->
       <div class="col-md-3 col-sm-6">

@@ -47,7 +47,7 @@ unset($_SESSION['login_groups_id']);
   <meta content="Loaded Commerce" name="author" />
   <?php
   // themes: black, blue, default, red, orange, purple
-  $theme = (isset($_SESSION['theme']) && $_SESSION['theme'] != '') ? $_SESSION['theme'] : 'blue';
+  $theme = (defined('ADMIN_THEME') && ADMIN_THEME != '') ? ADMIN_THEME : 'default';
   ?>  
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
   <link href="assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />

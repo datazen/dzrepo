@@ -1,0 +1,16 @@
+    /*
+     * Light Theme
+     */
+    .light,
+    .light .panel-left {
+      background-color: #fff;
+    }    
+    .light .panel-right {
+      background-color: #f6f6f6;     
+    }     
+    .light .table-col {
+      font-weight: 400 !important;
+    }
+    .light .selected {
+      background-color: #edf1f6;
+    }  

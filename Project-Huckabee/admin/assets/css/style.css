@@ -232,9 +232,14 @@ label {
 }
 
 /* utility */
-.p-relative {
-    position:relative !important;
-}
+.p-relative { position:relative !important; }
+
+.fw-300 { font-weight: 300 !important; }
+.fw-400 { font-weight: 400 !important; }
+.fw-500 { font-weight: 500 !important; }
+.fw-600 { font-weight: 600 !important; }
+
+.text-ltgray { color:#a6a6a6; }
 
 /* -------------------------------
    2.0 Page Structure Settings
@@ -978,6 +983,15 @@ label {
     color: #333;
 }
 
+.table-file-permissions .table-row-boxes {
+  background-color: #ffc107;
+  color:#a6a6a6;
+}
+.table-file-permissions .col-boxes {
+  background-color: #ffc107;
+  color:#a6a6a6;
+}
+
 /* 2.6 Footer & footer elements */
 
 .footer {
@@ -1692,10 +1706,15 @@ legend {
 .open > .dropdown-toggle.btn-default:focus {
     background: #929ba1;
     border-color: #929ba1;
+    box-shadow: none;
 }
 .btn-group .btn.btn-default:not(.active) + .btn.btn-default,
 .input-group-btn .btn.btn-default:not(.active) + .btn.btn-default {
     border-left-color: #929ba1;
+}
+.btn-default:not([disabled]):not(.disabled):active:focus, .btn-default:not([disabled]):not(.disabled).active:focus,
+.show > .btn-default.dropdown-toggle:focus {
+    box-shadow: none;
 }
 
 
@@ -1728,10 +1747,15 @@ legend {
 .open > .dropdown-toggle.btn-white:focus {
     background: #e2e7eb;
     border-color: #d8dde1;
+    box-shadow: none;    
 }
 .btn-group .btn.btn-white:not(.active) + .btn.btn-white,
 .input-group-btn .btn.btn-white:not(.active) + .btn.btn-white {
     border-left-color: #eee;
+}
+.btn-white:not([disabled]):not(.disabled):active:focus, .btn-white:not([disabled]):not(.disabled).active:focus,
+.show > .btn-white.dropdown-toggle:focus {
+    box-shadow: none;
 }
 
 
@@ -1751,10 +1775,15 @@ legend {
 .open > .dropdown-toggle.btn-inverse:focus {
     background: #242a30;
     border-color: #242a30;
+    box-shadow: none;    
 }
 .btn-group .btn.btn-inverse:not(.active) + .btn.btn-inverse,
 .input-group-btn .btn.btn-inverse:not(.active) + .btn.btn-inverse {
     border-left-color: #242a30;
+}
+.btn-inverse:not([disabled]):not(.disabled):active:focus, .btn-inverse:not([disabled]):not(.disabled).active:focus,
+.show > .btn-inverse.dropdown-toggle:focus {
+    box-shadow: none;
 }
 
 
@@ -1774,10 +1803,15 @@ legend {
 .open > .dropdown-toggle.btn-primary:focus {
     background: #2a72b5;
     border-color: #2a72b5;
+    box-shadow: none;    
 }
 .btn-group .btn.btn-primary:not(.active) + .btn.btn-primary,
 .input-group-btn .btn.btn-primary:not(.active) + .btn.btn-primary {
     border-left-color: #2a72b5;
+}
+.btn-primary:not([disabled]):not(.disabled):active:focus, .btn-primary:not([disabled]):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+    box-shadow: none;
 }
 
 
@@ -1797,10 +1831,15 @@ legend {
 .open > .dropdown-toggle.btn-success:focus {
     background: #008a8a;
     border-color: #008a8a;
+    box-shadow: none;    
 }
 .btn-group .btn.btn-success:not(.active) + .btn.btn-success,
 .input-group-btn .btn.btn-success:not(.active) + .btn.btn-success {
     border-left-color: #008a8a;
+}
+.btn-success:not([disabled]):not(.disabled):active:focus, .btn-success:not([disabled]):not(.disabled).active:focus,
+.show > .btn-success.dropdown-toggle:focus {
+    box-shadow: none;
 }
 
 
@@ -1820,12 +1859,16 @@ legend {
 .open > .dropdown-toggle.btn-warning:hover {
     background: #c47d15;
     border-color: #c47d15;
+    box-shadow: none;    
 }
 .btn-group .btn.btn-warning:not(.active) + .btn.btn-warning,
 .input-group-btn .btn.btn-warning:not(.active) + .btn.btn-warning {
     border-left-color: #c47d15;
 }
-
+.btn-warning:not([disabled]):not(.disabled):active:focus, .btn-warning:not([disabled]):not(.disabled).active:focus,
+.show > .btn-warning.dropdown-toggle:focus {
+    box-shadow: none;
+}
 
 /* 3.14.7 Component - Button - Danger */
 
@@ -1843,10 +1886,15 @@ legend {
 .open > .dropdown-toggle.btn-danger:focus {
     background: #cc4946;
     border-color: #cc4946;
+    box-shadow: none;    
 }
 .btn-group .btn.btn-danger:not(.active) + .btn.btn-danger,
 .input-group-btn .btn.btn-danger:not(.active) + .btn.btn-danger {
     border-left-color: #cc4946;
+}
+.btn-danger:not([disabled]):not(.disabled):active:focus, .btn-danger:not([disabled]):not(.disabled).active:focus,
+.show > .btn-danger.dropdown-toggle:focus {
+    box-shadow: none;
 }
 
 
@@ -1866,12 +1914,43 @@ legend {
 .open > .dropdown-toggle.btn-info:focus {
     background: #3a92ab;
     border-color: #3a92ab;
+    box-shadow: none;    
 }
 .btn-group .btn.btn-info:not(.active) + .btn.btn-info,
 .input-group-btn .btn.btn-info:not(.active) + .btn.btn-info {
     border-left-color: #3a92ab;
 }
+.btn-info:not([disabled]):not(.disabled):active:focus, .btn-info:not([disabled]):not(.disabled).active:focus,
+.show > .btn-info.dropdown-toggle:focus {
+    box-shadow: none;
+}
 
+/* 3.14.9 Component - Button - Black */
+
+.btn.btn-black {
+    color: #fff;
+    background: #63696c;
+    border-color: #63696c;
+}
+.btn.btn-black:hover, 
+.btn.btn-black:focus, 
+.btn.btn-black:active, 
+.btn.btn-black.active, 
+.open > .dropdown-toggle.btn-black,
+.open > .dropdown-toggle.btn-black:hover,
+.open > .dropdown-toggle.btn-black:focus {
+    background: #454a4c;
+    border-color: #454a4c;
+    box-shadow: none;    
+}
+.btn-group .btn.btn-black:not(.active) + .btn.btn-black,
+.input-group-btn .btn.btn-black:not(.active) + .btn.btn-black {
+    border-left-color: #454a4c;
+} 
+.btn-black:not([disabled]):not(.disabled):active:focus, .btn-black:not([disabled]):not(.disabled).active:focus,
+.show > .btn-black.dropdown-toggle:focus {
+    box-shadow: none;
+}
 
 /* 3.15 Component - Panel */
 
@@ -2350,6 +2429,71 @@ legend {
     border-color: #e2e7e9;
 }
 
+/* DZ added */
+/*
+ * Tables 
+ */
+.rounded-left {
+  border-top-left-radius: 4px;
+  -webkit-border-top-left-radius: 4px;
+  -moz-border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  -moz-border-bottom-left-radius: 4px;      
+}    
+.rounded-right {
+  border-top-right-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  -moz-border-bottom-right-radius: 4px;  
+}
+.th-row,
+.th-col {
+  font-size: 14px !important;
+  font-weight: 400 !important;      
+}
+.table-col,    
+.table-row {
+  cursor: pointer;      
+}
+.table-col {
+  font-size: 13px !important;
+  font-weight: 300 !important;
+}
+.sidebar-heading {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  margin-top:14px;
+}
+.sidebar-title {
+  font-size: 13px !important;
+  font-weight: 400 !important;   
+  margin-bottom: 4px;     
+}
+.sidebar-text {
+  font-size: 12px !important;
+  font-weight: 300 !important;   
+}
+.sidebar-row {
+  font-size: 12px !important;
+  font-weight: 300 !important;     
+}
+.pagination-container {
+  font-size: 12px !important;
+  font-weight: 300 !important;         
+}
+.pagination-container .results-right {
+  float:right;
+  top:0;
+}
+.btn-danger {
+/*    background-color:#dc3545 !important; */
+} 
+.note p {
+  font-weight:400;
+}
 
 /* 3.21 Component - Well */
 
@@ -7674,4 +7818,16 @@ body .bootstrap-datetimepicker-widget table td {
 	border-width: 1px;
 	border-style: solid;
 }
+/*
+ * Pro Upsell 
+ */
+.popover-header { 
+  margin-top:0 !important; 
+  background-color: #f8d7da !important;
+  color: #721c24 !important;
+  border: 1px solid #f5c6cb !important;
 
+}
+.popover {
+  border: 1px solid #f5c6cb !important;
+} 

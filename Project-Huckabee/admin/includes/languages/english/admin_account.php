@@ -26,17 +26,17 @@ define('TEXT_INFO_LOGDATE', '<b>Last Access: </b>');
 define('TEXT_INFO_LOGNUM', '<b>Log Number: </b>');
 define('TEXT_INFO_GROUP', '<b>Group Level: </b>');
 define('TEXT_EMAIL_ERROR', '<font color="red">Email address has already been used! Please try again.</font>');
-define('TEXT_PASSWORD_ERROR', '<font color="red">Password must be a minimum of ' . ((ENTRY_PASSWORD_MIN_LENGTH > 7) ? ENTRY_PASSWORD_MIN_LENGTH : 8) . ' characters, contain upper and lowercase characters and at least one number.</font>');  
-define('TEXT_INFO_MODIFIED', 'Modified: ');
+define('TEXT_PASSWORD_ERROR', 'Password must be a minimum of ' . ((ENTRY_PASSWORD_MIN_LENGTH > 7) ? ENTRY_PASSWORD_MIN_LENGTH : 8) . ' characters, contain upper and lowercase characters and at least one number.');  
+define('TEXT_INFO_MODIFIED', 'Last Modified: ');
 
 define('TEXT_INFO_HEADING_DEFAULT', 'Edit Account ');
 define('TEXT_INFO_HEADING_CONFIRM_PASSWORD', 'Password Confirmation ');
 define('TEXT_INFO_INTRO_CONFIRM_PASSWORD', 'Current Password:');
-define('TEXT_INFO_INTRO_CONFIRM_PASSWORD_ERROR', '<font color="red"><b>ERROR:</b> wrong password!</font>');
+define('TEXT_INFO_INTRO_CONFIRM_PASSWORD_ERROR', 'Incorrect password!</font>');
 define('TEXT_INFO_INTRO_DEFAULT', 'Click <b>Edit button</b> to change your account.');
-define('TEXT_INFO_INTRO_DEFAULT_FIRST_TIME', '<br><b>WARNING:</b><br>Hello <b>%s</b>, you have just come here for the first time. We recommend you to change your password!');
-define('TEXT_INFO_INTRO_DEFAULT_FIRST', '<br><b>WARNING:</b><br>Hello <b>%s</b>, we recommend you to change your email (<font color="red">admin@localhost</font>) and password!');
-define('TEXT_INFO_INTRO_EDIT_PROCESS', 'All fields are required. Click save to submit.');
+define('TEXT_INFO_INTRO_DEFAULT_FIRST_TIME', 'Welcome <b>%s</b>, please update your password.');
+define('TEXT_INFO_INTRO_DEFAULT_FIRST', 'Welcome <b>%s</b>, we recommend you change your email (<font color="red">admin@localhost</font>) and password!');
+define('TEXT_INFO_INTRO_EDIT_PROCESS', 'All fields are required. Click Update to save.');
 
 define('JS_ALERT_FIRSTNAME',        '- Required: Firstname \n');
 define('JS_ALERT_LASTNAME',         '- Required: Lastname \n');

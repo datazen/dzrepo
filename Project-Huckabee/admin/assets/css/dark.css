@@ -1,0 +1,69 @@
+    /*
+     * Dark Theme 
+     */
+    .dark,
+    .dark .panel-left {
+      background-color: #22272c;
+    }    
+    .dark .panel-right {
+      background-color: #293036;     
+    }
+    .dark .th-row,
+    .dark .th-col {
+      background-color: #22272c;     
+      color: #fff;
+    }
+    .dark .table-col,    
+    .dark .table-row {
+      background-color: #22272c;  
+      color: #ccc;  
+      border-bottom:1px solid #666;      
+    }    
+    .dark .table-hover tbody tr:hover td {
+      background-color: #293036 !important;
+    } 
+    .dark .selected {
+      background-color: #39424a;
+    }
+    .dark .sidebar-heading {
+      color: #fff;
+    }
+    .dark .sidebar-title {
+      color: #fff;
+    }     
+    .dark .sidebar-text {
+      color: #a8acb1;
+    } 
+    .dark .sidebar-row .form-label {       
+      color: #a0a4a9;            
+    }
+    .dark .pagination-container {
+      color: #a0a4a9;      
+    }
+    .dark select,
+    .dark select:focus,
+    .dark input,
+    .dark input:focus {
+      background-color: #000;
+      color: #fff;
+    }
+    .dark .btn.btn-default {
+      color: #fff;
+      background: #0f0e0e;
+      border-color: #0f0e0e;
+      border-width: 2px;
+    }
+    .dark .btn-default:hover, 
+    .dark .btn-default:focus, 
+    .dark .btn-default:active, 
+    .dark .btn-default.active, 
+    .dark .open > .dropdown-toggle.btn-default,
+    .dark .open > .dropdown-toggle.btn-default:hover,
+    .dark .open > .dropdown-toggle.btn-default:focus {
+      background: #151617;
+      border-color: #151617;
+    }
+    .dark .btn-group .btn.btn-default:not(.active) + .btn.btn-default,
+    .dark .input-group-btn .btn.btn-default:not(.active) + .btn.btn-default {
+      border-left-color: #151617;
+    }

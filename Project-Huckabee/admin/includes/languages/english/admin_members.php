@@ -12,7 +12,7 @@
 
 
 define('HEADING_TITLE_GROUPS', 'Admin Groups');
-define('HEADING_TITLE_DEFINE', 'Set Menu and File Access by Group');
+define('HEADING_TITLE_DEFINE', 'Menu and File Access');
 define('HEADING_TITLE_MEMBERS', 'Admin Members');
 
 define('TEXT_COUNT_GROUPS', 'Groups: ');
@@ -57,9 +57,9 @@ define('TEXT_INFO_MODIFIED', 'Account Modified: ');
 define('TEXT_INFO_LOGDATE', 'Last Access: ');
 define('TEXT_INFO_LOGNUM', 'Log Number: ');
 define('TEXT_INFO_GROUP', 'Group Level: ');
-define('TEXT_INFO_ERROR', 'Email address has already been used! Please try again.');
+define('TEXT_INFO_EMAIL_USED', 'E-mail address already in use.');
 
-define('JS_ALERT_INTRO', 'Oops! You missed something! \n');
+define('JS_ALERT_INTRO', 'You missed something! \n');
 define('JS_ALERT_FIRSTNAME', '- First Name cannot be blank. \n');
 define('JS_ALERT_LASTNAME', '- Last Name cannot be blank. \n');
 define('JS_ALERT_EMAIL', '- Email Address cannot be blank. \n');
@@ -75,9 +75,9 @@ define('ADMIN_EMAIL_EDIT_TEXT', 'Hi %s,' . "\n\n" . 'Your personal information h
 define('TEXT_INFO_HEADING_DEFAULT_GROUPS', 'Admin Group ');
 define('TEXT_INFO_HEADING_DELETE_GROUPS', 'Delete Group ');
 
-define('TEXT_INFO_DEFAULT_GROUPS_INTRO', '<b>NOTE:</b><ul><li><b>Edit:</b> edit group name.</li><li><b>Delete:</b> delete group.</li><li><b>File Permissions:</b> define and change group access.</li></ul>');
+define('TEXT_INFO_DEFAULT_GROUPS_INTRO', '');
 define('TEXT_INFO_DELETE_GROUPS_INTRO', 'This will also delete <b>ALL</b> members of this group.  Are you sure want to delete <nobr><b>%s</b> group?</nobr>');
-define('TEXT_INFO_DELETE_GROUPS_INTRO_NOT', 'Oops sorry, you can not delete this group.');
+define('TEXT_INFO_DELETE_GROUPS_INTRO_NOT', 'You can not delete this group.');
 
 define('TEXT_INFO_HEADING_GROUPS', 'New Group');
 define('TEXT_INFO_GROUPS_NAME', 'Unique Group Name:');
@@ -89,11 +89,11 @@ define('TEXT_INFO_GROUPS_BOXES_INCLUDE', 'Include files stored in: ');
 
 define('TEXT_INFO_EDIT_GROUP_INTRO', 'Unique Group Name: ');
 
-define('TEXT_INFO_HEADING_DEFINE', 'Set Menu and File Access by Group');
-define('TEXT_INFO_DEFINE_INTRO_1', 'Oops sorry, you can not change file permissions for <b>%s</b> group.');
-define('TEXT_INFO_DEFINE_INTRO', '<b>%s:</b><br>Change permission for this group by selecting or unselecting boxes and files provided. Click <b>Update</b> to save the changes.<br>');
-define('TEXT_INFO_DEFINE_TYPE', '<div class="mt-2 mb-2"><b>Legend:</b></div><div class="dataTableRowBoxes p-3">Yellow denotes Menu Access.</div><div class="mt-2 mb-2 p-3">Gray denotes File Access.</div>');
+define('TEXT_INFO_HEADING_DEFINE', '%s Group');
+define('TEXT_INFO_DEFINE_INTRO_1', 'You can not change permissions for <b>%s</b> group.');
+define('TEXT_INFO_DEFINE_INTRO', '<div class="fw-400 mt-3 text-ltgray">Change permission for this group by selecting or unselecting boxes and files provided. Click <b>Update</b> to save the changes.</div>');
+define('TEXT_INFO_DEFINE_TYPE', '<div class="mt-4"><div class="bg-warning text-dark p-4 text-center"><b>Yellow denotes Menu Access.</b></div><div class="bg-dark text-light mt-2 mb-2 p-4 text-center">Gray denotes File Access.</div></div>');
 
 define('TEXT_INFO_HEADING_EDIT_GROUP', 'Edit Group');
-define('IMAGE_FILE_PERMISSIONS', 'File Permissions');
+define('IMAGE_FILE_PERMISSIONS', 'Menu/File Access');
 ?>

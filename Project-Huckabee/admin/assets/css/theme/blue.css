@@ -122,8 +122,23 @@ body {
 .open > .dropdown-toggle.btn-success:focus {
     background: #2a72b5;
     border-color: #2a72b5;
+    box-shadow: none;
 }
 .btn-group .btn.btn-success:not(.active) + .btn.btn-success,
 .input-group-btn .btn.btn-success:not(.active) + .btn.btn-success {
     border-left-color: #2a72b5;
+}
+.btn-success.disabled, .btn-success:disabled {
+  background-color: #348fe2;
+  border-color: #348fe2;
+}
+.btn-success:not([disabled]):not(.disabled):active, .btn-success:not([disabled]):not(.disabled).active,
+.show > .btn-success.dropdown-toggle {
+  color: #fff;
+  background-color: #348fe2;
+  border-color: #348fe2;
+}
+.btn-success:not([disabled]):not(.disabled):active:focus, .btn-success:not([disabled]):not(.disabled).active:focus,
+.show > .btn-success.dropdown-toggle:focus {
+  box-shadow: none;
 }

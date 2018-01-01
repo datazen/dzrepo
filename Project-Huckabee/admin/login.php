@@ -32,9 +32,9 @@ if ( (isset($_POST['action']) && ($_POST['action'] == 'process')) && (isset($_PO
     if (!tep_validate_password($password, $check_admin['login_password'])) {
       $error = true;
     } else {
-      if (isset($_SESSION['password_forgotten'])) {
-        unset($_SESSION['password_forgotten']);
-      }
+
+      if (isset($_SESSION['password_forgotten'])) unset($_SESSION['password_forgotten']);
+
       $login_email_address = $check_admin['login_email_address'];
       $login_logdate = $check_admin['login_logdate'];
       $login_lognum = $check_admin['login_lognum'];
@@ -89,10 +89,7 @@ $email_address = (isset($_GET['email_address'])) ? $_GET['email_address'] : '';
   <meta content="Loaded Commerce" name="author" />
   <?php
   // themes: black, blue, default, red, orange, purple
-  if (!isset($_SESSION['theme'])) $_SESSION['theme'] = (defined('ADMIN_THEME') && in_array(ADMIN_THEME, array("red","blue","default","black","purple","orange"))) ? ADMIN_THEME : 'default';
-  if (isset($_GET['theme']) && in_array($_GET['theme'], array("red","blue","default","black","purple","orange"))) {
-    $_SESSION['theme'] = $_GET['theme'];  
-  }
+  $theme = (defined('ADMIN_THEME') && ADMIN_THEME != '') ? ADMIN_THEME : 'default';
   ?>
   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
   <link href="assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
@@ -104,6 +101,11 @@ $email_address = (isset($_GET['email_address'])) ? $_GET['email_address'] : '';
   <link href="assets/css/style-responsive.css" rel="stylesheet" />
   <link href="assets/css/theme/<?php echo $_SESSION['theme']; ?>.css" rel="stylesheet" id="theme" />
 </head>
+<style>
+.login .login-content {
+    padding: 40px 40px 20px 40px;
+}
+</style>
 
 <body class="pace-top" onload="document.getElementById('email_address').focus()">
   <!-- begin #page-loader -->
@@ -135,12 +137,12 @@ $email_address = (isset($_GET['email_address'])) ? $_GET['email_address'] : '';
       </div>
       <!-- end brand -->
       <div class="login-content">
-        <div class="login-content-heading">Administrator Login</div>
+        <div class="login-content-heading mb-1">Administrator Login</div>
         <?php 
-        if ($error) echo '<div class="alert-container"><div class="alert alert-danger text-white">' . TEXT_LOGIN_ERROR . '</div></div>';
+        if ($error) echo '<div class="row errmsg"><div class="col p-0 mb-3 mt-1 ml-2 mr-2"><div class="note note-danger m-0"><h4 class="m-0">' . TEXT_ERROR . '</h4><p class="mb-0 mt-2">' . TEXT_LOGIN_ERROR . '</p></div></div></div>';     
         echo tep_draw_form('login', FILENAME_LOGIN, 'action=process', 'post', 'class="mb-0"', 'SSL') . tep_draw_hidden_field("action","process"); 
         ?>
-        <div class="form-group m-b-20">
+        <div class="form-group m-b-20 pt-1">
           <input name="email_address" id="email_address" type="text" class="form-control input-lg" placeholder="Email Address" />
         </div>
         <div class="form-group m-b-20">
@@ -177,7 +179,7 @@ $email_address = (isset($_GET['email_address'])) ? $_GET['email_address'] : '';
   <script>
   $(document).ready(function() {
     App.init();
-    setTimeout(function(){ $('.alert').delay(3000).fadeOut('slow'); }, 5000);
+    setTimeout(function(){ $('.errmsg').delay(3000).fadeOut('slow'); }, 5000);
   });
   </script>
   <?php

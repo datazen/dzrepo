@@ -16,7 +16,6 @@ define('TEXT_UPGRADE_TO_PRO','Upgrade to Pro!');
 define('TEXT_UPGRADE_ADMIN_MEMBERS', 'Upgrade to Loaded Commerce Pro and get unlimited admin members.');
 define('TEXT_UPGRADE_ADMIN_GROUPS', 'Upgrade to Loaded Commerce Pro and get unlimited admin groups.');
 
-
 //Admin begin
 define('TEXT_ADMIN_HOME','Admin Home');
 define('TEXT_VIEW_CATALOG','View Catalog');
@@ -27,6 +26,11 @@ define('TEXT_ADMIN_LANG','Language');
 define('TEXT_CHANGE_PASWORD','Change Password');
 define('TEXT_LOGOUT','Logout');
 define('TEXT_CHECK_UPDATES','Check for Updates');
+define('TEXT_ERROR','Error');
+define('TEXT_WARNING','Warning');
+define('TEXT_INFO','Info');
+define('TEXT_VISIT_CATALOG', 'Visit Catalog');
+define('TEXT_RETURN_TO_ADMIN', 'Return to Admin');
 
 // header text in includes/header.php
 define('HEADER_TITLE_ACCOUNT', 'My Account/Password');

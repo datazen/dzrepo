@@ -20,11 +20,11 @@ define('IMAGE_BUTTON_LOGIN', 'Submit');
 
 define('HEADING_TITLE_FORGOTTEN', 'Forgot Passsword?');
 
-define('TEXT_LOGIN_ERROR', '<b>OOPS:</b> We could not verify your credentials. Please check your username/password and try again.');
+define('TEXT_LOGIN_ERROR', 'Validation failed!<span class="ml-2">Please try again.</span>');
 define('TEXT_SEND_PASSWORD', 'Send Password');
 define('TEXT_BACK_TO_LOGIN', 'Back to Login');
 
-define('TEXT_FORGOTTEN_ERROR', '<b>OOPS:</b></font> The email entered is not found!');
+define('TEXT_FORGOTTEN_ERROR', 'Recover password attempt (%s) failed!<span class="ml-2">Please try again.</span>');
 define('TEXT_FORGOTTEN_FAIL', 'You have tried more than 3 times. For security reasons, please contact the Webmaster to get a new password.');
 define('TEXT_FORGOTTEN_SUCCESS', '<b>The new password has been sent to your Email address. Please check your Email and click Back to login again.');
 define('TEXT_FORGOTTEN_SUPPORT_MESSAGE','If you need assistance resetting your email address or retrieving your password please contact your webhost support or Loaded Commerce support at <a href="http://www.loadedcommerce.com/" target="_blank">www.loadedcommerce.com</a>');

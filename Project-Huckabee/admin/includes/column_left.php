@@ -92,6 +92,7 @@ $( document ).ready(function() {
       break;
     
     case 'categories':
+    case 'product_edit':
     case 'products_attributes':
     case 'manufacturers':
     case 'reviews':
@@ -141,6 +142,7 @@ $( document ).ready(function() {
   if (action == 'new_group' || action == 'edit_group' || action == 'del_group' || action == 'define_group') section = 'admin_groups';
   if (admin_groupID) section = 'admin_groups';
   if (action == 'check_account') section = 'update_account';
+  if (action == 'edit_product') section = 'categories';
 
   // set default if no parameters
   if (section == '') section = currentPage;

@@ -34,7 +34,7 @@
        $output  = '<div class="sidebar-container p-4">';
        $output .= '  <div class="sidebar-heading">';
        $output .= '    <span>' . $heading[0]['text'] . '</span>';
-       $output .= '  </div>';
+       $output .= '  </div><div class="sidebar-heading-footer"></div>';
        foreach ($contents as $key => $value) {
          $align = 'text-left';
          if (isset($value['align'])) {
@@ -51,6 +51,7 @@
          }
        }
        if ($isForm) $output .= '</form>';
+       $output .= '</div>';
 
        return $output;
     }

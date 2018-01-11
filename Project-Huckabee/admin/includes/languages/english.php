@@ -970,7 +970,7 @@ define('PASS_FORGOTTEN_FOOTER','E-Commerce Engine Copyright &copy; 2003 <a href=
 ##################### 07/07/2006 End  ####################
 
 define('QUICK_ATTRIBUTES_POPUP_TXT_0','Current Attributes');
-define('QUICK_ATTRIBUTES_POPUP_TXT_1','Current ID#');
+define('QUICK_ATTRIBUTES_POPUP_TXT_1','Product ID:');
 define('QUICK_ATTRIBUTES_POPUP_TXT_2','Model:');
 define('QUICK_ATTRIBUTES_POPUP_TXT_3','NO CURRENT ATTRIBUTES ...');
 define('QUICK_ATTRIBUTES_POPUP_TXT_4','CURRENT ATTRIBUTES:');

@@ -16,7 +16,18 @@ require('includes/application_top.php');
 require('includes/functions/categories_description.php');
 require(DIR_WS_CLASSES . 'file_select.php');
 require(DIR_WS_CLASSES . 'currencies.php');
+require(DIR_WS_CLASSES . 'Specials.class.php');
 $currencies = new currencies();
+
+define('TEXT_PRO_UPSELL_POPOVER_BODY', 'Get Pro to unlock this feature and many more, plus get support and updates!');            
+define('TEXT_PRO_UPSELL_GET_PRO', 'Get Pro');
+define('TEXT_PRO_UPSELL_GET_PRO_URL', 'http://www.loadedcommerce.com');
+define('TEXT_PRO_UPSELL_RIBBON_TEXT', 'Get Pro');
+
+define('TEXT_B2B_UPSELL_POPOVER_BODY', 'Get B2B to unlock this feature and many more, plus get support and updates!');            
+define('TEXT_B2B_UPSELL_GET_B2B', 'Get B2B');
+define('TEXT_B2B_UPSELL_GET_B2B_URL', 'http://www.loadedcommerce.com');
+define('TEXT_B2B_UPSELL_RIBBON_TEXT', 'Get B2B');
 
 // RCI code start
 echo $cre_RCI->get('global', 'top', false);
@@ -278,6 +289,8 @@ if (tep_not_null($action)) {
       if ($products_quantity != $products_old['products_quantity']) $sql_data_array['products_quantity'] = $products_quantity;
       $products_model = tep_db_prepare_input(tep_db_encoder($_POST['products_model']));
       if ($products_model != $products_old['products_model']) $sql_data_array['products_model'] = $products_model;
+      $products_sku = tep_db_prepare_input(tep_db_encoder($_POST['products_sku']));
+      if ($products_sku != $products_old['products_sku']) $sql_data_array['products_sku'] = $products_sku;
       $products_price = tep_db_prepare_input($_POST['products_price']);
       if ($products_price != $products_old['products_price']) $sql_data_array['products_price'] = $products_price;
       $products_weight = isset($_POST['products_weight']) ? tep_db_prepare_input($_POST['products_weight']) : 0;
@@ -425,6 +438,7 @@ if (tep_not_null($action)) {
         $products_date_available = tep_db_prepare_input($_POST['products_date_available']);
         $products_quantity = tep_db_prepare_input($_POST['products_quantity']);
         $products_model = tep_db_prepare_input(tep_db_encoder($_POST['products_model']));
+        $products_sku = tep_db_prepare_input(tep_db_encoder($_POST['products_sku']));
         $products_price = tep_db_prepare_input($_POST['products_price']);
         $products_weight = isset($_POST['products_weight']) ? tep_db_prepare_input($_POST['products_weight']) : 0;
         $products_status = isset($_POST['products_status']) ? tep_db_prepare_input($_POST['products_status']) : 0;
@@ -433,6 +447,7 @@ if (tep_not_null($action)) {
         $sql_data_array = array('products_date_available' => $products_date_available,
                                 'products_quantity' => $products_quantity,
                                 'products_model' => $products_model,
+                                'products_sku' => $products_sku,
                                 'products_price' => $products_price,
                                 'products_weight' => $products_weight,
                                 'products_status' => $products_status,
@@ -554,10 +569,10 @@ if (tep_not_null($action)) {
             $messageStack->add_session('search', ERROR_CANNOT_LINK_TO_SAME_CATEGORY, 'error');
           }
         } elseif ($_POST['copy_as'] == 'duplicate') {
-          $product_query = tep_db_query("select products_quantity, products_model, products_image, products_image_med, products_image_lrg, products_image_sm_1, products_image_xl_1, products_image_sm_2, products_image_xl_2, products_image_sm_3, products_image_xl_3, products_image_sm_4, products_image_xl_4, products_image_sm_5, products_image_xl_5, products_image_sm_6, products_image_xl_6, products_price, products_price1, products_price2, products_price3, products_price4, products_price5, products_price6, products_price7, products_price8, products_price9, products_price10, products_price11, products_price1_qty, products_price2_qty, products_price3_qty, products_price4_qty, products_price5_qty, products_price6_qty, products_price7_qty, products_price8_qty, products_price9_qty, products_price10_qty, products_price11_qty, products_qty_blocks, products_date_available, products_weight, products_tax_class_id, manufacturers_id from " . TABLE_PRODUCTS . " where products_id = '" . (int)$products_id . "'");
+          $product_query = tep_db_query("select products_quantity, products_model, products_sku, products_image, products_image_med, products_image_lrg, products_image_sm_1, products_image_xl_1, products_image_sm_2, products_image_xl_2, products_image_sm_3, products_image_xl_3, products_image_sm_4, products_image_xl_4, products_image_sm_5, products_image_xl_5, products_image_sm_6, products_image_xl_6, products_price, products_price1, products_price2, products_price3, products_price4, products_price5, products_price6, products_price7, products_price8, products_price9, products_price10, products_price11, products_price1_qty, products_price2_qty, products_price3_qty, products_price4_qty, products_price5_qty, products_price6_qty, products_price7_qty, products_price8_qty, products_price9_qty, products_price10_qty, products_price11_qty, products_qty_blocks, products_date_available, products_weight, products_tax_class_id, manufacturers_id from " . TABLE_PRODUCTS . " where products_id = '" . (int)$products_id . "'");
           $product = tep_db_fetch_array($product_query);
-          tep_db_query("insert into " . TABLE_PRODUCTS . " (products_quantity, products_model, products_image, products_image_med, products_image_lrg, products_image_sm_1, products_image_xl_1, products_image_sm_2, products_image_xl_2, products_image_sm_3, products_image_xl_3, products_image_sm_4, products_image_xl_4, products_image_sm_5, products_image_xl_5, products_image_sm_6, products_image_xl_6, products_price, products_price1, products_price2, products_price3, products_price4, products_price5, products_price6, products_price7, products_price8, products_price9, products_price10, products_price11, products_price1_qty, products_price2_qty, products_price3_qty, products_price4_qty, products_price5_qty, products_price6_qty, products_price7_qty, products_price8_qty, products_price9_qty, products_price10_qty, products_price11_qty, products_qty_blocks, products_date_added, products_date_available, products_weight, products_status, products_tax_class_id, manufacturers_id) values
-                      ('" . tep_db_input($product['products_quantity']) . "', '" . tep_db_input($product['products_model']) . "', '" . tep_db_input($product['products_image']) . "', '" . tep_db_input($product['products_image_med']) . "', '" . tep_db_input($product['products_image_lrg']) . "', '" . tep_db_input($product['products_image_sm_1']) . "', '" . tep_db_input($product['products_image_xl_1']) . "', '" . tep_db_input($product['products_image_sm_2']) . "', '" . tep_db_input($product['products_image_xl_2']) . "', '" . tep_db_input($product['products_image_sm_3']) . "', '" . tep_db_input($product['products_image_xl_3']) . "', '" . tep_db_input($product['products_image_sm_4']) . "', '" . tep_db_input($product['products_image_xl_4']) . "', '" . tep_db_input($product['products_image_sm_5']) . "', '" . tep_db_input($product['products_image_xl_5']) . "', '" . tep_db_input($product['products_image_sm_6']) . "', '" . tep_db_input($product['products_image_xl_6']) . "', '" . tep_db_input($product['products_price']) . "',
+          tep_db_query("insert into " . TABLE_PRODUCTS . " (products_quantity, products_model, products_sku, products_image, products_image_med, products_image_lrg, products_image_sm_1, products_image_xl_1, products_image_sm_2, products_image_xl_2, products_image_sm_3, products_image_xl_3, products_image_sm_4, products_image_xl_4, products_image_sm_5, products_image_xl_5, products_image_sm_6, products_image_xl_6, products_price, products_price1, products_price2, products_price3, products_price4, products_price5, products_price6, products_price7, products_price8, products_price9, products_price10, products_price11, products_price1_qty, products_price2_qty, products_price3_qty, products_price4_qty, products_price5_qty, products_price6_qty, products_price7_qty, products_price8_qty, products_price9_qty, products_price10_qty, products_price11_qty, products_qty_blocks, products_date_added, products_date_available, products_weight, products_status, products_tax_class_id, manufacturers_id) values
+                      ('" . tep_db_input($product['products_quantity']) . "', '" . tep_db_input($product['products_model']) . "', '" . tep_db_input($product['products_sku']) . "', '" . tep_db_input($product['products_image']) . "', '" . tep_db_input($product['products_image_med']) . "', '" . tep_db_input($product['products_image_lrg']) . "', '" . tep_db_input($product['products_image_sm_1']) . "', '" . tep_db_input($product['products_image_xl_1']) . "', '" . tep_db_input($product['products_image_sm_2']) . "', '" . tep_db_input($product['products_image_xl_2']) . "', '" . tep_db_input($product['products_image_sm_3']) . "', '" . tep_db_input($product['products_image_xl_3']) . "', '" . tep_db_input($product['products_image_sm_4']) . "', '" . tep_db_input($product['products_image_xl_4']) . "', '" . tep_db_input($product['products_image_sm_5']) . "', '" . tep_db_input($product['products_image_xl_5']) . "', '" . tep_db_input($product['products_image_sm_6']) . "', '" . tep_db_input($product['products_image_xl_6']) . "', '" . tep_db_input($product['products_price']) . "',
                        '" . tep_db_input($product['products_price1']) . "', '" . tep_db_input($product['products_price2']) . "', '" . tep_db_input($product['products_price3']) . "', '" . tep_db_input($product['products_price4']) . "', '" . tep_db_input($product['products_price5']) . "', '" . tep_db_input($product['products_price6']) . "', '" . tep_db_input($product['products_price7']) . "', '" . tep_db_input($product['products_price8']) . "', '" . tep_db_input($product['products_price9']) . "', '" . tep_db_input($product['products_price10']) . "', '" . tep_db_input($product['products_price11']) . "', '" . tep_db_input($product['products_price1_qty']) . "', '" . tep_db_input($product['products_price2_qty']) . "', '" . tep_db_input($product['products_price3_qty']) . "', '" . tep_db_input($product['products_price4_qty']) . "', '" . tep_db_input($product['products_price5_qty']) . "', '" . tep_db_input($product['products_price6_qty']) . "', '" . tep_db_input($product['products_price7_qty']) . "', '" . tep_db_input($product['products_price8_qty']) . "', '" . tep_db_input($product['products_price9_qty']) . "', '" . tep_db_input($product['products_price10_qty']) . "', '" . tep_db_input($product['products_price11_qty']) . "', '" . tep_db_input($product['products_qty_blocks']) . "',
                        now(), '" . tep_db_input($product['products_date_available']) . "', '" . tep_db_input($product['products_weight']) . "', '0', '" . (int)$product['products_tax_class_id'] . "', '" . (int)$product['manufacturers_id'] . "')");
           $dup_products_id = tep_db_insert_id();
@@ -657,19 +672,62 @@ include(DIR_WS_INCLUDES . 'column_left.php');
 <style>
 
 </style>
+<?php
+$msg = 'TEST';
+$error = false;
+$warning = false;
+?>
 <div id="content" class="content p-relative">         
   <h1 class="page-header"><i class="fa fa-laptop"></i> <?php echo HEADING_TITLE; ?></h1>
 
   <?php if (file_exists(DIR_WS_INCLUDES . 'toolbar.php')) include(DIR_WS_INCLUDES . 'toolbar.php'); ?>
   
-  <div class="col">     
+  <div class="col main-col">     
+    <!-- begin alert -->
+    <?php if ($error) echo '<div class="row"><div class="col p-0 mt-0 mb-3"><div class="note note-danger m-0"><h4 class="m-0">' . TEXT_ERROR . '</h4><p class="mb-0 mt-2">' . $msg . '</p></div></div></div>'; ?>
+    <?php if ($warning) echo '<div class="row"><div class="col p-0 mt-0 mb-3"><div class="note note-warning m-0"><h4 class="m-0">' . TEXT_WARNING . '</h4><p class="mb-0 mt-2">' . $msg . '</p></div></div></div>'; ?>
+    <!-- end alert -->
+    <?php 
+    if (isset($action) && $action == 'new_product') {
+      ?>
+      <form name="new_product" method="post" enctype="multipart/form-data" onSubmit="return OnSubmitForm();">
+      <!-- begin button bar --> 
+      <div class="row">
+        <div class="col-9 m-b-10"> 
+          <a href="javascript:;" class="btn btn-link m-r-3 f-w-200 text-primary hidden-xs hidden-sm"><i class="fa fa-chevron-left"></i> Return to List</a>
+          <a href="javascript:;" class="btn btn-primary m-r-3"><i class="fa fa-save"></i> Save</a>
+          <a href="javascript:;" class="btn btn-info m-r-3 btn-save-stay"><i class="fa fa-save"></i> Save and Stay</a>
+          <a href="javascript:;" class="hidden-xs hidden-sm hidden-md btn btn-link m-r-5 f-w-200 text-primary"><i class="fa fa-laptop"></i> View in Catalog</a>
+        </div>
+        <div class="col-3">
+          <div class="btn-group pull-right dark"> <a aria-expanded="false" href="javascript:;" data-toggle="dropdown" class="btn btn-white dropdown-toggle"> <?php echo ucwords($_SESSION['language']); ?> <span class="caret"></span> </a>
+            <ul class="dropdown-menu pull-right">
+              <?php
+              $languages = tep_get_languages();
+              for ($i=0; $i<sizeof($languages); $i++) {
+                ?>
+                <li <?php echo (($languages[$i]['id'] == $_SESSION['languages_id'])? 'class="active"':'');?>>
+                  <a aria-expanded="false" href="#"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name'],'align="absmiddle" style="height:16px; "') . '<span class="ml-2">' . $languages[$i]['name'];?></span></a>
+                </li>
+                <?php
+              }
+              ?>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- end button bar -->
+      <?php 
+    } 
+    ?>
     <!-- begin panel -->
     <div class="dark">
-      <!-- body_text //-->     
+      <!-- body_text //-->           
       <div id="table-categories" class="table-categories">
-        <div class="row">
-          <div class="col-md-8 col-xl-9 dark panel-left rounded-left">
 
+        <div class="row">
+
+          <div class="col-md-8 col-xl-9 dark panel-left rounded-left">
             <?php
             $manage_image = new DirSelect($ImageLocations);
             $image_dir = $manage_image->getDirs();
@@ -1079,6 +1137,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                                  'products_id' => '',
                                  'products_quantity' => '',
                                  'products_model' => '',
+                                 'products_sku' => '',
                                  'products_image' => '',
                                  'products_image_med' => '',
                                  'products_image_lrg' => '',
@@ -1111,7 +1170,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                   $extra_field_array=array('extra_field'=>$extra_field);
                   $pInfo->objectInfo($extra_field_array);
                 }*/
-                $product_query = tep_db_query("select pd.products_name, pd.products_description, pd.products_head_title_tag, pd.products_head_desc_tag, pd.products_head_keywords_tag, pd.products_url, p.products_id, p.products_quantity, p.products_model, p.products_image, p.products_image_med, p.products_image_lrg, p.products_image_sm_1, p.products_image_xl_1, p.products_image_sm_2, p.products_image_xl_2, p.products_image_sm_3, p.products_image_xl_3, p.products_image_sm_4, p.products_image_xl_4, p.products_image_sm_5, p.products_image_xl_5, p.products_image_sm_6, p.products_image_xl_6, p.products_price, p.products_weight, p.products_date_added, p.products_last_modified, date_format(p.products_date_available, '%Y-%m-%d') as products_date_available, p.products_status, p.products_tax_class_id, p.manufacturers_id, p.products_price, p.products_price1, p.products_price2, p.products_price3, p.products_price4, p.products_price5, p.products_price6, p.products_price7, p.products_price8, p.products_price9, p.products_price10, p.products_price11, p.products_price1_qty, p.products_price2_qty, p.products_price3_qty, p.products_price4_qty, p.products_price5_qty, p.products_price6_qty, p.products_price7_qty, p.products_price8_qty, p.products_price9_qty, p.products_price10_qty, p.products_price11_qty from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '" . (int)$pID . "' and p.products_id = pd.products_id and pd.language_id = '" . (int)$languages_id . "'");
+                $product_query = tep_db_query("select pd.products_name, pd.products_description, pd.products_head_title_tag, pd.products_head_desc_tag, pd.products_head_keywords_tag, pd.products_url, p.products_id, p.products_quantity, p.products_model, p.products_sku, p.products_image, p.products_image_med, p.products_image_lrg, p.products_image_sm_1, p.products_image_xl_1, p.products_image_sm_2, p.products_image_xl_2, p.products_image_sm_3, p.products_image_xl_3, p.products_image_sm_4, p.products_image_xl_4, p.products_image_sm_5, p.products_image_xl_5, p.products_image_sm_6, p.products_image_xl_6, p.products_price, p.products_weight, p.products_date_added, p.products_last_modified, date_format(p.products_date_available, '%Y-%m-%d') as products_date_available, p.products_status, p.products_tax_class_id, p.manufacturers_id, p.products_price, p.products_price1, p.products_price2, p.products_price3, p.products_price4, p.products_price5, p.products_price6, p.products_price7, p.products_price8, p.products_price9, p.products_price10, p.products_price11, p.products_price1_qty, p.products_price2_qty, p.products_price3_qty, p.products_price4_qty, p.products_price5_qty, p.products_price6_qty, p.products_price7_qty, p.products_price8_qty, p.products_price9_qty, p.products_price10_qty, p.products_price11_qty from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where p.products_id = '" . (int)$pID . "' and p.products_id = pd.products_id and pd.language_id = '" . (int)$languages_id . "'");
                 $product = tep_db_fetch_array($product_query);
                 if (!empty($product)){
                   $pInfo->objectInfo($product);
@@ -1122,7 +1181,6 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 $products_description = $_POST['products_description'];
                 $products_url = $_POST['products_url'];
               }
-
               $manufacturers_array = array(array('id' => '', 'text' => TEXT_NONE));
               $manufacturers_query = tep_db_query("select manufacturers_id, manufacturers_name from " . TABLE_MANUFACTURERS . " order by manufacturers_name");
               while ($manufacturers = tep_db_fetch_array($manufacturers_query)) {
@@ -1142,63 +1200,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 case '1':
                 default: $in_status = true; $out_status = false;
               }
-              ?>
-              <script type="text/javascript">
-                <!--
-                var dateAvailable = new ctlSpiffyCalendarBox("dateAvailable", "new_product", "products_date_available","btnDate1","<?php echo $pInfo->products_date_available; ?>",scBTNMODE_CUSTOMBLUE);
-                //-->
-              </script>
-              <script type="text/javascript"><!--
-              var tax_rates = new Array();
-              <?php
-              for ($i=0, $n=sizeof($tax_class_array); $i<$n; $i++) {
-                if ($tax_class_array[$i]['id'] > 0) {
-                  echo 'tax_rates["' . $tax_class_array[$i]['id'] . '"] = ' . tep_get_tax_rate($tax_class_array[$i]['id']) . ';' . "\n";
-                }
-              }
-              ?>
-              function doRound(x, places) {
-                return Math.round(x * Math.pow(10, places)) / Math.pow(10, places);
-              }
-              function getTaxRate() {
-                var selected_value = document.forms["new_product"].products_tax_class_id.selectedIndex;
-                var parameterVal = document.forms["new_product"].products_tax_class_id[selected_value].value;
-                if ( (parameterVal > 0) && (tax_rates[parameterVal] > 0) ) {
-                  return tax_rates[parameterVal];
-                } else {
-                  return 0;
-                }
-              }
-              function updateGross() {
-                var taxRate = getTaxRate();
-                var grossValue = document.forms["new_product"].products_price.value;
-                if (taxRate > 0) {
-                  grossValue = grossValue * ((taxRate / 100) + 1);
-                }
-                document.forms["new_product"].products_price_gross.value = doRound(grossValue, 4);
-              }
-              function updateNet() {
-                var taxRate = getTaxRate();
-                var netValue = document.forms["new_product"].products_price_gross.value;
-                if (taxRate > 0) {
-                  netValue = netValue / ((taxRate / 100) + 1);
-                }
-                document.forms["new_product"].products_price.value = doRound(netValue, 4);
-              }
-              function setRetailPrice() {
-                updateGross();
-                updateNet();
-              }
-              </script>
-              <?php
-              // editor functions
-              echo tep_load_html_editor();
-              $products_elements = '';
-              for ($i=0; $i<sizeof($languages); $i++) {
-                $products_elements .= 'products_description[' . $languages[$i]['id'] . '],';
-              }
-              echo tep_insert_html_editor($products_elements);
-              // editor functions eof
+
               // RCI start
               echo $cre_RCI->get('categories', 'pedittop');
               // RCI eof
@@ -1221,615 +1223,314 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 }
                 return true;
               }
+
               </script>
-              <form name="new_product" method="post" enctype="multipart/form-data" onSubmit="return OnSubmitForm();setRetailPrice()">
-              <table border="0" width="98%" cellspacing="0" cellpadding="2" align="center" class="data-table">
-                <tr>
-                  <td><h1 class="page-header">
-                    <?php
-                    $text_new_or_edit = (isset($_GET['pID'])) ? sprintf(TEXT_INFO_HEADING_EDIT_PRODUCT, tep_get_products_name($_GET['pID'], $language_id)) : sprintf(TEXT_NEW_PRODUCT, tep_output_generated_category_path($current_category_id));
-                    echo $text_new_or_edit;
-                    ?></h1>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
-                </tr>
-                <?php
-                // RCO start fieldsetdescr
-                if ($cre_RCO->get('categories', 'fieldsetdescr') !== true) {
-                  ?>
-                  <tr>
-                    <td colspan="2"><!-- tabs -->
-                      <table border="0" cellspacing="0" cellpadding="2" width="100%" align="center">
-                        <tr>
-                          <td class="main" valign="top" width="100%">
-                          <ul class="nav nav-tabs">
-                            <?php
-                            for ($i=0; $i<sizeof($languages); $i++) {
-                              ?>
-                              <li <?php echo (($languages[$i]['id'] == 1)? 'class="active"':'');?>><a aria-expanded="true" href="#default-tab-<?php echo $languages[$i]['id'];?>" data-toggle="tab" style="border-top:1px solid #C1CCD1 !important; border-left:1px solid #C1CCD1 !important;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name'],'align="absmiddle" style="height:16px; width:30px;"') . '&nbsp;' .$languages[$i]['name'];?></a></li>
-                          <?php
-                            }
-                          echo '</ul>';
-                          echo '<div class="tab-content" style="border-left:1px solid #C1CCD1;border-right:1px solid #C1CCD1;border-bottom:1px solid #C1CCD1;">';
-                            for ($i=0; $i<sizeof($languages); $i++) {
-                              ?>
-                             <div class="tab-pane fade in <?php echo (($languages[$i]['id'] == 1)? 'active':'');?>" id="default-tab-<?php echo $languages[$i]['id'];?>">
-                                <table width="100%"  border="0" cellspacing="0" cellpadding="0" summary="tab table">
-                                  <tr>
-                                    <td valign="top"><table border="0" cellspacing="4" cellpadding="4" summary="Title table">
-                                      <tr valign="top">
-                                        <td class="main"><strong><?php echo TEXT_PRODUCTS_NAME; ?></strong></td>
-                                        <td class="main"><?php echo tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? $products_name[$languages[$i]['id']] : tep_get_products_name($pInfo->products_id, $languages[$i]['id'])), 'size="64" maxlength="64"'); ?></td>
-                                      </tr>
-                                      <tr>
-                                        <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '1'); ?></td>
-                                      </tr>
-                                      <tr valign="top">
-                                        <td class="main"><?php echo '<strong>' . TEXT_PRODUCTS_URL . '</strong><br><small>' . TEXT_PRODUCTS_URL_WITHOUT_HTTP . '</small>'; ?></td>
-                                        <td class="main"><?php echo tep_draw_input_field('products_url[' . $languages[$i]['id'] . ']', (isset($products_url[$languages[$i]['id']]) ? $products_url[$languages[$i]['id']] : tep_get_products_url($pInfo->products_id, $languages[$i]['id'])), 'size="64" maxlength="255"'); ?></td>
-                                      </tr>
-                                      <tr>
-                                        <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '1'); ?></td>
-                                      </tr>
-                                    </table>
-                                    <?php if ($parentid["products_parent_id"] == 0) { ?>
-                                    <table width="100%"  border="0" cellspacing="4" cellpadding="4" summary="description tabe">
-                                      <tr valign="top">
-                                        <td class="main"><strong><?php echo TEXT_PRODUCTS_DESCRIPTION; ?></strong></td>
-                                      </tr>
-                                      <tr>
-                                        <td><?php echo tep_draw_textarea_field('products_description[' . $languages[$i]['id'] . ']', 'soft', '70', '15', (isset($products_description[$languages[$i]['id']]) ? $products_description[$languages[$i]['id']] : tep_get_products_description($pInfo->products_id, $languages[$i]['id']))); ?></td>
-                                      </tr>
-                                    </table>
-                                    <?php
-                                      }
+              <!-- LEFT PANEL start -->
+              <?php
+              // RCO start fieldsetdescr
+              if ($cre_RCO->get('categories', 'fieldsetdescr') !== true) {                       
+                ?>
+                <div class="product-lang-content">
+                  <?php
+                  for ($i=0; $i<sizeof($languages); $i++) {
+                    $display = ($languages[$i]['id'] == $_SESSION['languages_id']) ? '' : 'display:none;'
+                    ?>
+                    <div style="<?php echo $display; ?>" class="product-lang-pane <?php echo (($languages[$i]['id'] == $_SESSION['languages_id']) ? 'active' : '');?>" id="default-pane-<?php echo $languages[$i]['id'];?>">
 
-                                    // RCO start fieldsetmeta
-                                    if ($cre_RCO->get('categories', 'fieldsetmeta') !== true) {
-                                      if ($parentid["products_parent_id"] == 0) {
-                                      ?>
-                                      <table width="100%"  border="0" cellspacing="3" cellpadding="0" summary="meta content holder table">
-                                        <tr>
-                                          <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                                        </tr>
-                                        <tr>
-                                          <td class="main"><fieldset><legend><?php echo TEXT_PRODUCT_METTA_INFO; ?></legend>
-                                            <table width="100%"  border="0" cellspacing="3" cellpadding="3">
-                                              <tr>
-                                                <td class="main"><strong><?php echo TEXT_PRODUCTS_PAGE_TITLE;?></strong></td>
-                                              </tr>
-                                              <tr>
-                                                <td class="main"><?php echo tep_draw_textarea_field('products_head_title_tag[' . $languages[$i]['id'] . ']', 'soft', '15', '2', (isset($products_head_title_tag[$languages[$i]['id']]) ? $products_head_title_tag[$languages[$i]['id']] : tep_get_products_head_title_tag($pInfo->products_id, $languages[$i]['id'])),'style="width:100%"'); ?></td>
-                                              </tr>
-                                            </table>
-                                            <table width="100%"  border="0" cellspacing="3" cellpadding="3">
-                                              <tr class="main">
-                                                <td width="50%"><strong><?php echo TEXT_PRODUCTS_HEADER_DESCRIPTION;?></strong></td>
-                                                <td width="50%"><strong><?php echo TEXT_PRODUCTS_KEYWORDS; ?></strong></td>
-                                              </tr>
-                                              <tr class="main">
-                                                <td><?php echo tep_draw_textarea_field('products_head_desc_tag[' . $languages[$i]['id'] . ']', 'soft', '35', '5', (isset($products_head_desc_tag[$languages[$i]['id']]) ? $products_head_desc_tag[$languages[$i]['id']] : tep_get_products_head_desc_tag($pInfo->products_id, $languages[$i]['id'])),'style="width:100%"'); ?></td>
-                                                <td><?php echo tep_draw_textarea_field('products_head_keywords_tag[' . $languages[$i]['id'] . ']', 'soft', '35', '5', (isset($products_head_keywords_tag[$languages[$i]['id']]) ? $products_head_keywords_tag[$languages[$i]['id']] : tep_get_products_head_keywords_tag($pInfo->products_id, $languages[$i]['id'])),'style="width:100%"'); ?></td>
-                                              </tr>
-                                            </table>
-                                          </fieldset></td>
-                                        </tr>
-                                      </table>
-                                      <?php
-                                     }
-                                    }
-                                    ?>
-                                  </tr>
-                                </table>
-                              </div>
+                    <!-- PRODUCT INFO start -->
+                    <div class="ml-2 mr-2">
+                      <div class="main-heading"><span>Product Info</span>
+                        <div class="main-heading-footer"></div>
+                      </div>             
+
+                      <div class="form-group row mb-3 m-t-20">
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo TEXT_PRODUCTS_NAME; ?></label>
+                        <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
+                          <?php echo tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? $products_name[$languages[$i]['id']] : tep_get_products_name($pInfo->products_id, $languages[$i]['id'])), 'id="products_name_' . $languages[$i]['id'] . '"class="form-control f-w-600 f-s-12 p-l-10 p-r-10"'); ?>
+                        </div>
+
+                        <div class="col-xs-1 p-l-0 p-r-0 p-relative">
+                          <div class="notify-container-name rounded-left rounded-right"><span class="text-black">Copied!</span></div>
+                          <div id="name-ctc-options" class="btn-group btn-xs"> <a aria-expanded="false" href="javascript:;" data-toggle="dropdown" class="f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
+                            <ul id="name-ctc-list" class="dropdown-menu pull-left">
                               <?php
-                            }
-                            ?>
-
+                              for ($j=0; $j<sizeof($languages); $j++) {
+                                ?>
+                                <li><a data-container="body" data-lang-name="<?php echo ucwords($languages[$j]['name']); ?>" data-lang-id="<?php echo $languages[$j]['id']; ?>" aria-expanded="false" href="javscript:;"><i class="fa fa-clipboard mr-1" aria-hidden="true"></i><?php echo sprintf(TEXT_COPY_LANG_TO_CLIPBOARD, $languages[$j]['name']);?></a></li>
+                                <?php
+                              }
+                              ?>
+                            </ul>
                           </div>
-                          <script type="text/javascript">
-                            //<![CDATA[
-                            setupAllTabs();
-                            //]]>
-                          </script>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <?php
-                } // RCO eof fieldsetdescr
+                        </div>
+                      </div>
 
-                // RCO start fieldsetpinfo
-                if ($cre_RCO->get('categories', 'fieldsetpinfo') !== true) {
-                  ?>
-                  <tr>
-                    <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '10'); ?></td>
-                  </tr>
-                  <tr>
-                    <td colspan="2"><fieldset><legend><?php echo TEXT_GENERAL_OPTIONS; ?></legend>
-                      <table width="100%"  border="0" cellspacing="0" cellpadding="0">
-                        <tr valign="top">
-                          <td width="50%"><table  border="0" cellspacing="2" cellpadding="2">
-                            <tr>
-                              <td class="main"><?php echo TEXT_PRODUCTS_STATUS; ?></td>
-                              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_status', '1', $in_status) . '&nbsp;' . TEXT_PRODUCT_AVAILABLE . '&nbsp;' . tep_draw_radio_field('products_status', '0', $out_status) . '&nbsp;' . TEXT_PRODUCT_NOT_AVAILABLE; ?></td>
-                            </tr>
-                            <tr>
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                            </tr>
-                            <tr>
-                              <td class="main"><?php echo TEXT_PRODUCTS_DATE_AVAILABLE; ?><br><small><?php DATE_FORMAT;?></small></td>
-                              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;'; ?><script script type="text/javascript">dateAvailable.writeControl(); dateAvailable.dateFormat="yyyy-MM-dd";</script></td>
-                            </tr>
-                            <tr>
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                            </tr>
-                            <tr>
-                              <td class="main"><?php echo TEXT_PRODUCTS_MANUFACTURER; ?></td>
-                              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, $pInfo->manufacturers_id); ?></td>
-                            </tr>
-                          </table></td>
-                          <td width="50%"><table  border="0" cellspacing="2" cellpadding="2">
-                            <tr>
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                            </tr>
-                            <tr>
-                              <td class="main"><?php echo TEXT_PRODUCTS_QUANTITY; ?></td>
-                              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_quantity', $pInfo->products_quantity); ?></td>
-                            </tr>
-                            <tr>
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                            </tr>
-                            <tr>
-                              <td class="main"><?php echo TEXT_PRODUCTS_MODEL; ?></td>
-                              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_model', $pInfo->products_model); ?></td>
-                            </tr>
-                            <tr>
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                            </tr>
-                            <tr>
-                              <td class="main"><?php echo TEXT_PRODUCTS_WEIGHT; ?></td>
-                              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_weight', $pInfo->products_weight); ?></td>
-                            </tr>
-                            <tr>
-                              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                            </tr>
-                          </table></td>
-                        </tr>
-                      </table>
-                      <table width="100%"  border="0" cellspacing="2" cellpadding="2">
-                        <tr bgcolor="#ebebff">
-                          <td class="main"><?php echo TEXT_PRODUCTS_TAX_CLASS; ?></td>
-                          <td class="main"><?php echo '&nbsp;' . tep_draw_pull_down_menu('products_tax_class_id', $tax_class_array, $pInfo->products_tax_class_id, 'onchange="updateGross()"'); ?></td>
-                        </tr>
-                        <tr bgcolor="#ebebff">
-                          <td class="main"><?php echo TEXT_PRODUCTS_PRICE_NET; ?></td>
-                          <td class="main"><?php echo '&nbsp;' . tep_draw_input_field('products_price', $pInfo->products_price, 'onKeyUp="updateGross()"'); ?></td>
-                        </tr>
-                        <tr bgcolor="#ebebff">
-                          <td class="main"><?php echo TEXT_PRODUCTS_PRICE_GROSS; ?></td>
-                          <td class="main"><?php echo '&nbsp;' . tep_draw_input_field('products_price_gross', $pInfo->products_price, 'OnKeyUp="updateNet()"'); ?></td>
-                        </tr>
-                        <script type="text/javascript">
-                          <!--
-                          updateGross();
-                          //-->
-                        </script>
-                      </table>
-                    </fieldset></td>
-                  </tr>
-                    <?php
-                } // RCO eof fieldsetpinfo
-                ?>
-                <?php
-                // RCO start fieldsetimages
-                if ($cre_RCO->get('categories', 'fieldsetimages') !== true) {
-                  ?>
-                  <tr>
-                    <td colspan="2">
-                      <fieldset><legend><!-- Product Images --><?php echo TEXT_PRODUCT_IMAGES;?></legend>
-                        <table border="0" cellpadding="2" cellspacing="2" width="100%">
-                          <!-- // BOF: MaxiDVD Added for Ulimited Images Pack! -->
-                          <tr>
-                            <td class="dataTableRow" valign="top">
-                              <span class="main"><?php echo TEXT_PRODUCTS_IMAGE_NOTE; ?></span>
-                              <br>
-                              <span class= "main"><strong><?php echo TEXT_UPLOAD_PRODUCTS_IMAGE; ?></strong></span>
-                              <br>
-                              <?php echo tep_draw_file_field('products_image') . tep_draw_hidden_field('products_image_previous', $pInfo->products_image); ?>
-                              <br>
-                              <select name="products_image_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                            </td>
-                            <td class="dataTableRow" valign="top">
-                              <span class="smallText">
-                                <?php if (($pID) && ($pInfo->products_image) != '')
-                                echo tep_draw_separator('pixel_trans.gif', '24', '17" align="left') . $pInfo->products_image . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image, $pInfo->products_image, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="dataTableRow" valign="top">
-                              <span class="main"><?php echo TEXT_PRODUCTS_IMAGE_MEDIUM; ?></span>
-                              <br>
-                              <span class= "main"><strong><?php echo TEXT_UPLOAD_PRODUCTS_IMAGE; ?></strong></span>
-                              <br>
-                              <?php echo tep_draw_file_field('products_image_med') . tep_draw_hidden_field('products_image_med_previous', $pInfo->products_image_med); ?>
-                              <br>
-                              <select name="products_image_med_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                            </td>
-                            <td class="dataTableRow" valign="top">
-                              <span class="smallText">
-                                <?php if (($pID) && ($pInfo->products_image_med) != '')
-                                echo tep_draw_separator('pixel_trans.gif', '24', '17" align="left') . $pInfo->products_image_med . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_med, $pInfo->products_image_med, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_med" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_med" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="dataTableRow" valign="top">
-                              <span class="main"><?php echo TEXT_PRODUCTS_IMAGE_LARGE; ?></span>
-                              <br>
-                              <span class= "main"><strong><?php echo TEXT_UPLOAD_PRODUCTS_IMAGE; ?></strong></span>
-                              <br>
-                              <?php echo tep_draw_file_field('products_image_lrg') . tep_draw_hidden_field('products_image_lrg_previous', $pInfo->products_image_lrg); ?>
-                              <br>
-                              <select name="products_image_med_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                            </td>
-                            <td class="dataTableRow" valign="top">
-                              <span class="smallText">
-                                <?php if (($pID) && ($pInfo->products_image_lrg) != '')
-                                echo tep_draw_separator('pixel_trans.gif', '24', '17" align="left') . $pInfo->products_image_lrg . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_lrg, $pInfo->products_image_lrg, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_lrg" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_lrg" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?>
-                              </span>
-                            </td>
-                          </tr>
-                        </table>
-                      </fieldset>
-                    </td>
-                  </tr>
-                  <?php
-                } // RCO eof fieldsetimages
-                ?>
-                <tr>
-                  <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
-                </tr>
-                <?php
-                // RCO start fieldsetaddimages
-                if ($cre_RCO->get('categories', 'fieldsetaddimages') !== true) {
-                  if ($parentid["products_parent_id"] == 0) {
-                  if (ULTIMATE_ADDITIONAL_IMAGES == 'enable') {
-                    ?>
-                    <tr>
-                      <td class="main" colspan="2"><fieldset><legend><?php echo TEXT_PRODUCTS_IMAGE_ADDITIONAL;?></legend>
-                        <table border="0" cellpadding="2" cellspacing="0" width="100%">
-                          <tr>
-                            <td class="smalltext"><table border="0" cellpadding="2" cellspacing="0" width="100%">
-                              <tr>
-                                <td class="smalltext" colspan="2" valign="top"><?php echo TEXT_PRODUCTS_IMAGE_TH_NOTICE; ?></td>
-                                <td class="smalltext" colspan="2" valign="top"><?php echo TEXT_PRODUCTS_IMAGE_XL_NOTICE; ?></td>
-                              </tr>
-                            </table>
-                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="data-table">
-                              <tr>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText"><?php echo TEXT_PRODUCTS_IMAGE_SM_1; ?></span></td>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText">
-                                  <?php echo tep_draw_file_field('products_image_sm_1') . tep_draw_hidden_field('products_image_sm_1_previous', $pInfo->products_image_sm_1); ?>
-                                  <br>
-                                  <select name="products_image_sm_1_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </span></td>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText"><?php echo TEXT_PRODUCTS_IMAGE_XL_1; ?></span></td>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText">
-                                  <?php echo tep_draw_file_field('products_image_xl_1') . tep_draw_hidden_field('products_image_xl_1_previous', $pInfo->products_image_xl_1); ?>
-                                  <br>
-                                  <select name="products_image_xl_1_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </span></td>
-                              </tr>
+                      <div class="form-group row mb-3">
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label pr-0 getpro main-text mt-1" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>Listing Blurb <span class="label label-theme bg-red ml-1">PRO</span></label>
+                        <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
+                          <textarea readonly class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="col-xs-1 p-l-0 p-r-0"> </div>
+                      </div>
+
+                      <div class="form-group row mb-3">
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo TEXT_PRODUCTS_DESCRIPTION; ?></label>
+                        <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
+                          <div id="summernote">
+                            <?php echo tep_draw_textarea_field('products_description[' . $languages[$i]['id'] . ']', 'soft', '70', '15', (isset($products_description[$languages[$i]['id']]) ? $products_description[$languages[$i]['id']] : tep_get_products_description($pInfo->products_id, $languages[$i]['id'])), 'class="form-control" id="products_description_' . $languages[$i]['id'] . '"'); ?>
+                          </div>
+                        </div>
+                        <div class="col-xs-1 p-l-0 p-r-0">
+                          <div class="notify-container-desc rounded-left rounded-right"><span class="text-black">Copied!</span></div>                            
+                          <div id="desc-ctc-options" class="btn-group btn-xs"> <a aria-expanded="false" href="javascript:;" style="color:#666" data-toggle="dropdown" class="f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
+                            <ul id="desc-ctc-list" class="dropdown-menu pull-left">
                               <?php
-                              if (($pID) && ($pInfo->products_image_sm_1) != '' or ($pInfo->products_image_xl_1) != '') {
+                              for ($j=0; $j<sizeof($languages); $j++) {
                                 ?>
-                                <tr>
-                                  <td class="infobox-listing-even" colspan="2" valign="top"><?php if (tep_not_null($pInfo->products_image_sm_1)) { ?>
-                                    <span class="smallText"><?php echo $pInfo->products_image_sm_1 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_sm_1, $pInfo->products_image_sm_1, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_sm_1" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_sm_1" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?></span>
-                                    <?php } ?>
-                                  </td>
-                                  <td class="infobox-listing-even" colspan="2" valign="top"><?php if (tep_not_null($pInfo->products_image_xl_1)) { ?>
-                                    <span class="smallText"><?php echo $pInfo->products_image_xl_1 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_xl_1, $pInfo->products_image_xl_1, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_xl_1" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_xl_1" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?></span>
-                                    <?php } ?>
-                                  </td>
-                                </tr>
+                                <li><a data-lang-name="<?php echo ucwords($languages[$j]['name']); ?>" data-lang-id="<?php echo $languages[$j]['id']; ?>" aria-expanded="false" href="javscript:;"><i class="fa fa-clipboard mr-1" aria-hidden="true"></i><?php echo sprintf(TEXT_COPY_LANG_TO_CLIPBOARD, $languages[$i]['name']);?></a></li>
                                 <?php
                               }
-                              ?>
-                              <tr>
-                                <td class="smallText" valign="top"><?php echo TEXT_PRODUCTS_IMAGE_SM_2; ?></td>
-                                <td class="smallText" valign="top">
-                                  <?php echo tep_draw_file_field('products_image_sm_2') . tep_draw_hidden_field('products_image_sm_2_previous', $pInfo->products_image_sm_2); ?>
-                                  <br>
-                                  <select name="products_image_sm_2_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </td>
-                                <td class="smallText" valign="top"><?php echo TEXT_PRODUCTS_IMAGE_XL_2; ?></td>
-                                <td class="smallText" valign="top">
-                                  <?php echo tep_draw_file_field('products_image_xl_2') . tep_draw_hidden_field('products_image_xl_2_previous', $pInfo->products_image_xl_2); ?>
-                                  <br>
-                                  <select name="products_image_xl_2_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </td>
-                              </tr>
-                              <?php
-                              if (($pID) && ($pInfo->products_image_sm_2) != '' or ($pInfo->products_image_xl_2) != '') {
-                                ?>
-                                <tr>
-                                  <td class="smallText" valign="top" colspan="2"><?php if (tep_not_null($pInfo->products_image_sm_2)) { ?>
-                                    <?php echo $pInfo->products_image_sm_2 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_sm_2, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_sm_2" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_sm_2" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?>
-                                    <?php } ?>
-                                  </td>
-                                  <td class="smallText" valign="top" colspan="2"><?php if (tep_not_null($pInfo->products_image_xl_2)) { ?>
-                                    <?php echo $pInfo->products_image_xl_2 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_xl_2, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_xl_2" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_xl_2" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?>
-                                    <?php } ?>
-                                  </td>
-                                </tr>
-                                <?php
-                              }
-                              ?>
-                              <tr>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText"><?php echo TEXT_PRODUCTS_IMAGE_SM_3; ?></span></td>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText">
-                                  <?php echo tep_draw_file_field('products_image_sm_3') . tep_draw_hidden_field('products_image_sm_3_previous', $pInfo->products_image_sm_3); ?>
-                                  <br>
-                                  <select name="products_image_sm_3_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </span></td>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText"><?php echo TEXT_PRODUCTS_IMAGE_XL_3; ?></span></td>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText">
-                                  <?php echo tep_draw_file_field('products_image_xl_3') . tep_draw_hidden_field('products_image_xl_3_previous', $pInfo->products_image_xl_3); ?>
-                                  <br>
-                                  <select name="products_image_xl_3_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </span></td>
-                              </tr>
-                              <?php
-                              if (($pID) && ($pInfo->products_image_sm_3) != '' or ($pInfo->products_image_xl_3) != '') {
-                                ?>
-                                <tr>
-                                  <td class="infobox-listing-even" colspan="2" valign="top"><?php if (tep_not_null($pInfo->products_image_sm_3)) { ?>
-                                    <span class="smallText"><?php echo $pInfo->products_image_sm_3 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_sm_3, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_sm_3" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_sm_3" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?></span>
-                                    <?php } ?>
-                                  </td>
-                                  <td class="infobox-listing-even" colspan="2" valign="top"><?php if (tep_not_null($pInfo->products_image_xl_3)) { ?>
-                                    <span class="smallText"><?php echo $pInfo->products_image_xl_3 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_xl_3, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_xl_3" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_xl_3" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?></span>
-                                    <?php } ?>
-                                  </td>
-                                </tr>
-                                <?php
-                              }
-                              ?>
-                              <tr>
-                                <td class="smallText" valign="top"><?php echo TEXT_PRODUCTS_IMAGE_SM_4; ?></td>
-                                <td class="smallText" valign="top">
-                                  <?php echo tep_draw_file_field('products_image_sm_4') . tep_draw_hidden_field('products_image_sm_4_previous', $pInfo->products_image_sm_4); ?>
-                                  <br>
-                                  <select name="products_image_sm_4_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </td>
-                                <td class="smallText" valign="top"><?php echo TEXT_PRODUCTS_IMAGE_XL_4; ?></td>
-                                <td class="smallText" valign="top">
-                                  <?php echo tep_draw_file_field('products_image_xl_4') . tep_draw_hidden_field('products_image_xl_4_previous', $pInfo->products_image_xl_4); ?>
-                                  <br>
-                                  <select name="products_image_xl_4_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </td>
-                              </tr>
-                              <?php
-                              if (($pID) && ($pInfo->products_image_sm_4) != '' or ($pInfo->products_image_xl_4) != '') {
-                                ?>
-                                <tr>
-                                  <td class="smallText" valign="top" colspan="2"><?php if (tep_not_null($pInfo->products_image_sm_4)) { ?>
-                                    <?php echo $pInfo->products_image_sm_4 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_sm_4, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_sm_4" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_sm_4" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?>
-                                    <?php } ?>
-                                  </td>
-                                  <td class="smallText" valign="top" colspan="2"><?php if (tep_not_null($pInfo->products_image_xl_4)) { ?>
-                                    <?php echo $pInfo->products_image_xl_4 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_xl_4, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_xl_4" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_xl_4" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?>
-                                    <?php } ?>
-                                  </td>
-                                </tr>
-                                <?php
-                              }
-                              ?>
-                              <tr>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText"><?php echo TEXT_PRODUCTS_IMAGE_SM_5; ?></span></td>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText">
-                                  <?php echo tep_draw_file_field('products_image_sm_5') . tep_draw_hidden_field('products_image_sm_5_previous', $pInfo->products_image_sm_5); ?>
-                                  <br>
-                                  <select name="products_image_sm_5_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </span></td>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText"><?php echo TEXT_PRODUCTS_IMAGE_XL_5; ?></span></td>
-                                <td class="infobox-listing-even" valign="top"><span class="smallText">
-                                  <?php echo tep_draw_file_field('products_image_xl_5') . tep_draw_hidden_field('products_image_xl_5_previous', $pInfo->products_image_xl_5); ?>
-                                  <br>
-                                  <select name="products_image_xl_5_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </span></td>
-                              </tr>
-                              <?php
-                              if (($pID) && ($pInfo->products_image_sm_5) != '' or ($pInfo->products_image_xl_5) != '') {
-                                ?>
-                                <tr>
-                                  <td class="infobox-listing-even" colspan="2" valign="top"><?php if (tep_not_null($pInfo->products_image_sm_5)) { ?>
-                                    <span class="smallText"><?php echo $pInfo->products_image_sm_5 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_sm_5, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_sm_5" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_sm_5" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?></span>
-                                    <?php } ?>
-                                  </td>
-                                  <td class="infobox-listing-even" colspan="2" valign="top"><?php if (tep_not_null($pInfo->products_image_xl_5)) { ?>
-                                    <span class="smallText"><?php echo $pInfo->products_image_xl_5 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_xl_5, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_xl_5" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_xl_5" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?></span>
-                                    <?php } ?>
-                                  </td>
-                                </tr>
-                                <?php
-                              }
-                              ?>
-                              <tr>
-                                <td class="smallText" valign="top"><?php echo TEXT_PRODUCTS_IMAGE_SM_6; ?></td>
-                                <td class="smalltext" valign="top">
-                                  <?php echo tep_draw_file_field('products_image_sm_6') . tep_draw_hidden_field('products_image_sm_6_previous', $pInfo->products_image_sm_6); ?>
-                                  <br>
-                                  <select name="products_image_sm_6_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </td>
-                                <td class="smallText" valign="top"><?php echo TEXT_PRODUCTS_IMAGE_XL_6; ?></td>
-                                <td class="smalltext" valign="top">
-                                  <?php echo tep_draw_file_field('products_image_xl_6') . tep_draw_hidden_field('products_image_xl_6_previous', $pInfo->products_image_xl_6); ?>
-                                  <br>
-                                  <select name="products_image_xl_6_destination" class="dirWidth" id="dirPath" ><?php echo $file_dir; ?></select>
-                                  </td>
-                              </tr>
-                              <?php
-                              if (($pID) && ($pInfo->products_image_sm_6) != '' or ($pInfo->products_image_xl_6) != '') {
-                                ?>
-                                <tr>
-                                  <td class="smallText" valign="top" colspan="2"><?php if (tep_not_null($pInfo->products_image_sm_6)) { ?>
-                                    <?php echo $pInfo->products_image_sm_6 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_sm_6, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_sm_6" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_sm_6" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?>
-                                    <?php } ?>
-                                  </td>
-                                  <td class="smallText" valign="top" colspan="2"><?php if (tep_not_null($pInfo->products_image_xl_6)) { ?>
-                                    <?php echo $pInfo->products_image_xl_6 . '<br>' . tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $pInfo->products_image_xl_6, '', SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="left" hspace="0" vspace="5"') . '<br>'. tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="unlink_image_xl_6" value="yes">' . TEXT_PRODUCTS_IMAGE_REMOVE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '5', '15') . '&nbsp;<input type="checkbox" name="delete_image_xl_6" value="yes">' . TEXT_PRODUCTS_IMAGE_DELETE_SHORT . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '42'); ?>
-                                    <?php } ?>
-                                  </td>
-                                </tr>
-                                <?php
-                              }
-                              ?>
-                            </table></td>
-                          </tr>
-                        </table>
-                      </fieldset></td>
-                    </tr>
-                    <?php
-                  } else {
-                    echo tep_draw_hidden_field('products_image_sm_1_previous', $pInfo->products_image_sm_1) .
-                    tep_draw_hidden_field('products_image_xl_1_previous', $pInfo->products_image_xl_1) .
-                    tep_draw_hidden_field('products_image_sm_2_previous', $pInfo->products_image_sm_2) .
-                    tep_draw_hidden_field('products_image_xl_2_previous', $pInfo->products_image_xl_2) .
-                    tep_draw_hidden_field('products_image_sm_3_previous', $pInfo->products_image_sm_3) .
-                    tep_draw_hidden_field('products_image_xl_3_previous', $pInfo->products_image_xl_3) .
-                    tep_draw_hidden_field('products_image_sm_4_previous', $pInfo->products_image_sm_4) .
-                    tep_draw_hidden_field('products_image_xl_4_previous', $pInfo->products_image_xl_4) .
-                    tep_draw_hidden_field('products_image_sm_5_previous', $pInfo->products_image_sm_5) .
-                    tep_draw_hidden_field('products_image_xl_5_previous', $pInfo->products_image_xl_5) .
-                    tep_draw_hidden_field('products_image_sm_6_previous', $pInfo->products_image_sm_6) .
-                    tep_draw_hidden_field('products_image_xl_6_previous', $pInfo->products_image_xl_6);
-                  }
-                 }
-                } // RCO eof fieldsetaddimages
-                ?>
-                <tr>
-                  <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '5'); ?></td>
-                </tr>
-              </table>
-              <!-- begin the attribute presentation -->
-              <table border="3" cellspacing="5" cellpadding="2" align="center" bgcolor="000000">
-                <?php
-                $rows = 0;
-                $options_query = tep_db_query("select po.products_options_id, pot.products_options_name from " . TABLE_PRODUCTS_OPTIONS . " po, " . TABLE_PRODUCTS_OPTIONS_TEXT . " pot where pot.language_id = '" . $languages_id . "' and po.products_options_id = pot.products_options_text_id order by po.products_options_sort_order, pot.products_options_name");
-                while ($options = tep_db_fetch_array($options_query)) {
-                  $values_query = tep_db_query("select pov.products_options_values_id, pov.products_options_values_name from " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov, " . TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS . " p2p where pov.products_options_values_id = p2p.products_options_values_id and p2p.products_options_id = '" . $options['products_options_id'] . "' and pov.language_id = '" . $languages_id . "' order by pov.products_options_values_name");
-                  $header = false;
-                  while ($values = tep_db_fetch_array($values_query)) {
-                    $rows ++;
-                    if (!$header) {
-                      $header = true;
-                      ?>
-                      <tr valign="top">
-                        <td><table border="2" cellpadding="2" cellspacing="2" bgcolor="FFFFFF">
-                          <tr class="dataTableHeadingRow">
-                            <td colspan="4" class="attributeBoxContent" align="center"><!-- Active Attributes --><?php echo TEXT_ACTIVE_ATTRIBUTES?></td>
-                          </tr>
-                          <tr class="dataTableHeadingRow">
-                            <td class="dataTableHeadingContent" width="250" align="left"><?php echo $options['products_options_name']; ?></td>
-                            <td class="dataTableHeadingContent" width="50" align="center"><?php echo 'Prefix'; ?></td>
-                            <td class="dataTableHeadingContent" width="70" align="center"><?php echo 'Price'; ?></td>
-                            <td class="dataTableHeadingContent" width="70" align="center"><?php echo 'Sort Order'; ?></td>
-                          </tr>
+                              ?>                                
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row mb-3">
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo TEXT_PRODUCTS_URL; ?></label>
+                        <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
+                          <?php echo tep_draw_input_field('products_url[' . $languages[$i]['id'] . ']', (isset($products_url[$languages[$i]['id']]) ? $products_url[$languages[$i]['id']] : tep_get_products_url($pInfo->products_id, $languages[$i]['id'])), 'id="products_url_' . $languages[$i]['id'] . '" class="form-control" placeholder="http://www.mystore.com/this_product"'); ?>
+                        </div>
+                        <div class="col-xs-1 pl-1 m-t-1"><button onclick="goToUrl('<?php echo $languages[$i]['id']; ?>'); return false;" class="btn btn-white btn-xs"><i class="fa fa-external-link"></i></button></div>
+                      </div>
+                    </div>
+
+                    <!-- SEO & META TAGS start-->
+                    <div class="ml-2 mr-2">
+                      <div class="main-heading m-t-30"><span><?php echo TEXT_PRODUCT_METTA_INFO; ?></span>
+                        <div class="main-heading-footer"></div>
+                      </div>  
+
+                      <div class="form-group row mb-3 mt-3">
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo TEXT_EDIT_CATEGORIES_TITLE_TAG; ?></label>
+                        <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
                           <?php
-                    }
-                    $attributes = array();
-                    if (sizeof($_POST) > 0) {
-                      if (isset($_POST['option'][$rows])) {
-                        $attributes = array(
-                                            'products_attributes_id' => $_POST['option'][$rows],
-                                            'options_values_price' => $_POST['price'][$rows],
-                                            'price_prefix' => $_POST['prefix'][$rows],
-                                            'products_options_sort_order' => $_POST['products_options_sort_order'][$rows],
-                                           );
-                      }
-                    } else {
-                      $attributes_query = tep_db_query("select products_attributes_id, options_values_price, price_prefix, products_options_sort_order from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . $pInfo->products_id . "' and options_id = '" . $options['products_options_id'] . "' and options_values_id = '" . $values['products_options_values_id'] . "'");
-                      if (tep_db_num_rows($attributes_query) > 0) {
-                        $attributes = tep_db_fetch_array($attributes_query);
-                      }
-                    }
-                    ?>
-                    <tr class="dataTableRow">
-                      <td class="dataTableContent">
-                      <?php
-                        if (isset($attributes['products_attributes_id'])) {
-                          echo tep_draw_checkbox_field('option[' . $rows . ']', $attributes['products_attributes_id'], $attributes['products_attributes_id']) . '&nbsp;' . $values['products_options_values_name'];
-                        } else {
-                          echo tep_draw_checkbox_field('option[' . $rows . ']') . '&nbsp;' . $values['products_options_values_name'];
-                        }
-                      ?>&nbsp;</td>
-                      <td class="dataTableContent" width="50" align="center">
-                      <?php
-                        if (isset($attributes['price_prefix'])) {
-                          echo tep_draw_input_field('prefix[' . $rows . ']', $attributes['price_prefix'], 'size="2"');
-                        } else {
-                          echo tep_draw_input_field('prefix[' . $rows . ']', '', 'size="2"');
-                        }
-                      ?>
-                      </td>
-                      <td class="dataTableContent" width="70" align="center">
-                      <?php
-                        if (isset($attributes['options_values_price'])) {
-                          echo tep_draw_input_field('price[' . $rows . ']', $attributes['options_values_price'], 'size="7"');
-                        } else {
-                          echo tep_draw_input_field('price[' . $rows . ']', 0, 'size="7"');
-                        }
-                      ?>
-                      </td>
-                      <td class="dataTableContent" width="70" align="center">
-                      <?php
-                        if (isset($attributes['products_options_sort_order'])) {
-                          echo tep_draw_input_field('products_options_sort_order[' . $rows . ']', $attributes['products_options_sort_order'], 'size="7"');
-                        } else {
-                          echo tep_draw_input_field('products_options_sort_order[' . $rows . ']', 0, 'size="7"');
-                        }
-                      ?>
-                      </td>
-                    </tr>
+                          echo tep_draw_textarea_field('products_head_title_tag[' . $languages[$i]['id'] . ']', 'soft', '15', '2', (isset($products_head_title_tag[$languages[$i]['id']]) ? $products_head_title_tag[$languages[$i]['id']] : tep_get_products_head_title_tag($pInfo->products_id, $languages[$i]['id'])),'class="form-control"');
+                          ?>                      
+                        </div>
+                        <div class="col-xs-1 p-l-0 p-r-0">
+                          <div class="btn-group btn-xs "> <a aria-expanded="false" href="javascript:;" style="color:#666" data-toggle="dropdown" class=" f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
+                            <ul class="dropdown-menu pull-left">
+                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-1" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy English to Clipboard</a></li>
+                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-2" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy Hindi to Clipboard</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row mb-3">
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1">Meta Keywords</label>
+                        <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
+                          <?php
+                          echo tep_draw_textarea_field('products_head_keywords_tag[' . $languages[$i]['id'] . ']', 'soft', '35', '5', (isset($products_head_keywords_tag[$languages[$i]['id']]) ? $products_head_keywords_tag[$languages[$i]['id']] : tep_get_products_head_keywords_tag($pInfo->products_id, $languages[$i]['id'])),'class="form-control"');
+                          ?>                                         
+                        </div>
+                        <div class="col-xs-1 p-l-0 p-r-0">
+                          <div class="btn-group btn-xs "> <a aria-expanded="false" href="javascript:;" style="color:#666" data-toggle="dropdown" class=" f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
+                            <ul class="dropdown-menu pull-left">
+                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-1" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy English to Clipboard</a></li>
+                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-2" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy Hindi to Clipboard</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row mb-3">
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1">Meta Description</label>
+                        <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
+                          <?php
+                          echo tep_draw_textarea_field('products_head_desc_tag[' . $languages[$i]['id'] . ']', 'soft', '35', '5', (isset($products_head_desc_tag[$languages[$i]['id']]) ? $products_head_desc_tag[$languages[$i]['id']] : tep_get_products_head_desc_tag($pInfo->products_id, $languages[$i]['id'])),'class="form-control"');
+                          ?>  
+                        </div>
+                        <div class="col-xs-1 p-l-0 p-r-0">
+                          <div class="btn-group btn-xs"> <a aria-expanded="false" href="javascript:;" style="color:#666" data-toggle="dropdown" class=" f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
+                            <ul class="dropdown-menu pull-left">
+                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-1" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy English to Clipboard</a></li>
+                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-2" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy Hindi to Clipboard</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- SEO & META TAGS end-->                      
+                    <!-- PRODUCT INFO end -->
                     <?php
                   }
-                  if ($header) {
-                    ?>
-                      </table></td>
-                    </tr>
-                    <?php
-                  }
+                  ?>
+                </div> <!-- end product-lang-content -->
+                <?php
+              } // RCO eof fieldsetdescr
+              ?>
+
+              <!-- IMAGES start-->     
+              <div class="ml-2 mr-2">
+                <?php
+                $products_image = 'no_image.png';
+                $products_image_med = 'no_image.png';
+                $products_image_lrg = 'no_image.png';
+                if (isset($pInfo)) {
+                  if ($pInfo->products_image != '') $products_image = $pInfo->products_image;
+                  if ($pInfo->products_image_med != '') $products_image_med = $pInfo->products_image_med;
+                  if ($pInfo->products_image_lrg != '') $products_image_lrg = $pInfo->products_image_lrg;
                 }
-                ?>
-              </table>
-              <!-- end of attributes presentation -->
-              <table cellpadding="0" cellpadding="2" width="100%">
-                <tr>
-                  <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-                </tr>
-                <tr>
-                  <td valign="top" align="right"> <table align="right" border="0">
-                    <tr>
-                      <td class="main" align="right">
-                        <?php
-                        echo tep_draw_hidden_field('products_date_added', (tep_not_null($pInfo->products_date_added) ? $pInfo->products_date_added : date('Y-m-d')));
-                        echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . (isset($pID) && (int)$pID > 0 ? '&pID=' . $pID : '')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>';
-                        echo tep_image_submit('button_preview_upload.gif', 'Preview','name="Operation" onClick="document.pressed=this.value"');
-                        echo tep_image_submit('button_'.$form_action_text.'.gif',$form_action_text,'name="Operation" onClick="document.pressed=this.value"');
-                        ?>
+                ?>                         
+                <div class="main-heading m-t-30"><span>Images</span>
+                  <div class="main-heading-footer"></div>
+                </div>                  
+
+                <div class="form-group row mt-3 mb-3">
+                  <label class="col-md-2 control-label main-text mt-1">Main Image</label>
+                  <div class="col-md-10">
+                    <div class="media">
+                      <div class="lc-border p-10">
+                        <a class="media-left" style="min-width:<?php echo SMALL_IMAGE_WIDTH; ?>px;" href="javascript:;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $products_image, $products_image, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'class="media-object mt-2"'); ?></a>
+                        <div class="media-body mr-2 mb-0"><?php echo $products_image; if ($products_image != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs">Delete</span></a><?php } ?>
+                          <div class="input-group input-file p-r-30 p-t-20">
+                            <input type="text" name="products_image" class="form-control file-input" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" />
+                            <span class="input-group-btn hidden-xs">
+                              <!-- button class="btn btn-default btn-choose" type="button">Choose</button -->
+                              <button class="btn btn-default btn-reset" type="button">Reset</button>
+                            </span>
+                          </div>
+                          <div class="mt-2"><select name="products_image_destination" class="form-control w-50" id="dirPath" ><?php echo $file_dir; ?></select></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row mt-3 mb-3">
+                  <label class="col-md-2 control-label main-text mt-1">Thumbnail Image</label>
+                  <div class="col-md-10">
+                    <div class="media">
+                      <div class="lc-border p-10">
+                        <a class="media-left" style="min-width:<?php echo SMALL_IMAGE_WIDTH; ?>px;" href="javascript:;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $products_image_med, $products_image_med, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'class="media-object mt-2"'); ?></a>
+                        <div class="media-body mr-2 mb-0 p-l-20"><?php echo $products_image_med; if ($products_image_med != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs">Delete</span></a><?php } ?>
+                          <div class="input-group input-file p-r-30 p-t-20">                            
+                            <input type="text" name="products_image_med" class="form-control file-input" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" /><?php echo tep_draw_hidden_field('products_image_med_previous', $products_image_med); ?>
+                            <span class="input-group-btn hidden-xs">
+                              <!-- button class="btn btn-default btn-choose" type="button">Choose</button -->
+                              <button class="btn btn-default btn-reset" type="button">Reset</button>
+                            </span>
+                          </div>
+                          <div class="mt-2"><select name="products_image_med_destination" class="form-control w-50" id="dirPath" ><?php echo $file_dir; ?></select></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row mt-3 mb-3">
+                  <label class="col-md-2 col-xs-12 control-label main-text mt-1">Large Image</label>
+                  <div class="col-md-10 col-xs-12">
+                    <div class="media">
+                      <div class="lc-border p-10">
+                        <a class="media-left" style="min-width:<?php echo SMALL_IMAGE_WIDTH; ?>px;" href="javascript:;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $products_image_lrg, $products_image_lrg, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'class="media-object mt-2"'); ?></a>
+                        <div class="media-body mr-2 mb-0 p-l-20"><?php echo $products_image_lrg; if ($products_image_lrg != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs">Delete</span></a><?php } ?>
+                          <div class="input-group input-file p-r-30 p-t-20">
+                            <input type="text" name="products_image_lrg" class="form-control file-input" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" />
+                            <span class="input-group-btn hidden-xs">
+                              <!-- button class="btn btn-default btn-choose" type="button">Choose</button -->
+                              <button class="btn btn-default btn-reset" type="button">Reset</button>
+                            </span>
+                          </div>
+                          <div class="mt-2"><select name="products_image_lrg_destination" class="form-control w-50" id="dirPath" ><?php echo $file_dir; ?></select></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>                
+
+                <div class="form-group row mb-3">
+                  <label class="col-md-3 control-label pr-0 getpro main-text mt-1" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>Additional Images <span class="label label-theme bg-red ml-1">PRO</span></label>                    
+                  <div class="col-md-9">
+                    <div class="col-md-2"> <i class="fa fa-plus-square-o fa-3x disabled"></i></div>
+                  </div>
+                </div>               
+              </div>   
+              <!-- IMAGES end-->
+
+              <!-- PRICING RULES start-->
+              <div class="ml-2 mr-2">
+                <div class="main-heading m-t-30"><span>Pricing Rules</span>
+                  <div class="main-heading-footer"></div>
+                </div>  
+                <table class="table mt-2">
+                  <tbody>
+                    <tr class="table-row">
+                      <td class="table-col dark text-left p-r-5 p-l-5 table-th-valign-middle no-border">
+                        <div class="pull-left m-r-10 getpro main-text f-s-12 f-w-600" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>Quantity Price Breaks <span class="label label-theme m-l-5 bg-red">PRO</span></div>
+                        <div class="col-sm-6 p-l-10 getpro" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>
+                          <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> On" data-off="<i class='fa fa-times'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                        </div>
                       </td>
                     </tr>
-                  </table></td>
-                </tr>
-              </table>
-              </form>
+                    <tr class="table-row">
+                      <td class="table-col dark text-left p-r-5 p-l-5 table-th-valign-middle no-border">
+                        <div class="pull-left m-r-10 getpro main-text f-s-12 f-w-600" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>Customer Group Pricing Overrides <span class="label label-theme m-l-5 bg-orange">B2B</span></div>
+                        <div class="col-sm-6 p-l-10 getpro" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>
+                          <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> On" data-off="<i class='fa fa-times'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>                           
+                </table>
+              </div>
+              <!-- PRICING RULES end-->
+
+              <!-- SUB PRODUCTS start-->
+              <div class="ml-2 mr-2">
+                <div class="main-heading m-t-30"><span class="mr-0">Sub Products</span>
+                  <span class="getpro main-text f-s-12 f-w-600 mr-1" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'><span class="label label-theme m-l-5 bg-red" style="vertical-align:20%;">PRO</span></span>
+                  <span class="getpro" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'> 
+                    <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> On" data-off="<i class='fa fa-times'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                  </span>
+                  <div class="main-heading-footer"></div>
+                </div> 
+                <table class="table">
+                  <thead>
+                    <tr class="th-row">
+                      <th class="th-col text-center"><i class="fa fa-camera"></i></th>
+                      <th class="th-col text-left">Sub Product Name</th>
+                      <th class="th-col text-left hidden-xs">Model</th>
+                      <th class="th-col text-right">Price</th>
+                      <th class="th-col text-right hidden-xs">Action</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <!-- SUB PRODUCTS end -->
+
+              <!-- USER ACCESS SETTINGS start-->
+              <div class="ml-2 mr-2">              
+                <div class="main-heading m-t-30"><span>User Access Settings</span>
+                  <div class="main-heading-footer"></div>
+                </div>  
+                <table class="table mt-2">
+                  <tbody>
+                    <tr class="table-row">
+                      <td class="table-col dark text-left p-r-5 p-l-5 table-th-valign-middle no-border">
+                        <div class="pull-left m-r-10 getpro main-text f-s-12 f-w-600" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>Restrict Access <span class="label label-theme m-l-5 bg-orange">B2B</span></div>
+                        <div class="col-sm-6 p-l-10 getpro" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>
+                          <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> On" data-off="<i class='fa fa-times'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>                           
+                </table>
+              </div>
+              <!-- USER ACCESS SETTINGS end-->   
+
+              <!-- LEFT PANEL end -->
+              </div>
               <?php
               // new product previw begin
             } elseif (isset($action) && $action == 'new_product_preview') {
@@ -1857,7 +1558,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 $products_image_xl_5_destination = str_ireplace( "%2F", "/", $_POST['products_image_xl_5_destination']);
                 $products_image_xl_6_destination = str_ireplace( "%2F", "/", $_POST['products_image_xl_6_destination']);
               } else {
-                $product_query = tep_db_query("select p.products_id, pd.language_id, pd.products_name, pd.products_description, pd.products_head_title_tag, pd.products_head_desc_tag, pd.products_head_keywords_tag, pd.products_url, p.products_quantity, p.products_model, p.products_image, p.products_image_med, p.products_image_lrg, p.products_image_sm_1, p.products_image_xl_1, p.products_image_sm_2, p.products_image_xl_2, p.products_image_sm_3, p.products_image_xl_3, p.products_image_sm_4, p.products_image_xl_4, p.products_image_sm_5, p.products_image_xl_5, p.products_image_sm_6, p.products_image_xl_6, p.products_price, p.products_price1, p.products_price2, p.products_price3, p.products_price4, p.products_price5, p.products_price6, p.products_price7, p.products_price8, p.products_price9, p.products_price10, p.products_price11, p.products_price1_qty, p.products_price2_qty, p.products_price3_qty, p.products_price4_qty, p.products_price5_qty, p.products_price1_qty, p.products_price7_qty, p.products_price8_qty, p.products_price9_qty, p.products_price10_qty, products_price11_qty, p.products_qty_blocks, p.products_weight, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p.manufacturers_id  from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where pd.products_id = p.products_id and p.products_id = '" . (int)$pID . "'");
+                $product_query = tep_db_query("select p.products_id, pd.language_id, pd.products_name, pd.products_description, pd.products_head_title_tag, pd.products_head_desc_tag, pd.products_head_keywords_tag, pd.products_url, p.products_quantity, p.products_model, p.products_sku, p.products_image, p.products_image_med, p.products_image_lrg, p.products_image_sm_1, p.products_image_xl_1, p.products_image_sm_2, p.products_image_xl_2, p.products_image_sm_3, p.products_image_xl_3, p.products_image_sm_4, p.products_image_xl_4, p.products_image_sm_5, p.products_image_xl_5, p.products_image_sm_6, p.products_image_xl_6, p.products_price, p.products_price1, p.products_price2, p.products_price3, p.products_price4, p.products_price5, p.products_price6, p.products_price7, p.products_price8, p.products_price9, p.products_price10, p.products_price11, p.products_price1_qty, p.products_price2_qty, p.products_price3_qty, p.products_price4_qty, p.products_price5_qty, p.products_price1_qty, p.products_price7_qty, p.products_price8_qty, p.products_price9_qty, p.products_price10_qty, products_price11_qty, p.products_qty_blocks, p.products_weight, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p.manufacturers_id  from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd where pd.products_id = p.products_id and p.products_id = '" . (int)$pID . "'");
                 $product = tep_db_fetch_array($product_query);
                 $pInfo = new objectInfo($product);
                 $products_image_destination ='';
@@ -2131,7 +1832,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 <thead>
                   <tr class="th-row">
                     <th scope="col" class="th-col dark text-left"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></th>
-                    <th scope="col" class="th-col dark text-center d-none d-md-table-cell col-blank"><?php echo TABLE_HEADING_STATUS; ?></th>
+                    <th scope="col" class="th-col dark text-center d-none d-lg-table-cell col-blank"><?php echo TABLE_HEADING_STATUS; ?></th>
                     <th scope="col" class="th-col dark text-right"><?php echo TABLE_HEADING_ACTION; ?></th>
                   </tr>
                 </thead>
@@ -2167,8 +1868,8 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                     $col_selected = ($selected) ? ' selected' : '';
                     ?>
                       <td class="table-col dark text-left<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])) . '"><i class="fa fa-folder fa-lg text-warning mr-2"></i></a><b>' . $categories['categories_name'] . '</b>'; ?></td>
-                      <td class="table-col dark text-left<?php echo $col_selected; ?> d-none d-md-table-cell col-blank">&nbsp;</td>
-                      <td class="table-col dark text-right<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories['categories_id'] . '&action=edit_category') . '"><i class="fa fa-edit fa-lg text-info"></i></a>'; ?>
+                      <td class="table-col dark text-left<?php echo $col_selected; ?> d-none d-lg-table-cell col-blank">&nbsp;</td>
+                      <td class="table-col dark text-right<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories['categories_id'] . '&action=edit_category') . '"><i class="fa fa-edit fa-lg text-success"></i></a>'; ?>
                         <?php
                         if ($selected) {
                           echo '<i class="fa fa-long-arrow-right fa-lg text-success" style="margin-left:1px;"></i>';
@@ -2184,7 +1885,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                     $products_count = 0;
                     if (isset($_POST['search'])) {
                       $search = str_replace("'", "&#39;", tep_db_prepare_input($_POST['search']));
-                      $products_query = tep_db_query("SELECT p.products_id, pd.products_name, p.products_quantity, p.products_image, p.products_price, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p.products_model, p2c.categories_id
+                      $products_query = tep_db_query("SELECT p.products_id, pd.products_name, p.products_quantity, p.products_image, p.products_price, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p.products_model, p.products_sku, p2c.categories_id
                                                       FROM " . TABLE_PRODUCTS . " p,
                                                            " . TABLE_PRODUCTS_DESCRIPTION . " pd,
                                                            " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
@@ -2193,9 +1894,10 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                                                         and p.products_id = p2c.products_id
                                                         and (pd.products_name like '%" . tep_db_input($search) . "%' or
                                                              p.products_model like '%" . tep_db_input($search) . "%')
+                                                             p.products_sku like '%" . tep_db_input($search) . "%')
                                                       ORDER BY pd.products_name");
                     } else {
-                      $products_query = tep_db_query("SELECT p.products_id, pd.products_name, p.products_quantity, p.products_image, p.products_price, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p.products_model, p2c.categories_id
+                      $products_query = tep_db_query("SELECT p.products_id, pd.products_name, p.products_quantity, p.products_image, p.products_price, p.products_date_added, p.products_last_modified, p.products_date_available, p.products_status, p.products_model, p.products_sku, p2c.categories_id
                                                       FROM " . TABLE_PRODUCTS . " p,
                                                            " . TABLE_PRODUCTS_DESCRIPTION . " pd,
                                                            " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
@@ -2239,7 +1941,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                           echo '<tr class="table-row dark" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id']) . '\'">' . "\n";
                         }
                         $pcol_selected = ($pselected) ? ' selected' : '';
-  
+
                         ?>
                           <td class="table-col dark text-left<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '"><i class="fa fa-search fa-lg text-info mr-2"></i></a>' . $products['products_name']; ?></td>
                           <td class="table-col dark text-center<?php echo $col_selected; ?>">
@@ -2251,7 +1953,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                             }
                             ?>
                           </td>
-                          <td class="table-col dark text-right<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product') . '"><i class="fa fa-edit fa-lg text-info"></i></a>'; ?>
+                          <td class="table-col dark text-right<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product') . '"><i class="fa fa-edit fa-lg text-success"></i></a>'; ?>
                           <?php
                           if ($pselected) {
                             echo '<i class="fa fa-long-arrow-right fa-lg text-success" style="margin-left:1px;"></i>';
@@ -2281,16 +1983,11 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 </tbody>
               </table>
               <div class="row">
-                <div class="col">
-                  <div class="pagination-container">
-                    <div class="results-left"><?php echo '<div class="sidebar-text-sm">' . TEXT_CATEGORIES . '&nbsp;' . $categories_count . '</div><div>' . TEXT_PRODUCTS . '&nbsp;' . $products_count . '</div>'; ?></div>
-                  </div>              
-                </div>
-                <div class="col">
+                <div class="col mt-1 w-100">
                   <div class="float-right mr-2 mt-0 mb-3" role="group">
                     <?php
                     if (sizeof($cPath_array) > 0) { 
-                      echo '<button class="btn btn-success btn-sm mr-1" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . 'cID=' . $current_category_id) . '\'">' . IMAGE_BACK . '</button>';
+                      echo '<button class="btn btn-default btn-sm mr-1" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . 'cID=' . $current_category_id) . '\'">' . IMAGE_BACK . '</button>';
                     }
                     // RCO start listing buttons
                     if ($cre_RCO->get('categories', 'listingbuttons') !== true) {
@@ -2313,16 +2010,9 @@ include(DIR_WS_INCLUDES . 'column_left.php');
               <?php 
             }
             ?>
-
           </div>
-          <div class="col-md-4 col-xl-3 dark panel-right rounded-right">
-<style>
-.dark .well { 
-  .border:1px solid #1a2229 !important;
-   background: rgb(17, 22, 27);
 
-}
-</style>            
+          <div class="col-md-4 col-xl-3 dark panel-right rounded-right">           
             <?php
             $heading = array();
             $contents = array();
@@ -2343,25 +2033,23 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 break;
               case 'delete_category':
                 $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_CATEGORY);
-                $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=delete_category_confirm&cPath=' . $cPath) . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
-                $contents[] = array('text' => TEXT_DELETE_CATEGORY_INTRO);
-                $contents[] = array('text' => '<br><b>' . $cInfo->categories_name . '</b>');
-                if ($cInfo->childs_count > 0) $contents[] = array('text' => '<br>' . sprintf(TEXT_DELETE_WARNING_CHILDS, $cInfo->childs_count));
-                if ($cInfo->products_count > 0) $contents[] = array('text' => '<br>' . sprintf(TEXT_DELETE_WARNING_PRODUCTS, $cInfo->products_count));
-                $contents[] = array('align' => 'center', 'text' => '<br><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>' . tep_image_submit('button_delete.gif', IMAGE_DELETE));
+                $contents[] = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=delete_category_confirm&cPath=' . $cPath) . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
+                if ($cInfo->childs_count > 0) $contents[] = array('text' => '<div class="row"><div class="col p-0 mt-3 ml-2 mr-2"><div class="note note-warning m-0"><h4 class="m-0">' . TEXT_WARNING . '</h4><p class="mb-0 mt-2">' . sprintf(TEXT_DELETE_WARNING_CHILDS, $cInfo->childs_count) . '</p></div></div></div>');     
+                if ($cInfo->products_count > 0) $contents[] = array('text' => '<div class="row"><div class="col p-0 mt-3 ml-2 mr-2"><div class="note note-warning m-0"><h4 class="m-0">' . TEXT_WARNING . '</h4><p class="mb-0 mt-2">' . sprintf(TEXT_DELETE_WARNING_PRODUCTS, $cInfo->products_count) . '</p></div></div></div>');     
+                $contents[] = array('text' => '<div class="row"><div class="col p-0 mt-3 ml-2 mr-2"><div class="note note-danger m-0 fw-400">' . sprintf(TEXT_DELETE_CATEGORY_INTRO, $cInfo->categories_name) . '</div></div></div>');
+                $contents[] = array('align' => 'center', 'text' => '<button type="button" class="btn btn-default btn-sm mr-2 mt-3 mb-4" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id)  . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-danger btn-sm mt-3 mb-4" type="submit">' . IMAGE_CONFIRM_DELETE . '</button>');
                 break;
               case 'move_category':
                 $heading[] = array('text' => TEXT_INFO_HEADING_MOVE_CATEGORY);
-                $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=move_category_confirm&cPath=' . $cPath) . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
-                $contents[] = array('text' => sprintf(TEXT_MOVE_CATEGORIES_INTRO, $cInfo->categories_name));
-                $contents[] = array('text' => '<br>' . sprintf(TEXT_MOVE, $cInfo->categories_name) . '<br>' . tep_draw_pull_down_menu('move_to_category_id', tep_get_category_tree(), $current_category_id));
-                $contents[] = array('align' => 'center', 'text' => '<br><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>' . tep_image_submit('button_move.gif', IMAGE_MOVE));
+                $contents[] = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=move_category_confirm&cPath=' . $cPath) . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
+                $contents[] = array('text' => '<div class="sidebar-text mt-3">' . sprintf(TEXT_MOVE_CATEGORIES_INTRO, $cInfo->categories_name) . '</div>');
+                $contents[] = array('text' => '<div class="sidebar-title mt-2">' . sprintf(TEXT_MOVE, $cInfo->categories_name) . '</div><div>' . tep_draw_pull_down_menu('move_to_category_id', tep_get_category_tree(), $current_category_id) . '</div>');
+                $contents[] = array('align' => 'center', 'text' => '<button type="button" class="btn btn-default btn-sm mr-2 mt-3 mb-4" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-info btn-sm mt-3 mb-4" type="submit">' . IMAGE_MOVE . '</button>');
                 break;
               case 'delete_product':
                 $heading[] = array('text' => TEXT_INFO_HEADING_DELETE_PRODUCT);
-                $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_confirm&cPath=' . $cPath) . tep_draw_hidden_field('products_id', $pInfo->products_id));
-                $contents[] = array('text' => TEXT_DELETE_PRODUCT_INTRO);
-                $contents[] = array('text' => '<br><b>' . $pInfo->products_name . '</b>');
+                $contents[] = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=delete_product_confirm&cPath=' . $cPath) . tep_draw_hidden_field('products_id', $pInfo->products_id));
+                $contents[] = array('text' => '<div class="row"><div class="col p-0 mt-3 ml-2 mr-2"><div class="note note-danger m-0 fw-400">' . sprintf(TEXT_DELETE_PRODUCT_INTRO, $pInfo->products_name) . '</div></div></div>');
                 $product_categories_string = '';
                 $product_categories = tep_generate_category_path($pInfo->products_id, 'product');
                 for ($i = 0, $n = sizeof($product_categories); $i < $n; $i++) {
@@ -2370,36 +2058,33 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                     $category_path .= $product_categories[$i][$j]['text'] . '&nbsp;&gt;&nbsp;';
                   }
                   $category_path = substr($category_path, 0, -16);
-                  $product_categories_string .= tep_draw_checkbox_field('product_categories[]', $product_categories[$i][sizeof($product_categories[$i])-1]['id'], true) . '&nbsp;' . $category_path . '<br>';
+                  $product_categories_string .= tep_draw_checkbox_field('product_categories[]', $product_categories[$i][sizeof($product_categories[$i])-1]['id'], true) . '<span class="sidebar-text ml-2">' . $category_path . '</span><br>';
                 }
                 $product_categories_string = substr($product_categories_string, 0, -4);
                 $contents[] = array('text' => '<br>' . $product_categories_string);
-                $contents[] = array('align' => 'center', 'text' => '<br><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>' . tep_image_submit('button_delete.gif', IMAGE_DELETE));
+                $contents[] = array('align' => 'center', 'text' => '<button type="button" class="btn btn-default btn-sm mr-2 mt-3 mb-4" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-danger btn-sm mt-3 mb-4" type="submit">' . IMAGE_CONFIRM_DELETE . '</button>');
                 break;
               case 'move_product':
                 $heading[] = array('text' => TEXT_INFO_HEADING_MOVE_PRODUCT);
-                $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=move_product_confirm&cPath=' . $cPath) . tep_draw_hidden_field('products_id', $pInfo->products_id));
-                $contents[] = array('text' => sprintf(TEXT_MOVE_PRODUCTS_INTRO, $pInfo->products_name));
-                $contents[] = array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br><b>' . tep_output_generated_category_path($pInfo->products_id, 'product') . '</b>');
-                $contents[] = array('text' => '<br>' . sprintf(TEXT_MOVE, $pInfo->products_name) . '<br>' . tep_draw_pull_down_menu('move_to_category_id', tep_get_category_tree(), $current_category_id));
-                $contents[] = array('align' => 'center', 'text' => '<br><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>' . tep_image_submit('button_move.gif', IMAGE_MOVE));
+                $contents[] = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=move_product_confirm&cPath=' . $cPath) . tep_draw_hidden_field('products_id', $pInfo->products_id));
+                $contents[] = array('text' => '<div class="sidebar-text mt-3">' . sprintf(TEXT_MOVE_PRODUCTS_INTRO, $pInfo->products_name));
+                $contents[] = array('text' => '<div class="sidebar-text mt-3">' . TEXT_INFO_CURRENT_CATEGORIES . '</div><div class="sidebar-title">' . tep_output_generated_category_path($pInfo->products_id, 'product') . '</div>');
+                $contents[] = array('text' => '<div class="sidebar-title mt-3">' . sprintf(TEXT_MOVE, $pInfo->products_name) . '</div><div>' . tep_draw_pull_down_menu('move_to_category_id', tep_get_category_tree(), $current_category_id) . '</div>');
+                $contents[] = array('align' => 'center', 'text' => '<button type="button" class="btn btn-default btn-sm mr-2 mt-3 mb-4" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-info btn-sm mt-3 mb-4" type="submit">' . IMAGE_MOVE . '</button>');
                 break;
               case 'copy_to':
-                $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_COPY_TO . '</b>');
-                $contents = array('form' => tep_draw_form('copy_to', FILENAME_CATEGORIES, 'action=copy_to_confirm&cPath=' . $cPath) . tep_draw_hidden_field('products_id', $pInfo->products_id));
-                $contents[] = array('text' => TEXT_INFO_COPY_TO_INTRO);
-                $contents[] = array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br><b>' . tep_output_generated_category_path($pInfo->products_id, 'product') . '</b>');
-                $contents[] = array('text' => '<br>' . TEXT_CATEGORIES . '<br>' . tep_draw_pull_down_menu('categories_id', tep_get_category_tree(), $current_category_id));
-                $contents[] = array('text' => '<br>' . TEXT_HOW_TO_COPY . '<br>' . tep_draw_radio_field('copy_as', 'link', true) . ' ' . TEXT_COPY_AS_LINK . '<br>' . tep_draw_radio_field('copy_as', 'duplicate') . ' ' . TEXT_COPY_AS_DUPLICATE);
-                $contents[] = array('text' => '<br>' . tep_image(DIR_WS_IMAGES . 'pixel_black.gif','','100%','3'));
+                $heading[] = array('text' => TEXT_INFO_HEADING_COPY_TO);
+                $contents[] = array('form' => tep_draw_form('copy_to', FILENAME_CATEGORIES, 'action=copy_to_confirm&cPath=' . $cPath) . tep_draw_hidden_field('products_id', $pInfo->products_id));
+                $contents[] = array('text' => '<div class="sidebar-text mt-3">' . TEXT_INFO_COPY_TO_INTRO . '</div>');
+                $contents[] = array('text' => '<div class="sidebar-text mt-3">' . TEXT_INFO_CURRENT_CATEGORIES . '</div><div class="sidebar-title">' . tep_output_generated_category_path($pInfo->products_id, 'product') . '</div>');
+                $contents[] = array('text' => '<div class="sidebar-text mt-3">' . TEXT_CATEGORIES . '</div><div>' . tep_draw_pull_down_menu('categories_id', tep_get_category_tree(), $current_category_id) . '</div>');
+                $contents[] = array('text' => '<div class="sidebar-text mt-3">' . TEXT_HOW_TO_COPY . '</div><div class="mt-2">' . tep_draw_radio_field('copy_as', 'link', true, null, 'onchange="setAttrText(\'link\');"') . '<span class="sidebar-text ml-1">' . TEXT_COPY_AS_LINK . '</span></div><div class="mt-2">' . tep_draw_radio_field('copy_as', 'duplicate', false, null, 'onchange="setAttrText(\'dupe\');"') . '<span class="sidebar-text ml-1">' . TEXT_COPY_AS_DUPLICATE . '</span></div>');
                 // only ask about attributes if they exist
                 if (tep_has_product_attributes($pInfo->products_id)) {
-                  $contents[] = array('text' => '<br>' . TEXT_COPY_ATTRIBUTES_ONLY);
-                  $contents[] = array('text' => '<br>' . TEXT_COPY_ATTRIBUTES . '<br>' . tep_draw_radio_field('copy_attributes', 'copy_attributes_yes', true) . ' ' . TEXT_COPY_ATTRIBUTES_YES . '<br>' . tep_draw_radio_field('copy_attributes', 'copy_attributes_no') . ' ' . TEXT_COPY_ATTRIBUTES_NO);
-                  $contents[] = array('align' => 'center', 'text' => '<br>' . ATTRIBUTES_NAMES_HELPER . '<br>' . tep_draw_separator('pixel_trans.gif', '1', '10'));
-                  $contents[] = array('text' => '<br>' . tep_image(DIR_WS_IMAGES . 'pixel_black.gif','','100%','3'));
+                  $contents[] = array('text' => '<div id="copy_attr" style="display:none;"><div class="sidebar-text mt-3 mb-3">' . TEXT_COPY_ATTRIBUTES . '</div><div class="mt-2">' . tep_draw_radio_field('copy_attributes', 'copy_attributes_yes', true) . '<span class="sidebar-text ml-1">' . TEXT_COPY_ATTRIBUTES_YES . '</span></div><div class="mt-2">' . tep_draw_radio_field('copy_attributes', 'copy_attributes_no') . '<span class="sidebar-text ml-1">' . TEXT_COPY_ATTRIBUTES_NO . '</span></div></div>');
+                  $contents[] = array('align' => 'center', 'text' => '<div class="mt-3 mb-0"><button class="btn btn-success btn-sm mt-0" data-toggle="modal" data-target="#listAttributesModal">' . TEXT_LIST_ATTRIBUTES . '</button></div>');
                 }
-                $contents[] = array('align' => 'center', 'text' => '<br><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>' . tep_image_submit('button_copy.gif', IMAGE_COPY));
+                $contents[] = array('align' => 'center', 'text' => '<button type="button" class="btn btn-default btn-sm mr-2 mt-2 mb-4" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $pInfo->products_id) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-info btn-sm mt-2 mb-4" type="submit">' . IMAGE_COPY . '</button>');
                 break;
               case 'copy_product_attributes':
                 $copy_attributes_delete_first='1';
@@ -2413,7 +2098,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                   $copy_attributes_include_filename='0';
                 }
                 $heading[] = array('text' => TEXT_COPY_ATTRIBUTES_TO_ANOTHER_PRODUCT);
-                $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=create_copy_product_attributes&cPath=' . $cPath . '&pID=' . $pInfo->products_id) . tep_draw_hidden_field('products_id', $pInfo->products_id) . tep_draw_hidden_field('products_name', $pInfo->products_name));
+                $contents[] = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=create_copy_product_attributes&cPath=' . $cPath . '&pID=' . $pInfo->products_id) . tep_draw_hidden_field('products_id', $pInfo->products_id) . tep_draw_hidden_field('products_name', $pInfo->products_name));
                 $contents[] = array('text' => '<br>'.TEXT_COPYING_ATTRIBUTES_FROM.' #' . $pInfo->products_id . '<br><b>' . $pInfo->products_name . '</b>');
                 $contents[] = array('text' => TEXT_COPYING_ATTRIBUTES_TO.' #&nbsp;' . tep_draw_input_field('copy_to_products_id', $copy_to_products_id, 'size="3"'));
                 $contents[] = array('text' => '<br>'.TEXT_DELETE_ALL_ATTRIBUTE.'&nbsp;' . tep_draw_checkbox_field('copy_attributes_delete_first',$copy_attributes_delete_first, 'size="2"'));
@@ -2445,7 +2130,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                   $copy_attributes_include_filename='0';
                 }
                 $heading[] = array('text' => TEXT_COPY_PRODUCT_ATTRIBUTES_TO_CATEGORY);
-                $contents = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=create_copy_product_attributes_categories&cPath=' . $cPath . '&cID=' . $cID . '&make_copy_from_products_id=' . $copy_from_products_id));
+                $contents[] = array('form' => tep_draw_form('products', FILENAME_CATEGORIES, 'action=create_copy_product_attributes_categories&cPath=' . $cPath . '&cID=' . $cID . '&make_copy_from_products_id=' . $copy_from_products_id));
                 $contents[] = array('text' => TEXT_COPY_PRODUCT_ATTRIBUTES_FROM_PRODUCT_ID.'#&nbsp;' . tep_draw_input_field('make_copy_from_products_id', $make_copy_from_products_id, 'size="3"'));
                 $contents[] = array('text' => '<br>'.TEXT_COPYING_TO_ALL_PRODUCTS_IN_CATEGORY_ID.'#&nbsp;' . $cID . '<br>'.TEXT_CATEGORY_NAME.' <b>' . tep_get_category_name($cID, $languages_id) . '</b>');
                 $contents[] = array('text' => '<br>'.TEXT_DELETE_ALL_ATTRIBUTE.'&nbsp;' . tep_draw_checkbox_field('copy_attributes_delete_first',$copy_attributes_delete_first, 'size="2"'));
@@ -2460,16 +2145,155 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 $contents[] = array('align' => 'center', 'text' => '<br>' . TEXT_ATTRIBUTES_PRODUCT_LOOKUP);
                 $contents[] = array('align' => 'center', 'text' => '<br><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cID) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>' . tep_image_submit('button_copy.gif', 'Copy Attribtues'));
                 break;
+              case 'new_product':
+                  $heading[] = array('text' => 'Pricing and Availability');
+                  $contents[] = array('text' => '
+                    <div class="sidebar-content-container">
+
+                      <div class="form-group row">
+                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_BASE_PRICE . '</label>
+                        <div class="col-sm-7">
+                          <div class="input-group"> <span class="input-group-addon text-white bg-blue-lighter p-5">$</span>' .
+                            tep_draw_input_field('products_price_gross', number_format($pInfo->products_price, 2), 'class="form-control f-w-600 f-s-14 p-l-5 p-r-5 text-primary"') . '
+                          </div>
+                        </div>
+                      </div>                     
+
+                      <div class="form-group row mt-3">
+                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">Special Price</label>
+                        <div class="col-sm-7">
+                          <div class="input-group"> <span class="input-group-addon text-white bg-red-lighter p-5 ">$</span>' . 
+                            tep_draw_input_field('products_special_price', number_format(Specials::getSpecialPrice($pInfo->products_id), 2), 'class="form-control f-s-14 p-l-5 p-r-5 text-danger"') . '
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0 getpro mb-1">MSRP<span class="label label-theme ml-2 bg-red">PRO</span></label>
+                        <div class="col-sm-7">
+                          <div class="input-group "> <span class="input-group-addon text-white bg-silver-darker p-5">$</span>
+                            <input disabled class="form-control f-s-14 p-l-5 p-r-5" type="text" value=""> 
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row mt-3">
+                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_DATE_AVAILABLE . '</label>
+                        <div class="col-sm-7">
+                          <input name="products_date_available" value="' . tep_date_short($pInfo->products_date_available) . '" type="text" class="form-control" id="datepicker-autoClose" placeholder="MM/DD/YYYY" />
+                        </div>
+                      </div>
+
+                      <div class="form-group row mt-3">
+                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_STATUS . '</label>
+                        <div class="col-sm-7">
+                          <input name="products_status" ' . (($in_status) ? 'checked' : '') . ' data-toggle="toggle" data-on="<i class=\'fa fa-check\'></i> Active" data-off="<i class=\'fa fa-times\'></i> Inactive" data-onstyle="success" data-offstyle="danger" type="checkbox" data-size="small">
+                        </div>
+                      </div>
+
+                      <div class="form-group row mt-3">
+                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">Featured</label>
+                        <div class="col-sm-7">
+                          <input checked data-toggle="toggle" data-on="<i class=\'fa fa-star\'></i> Yes" data-off="<i class=\'fa fa-star-o\'></i> No" data-onstyle="success" data-offstyle="danger" type="checkbox" data-size="small">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="sidebar-heading mt-3">    
+                      <span>Inventory</span>  
+                    </div><div class="sidebar-heading-footer w-100"></div>
+
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_MODEL . '</label>
+                      <div class="col-sm-7">' . tep_draw_input_field('products_model', $pInfo->products_model, 'class="form-control"') . '</div>
+                    </div>
+
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_SKU . '</label>
+                      <div class="col-sm-7">' . tep_draw_input_field('products_sku', $pInfo->products_sku, 'class="form-control"') . '
+                      </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_MANUFACTURER . '</label>
+                      <div class="col-sm-7">' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, $pInfo->manufacturers_id, 'class="form-control"') . '</div>
+                    </div>
+
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_TAX_CLASS . '</label>
+                      <div class="col-sm-7">' . tep_draw_pull_down_menu('products_tax_class_id', $tax_class_array, $pInfo->products_tax_class_id, 'class="form-control"') . '</div>
+                    </div>
+
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_WEIGHT . '</label>
+                      <div class="col-sm-7 input-group">' . tep_draw_input_field('products_weight', $pInfo->products_weight, 'class="form-control"') . '</div>
+                    </div>
+
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_QUANTITY . '</label>
+                      <div class="col-sm-7">' . tep_draw_input_field('products_quantity', $pInfo->products_quantity, 'class="form-control"') . '</div>
+                    </div>
+
+                    <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0 text-muted getpro mb-1">Item Cost<span class="label label-theme ml-2 bg-red">PRO</span></label>
+                      <div class="col-sm-7">
+                        <input disabled class="form-control" type="text">
+                      </div>
+                    </div>
+
+                    <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0 text-muted getpro mb-1">Vendor<span class="label label-theme ml-2 bg-red">PRO</span></label>
+                      <div class="col-sm-7">
+                        <select disabled class="form-control">
+                          <option>Select Vendor</option>
+                          <option>Gadgets 2000</option>
+                          <option>Amazon</option>
+                          <option>ebay</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0 text-muted getpro mb-1">Vendor Note<span class="label label-theme ml-2 bg-red">PRO</span></label>
+                      <div class="col-sm-7">
+                        <textarea disabled class="form-control" id="vendornote" name="vendornote" rows="3"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="sidebar-heading mt-3">    
+                      <span>Catalog</span>  
+                    </div><div class="sidebar-heading-footer w-100"></div>
+
+                    <div class="form-group row mt-3" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                      <label class="col-sm-5 sidebar-text col-form-label pl-3 pr-0 getpro mb-1">Sort Order<span class="label label-theme ml-2 bg-red">PRO</span></label></label>
+                      <div class="col-sm-7">
+                        <input disabled class="form-control" type="text">
+                      </div>
+                    </div>      
+
+                    <div class="sidebar-heading mt-3">    
+                      <span>Extra Fields</span>  
+                    </div><div class="sidebar-heading-footer w-100"></div>                                  
+
+                    <div class="form-group row mt-3 mb-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                      <label class="col-xs-5 sidebar-text col-form-label pl-3 pr-0 text-muted getpro mb-1">Enable<span class="label label-theme ml-2 bg-red">PRO</span></label>
+                      <div class="col-xs-7">
+                        <input disabled data-width="60" data-toggle="toggle" data-on="<i class=\'fa fa-check\'></i> On" data-off="<i class=\'fa fa-times\'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                      </div>
+                    </div>
+
+                    ');
+                     
+                  break;
               default:
                 if ($rows > 0) {
                   if (isset($cInfo) && is_object($cInfo)) { // category info box contents
                     $heading[] = array('text' => $cInfo->categories_name);
                     // RCO start
                     if ($cre_RCO->get('categories', 'csidebarbuttons') !== true) {
-                      $contents[] = array('align' => 'center', 'text' => '<div class="mt-3 mb-2">
-                        <button class="btn btn-success btn-sm" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_category') . '\'">' . IMAGE_EDIT . '</button>
-                        <button class="btn btn-danger btn-sm mr-1 ml-1" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=delete_category')  . '\'">' . IMAGE_DELETE . '</button>
-                        <button class="btn btn-success btn-sm" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=move_category') . '\'">' . IMAGE_MOVE . '</button>
+                      $contents[] = array('align' => 'center', 'text' => '<div class="mt-2 mb-2">
+                        <button class="btn btn-success btn-sm mt-2" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_category') . '\'">' . IMAGE_EDIT . '</button>
+                        <button class="btn btn-danger btn-sm mr-1 ml-1 mt-2" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=delete_category')  . '\'">' . IMAGE_DELETE . '</button>
+                        <button class="btn btn-info btn-sm mt-2" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=move_category') . '\'">' . IMAGE_MOVE . '</button>
                         </div>');
                     }
                     // RCO eof
@@ -2481,7 +2305,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                     if ($cre_RCO->get('categories', 'csidebarattributes') !== true) {
                       if ($cInfo->childs_count == 0 and $cInfo->products_count >= 1) {
                         if ($cID) {
-                          $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-success btn-sm mr-1 ml-1 mt-4" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cID . '&action=copy_product_attributes_categories') . '\'">' . IMAGE_COPY_ATTRIBUTES . '</button>');
+                          $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-success btn-sm mr-1 ml-1 mt-4 mb-3" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cID . '&action=copy_product_attributes_categories') . '\'">' . IMAGE_COPY_ATTRIBUTES . '</button>');
                         } else {
                           $contents[] = array('align' => 'center', 'text' => '<div class="sidebar-text">' . TEXT_ATTRIBUTES_COPY_TO . '</div>');
                         }
@@ -2495,30 +2319,35 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                     $heading[] = array('text' => tep_get_products_name($pInfo->products_id, $languages_id));
                     // RCO start
                     if ($cre_RCO->get('categories', 'psidebarbuttons') !== true) {
-                      $contents[] = array('align' => 'center', 'text' => '<br><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=new_product') . '">' . tep_image_button('button_page_edit.png', IMAGE_EDIT) . '</a><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=delete_product') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a><br><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=move_product') . '">' . tep_image_button('button_move.gif', IMAGE_MOVE) . '</a><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=copy_to') . '">' . tep_image_button('button_copy_to.gif', IMAGE_COPY_TO) . '</a>');
+                      $contents[] = array('align' => 'center', 'text' => '<div class="mt-2 mb-2">
+                        <button class="btn btn-success btn-sm mt-2" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=new_product') . '\'">' . IMAGE_EDIT . '</button>
+                        <button class="btn btn-danger btn-sm mr-1 ml-1 mt-2" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=delete_product') . '\'">' . IMAGE_DELETE . '</button>
+                        <button class="btn btn-info btn-sm mr-1 mt-2" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=move_product') . '\'">' . IMAGE_MOVE . '</button>
+                        <button class="btn btn-info btn-sm mt-2 mr-3" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=copy_to') . '\'">' . IMAGE_COPY_TO . '</button>
+                        </div>');
                     }
                     // RCO eof
                     //RCI include product sidebar buttons
                     $returned_rci = $cre_RCI->get('categories', 'psidebarbuttons');
                     $contents[] = array('align' => 'center', 'text' => $returned_rci);
-                    $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' <b>' . tep_date_short($pInfo->products_date_added) . '</b>');
-                    if (tep_not_null($pInfo->products_last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' <b>' . tep_date_short($pInfo->products_last_modified) . '</b>');
-                    if (date('Y-m-d') < $pInfo->products_date_available) $contents[] = array('text' => TEXT_DATE_AVAILABLE . ' <b>' . tep_date_short($pInfo->products_date_available) . '</b>');
-                    $contents[] = array('align' => 'center', 'text' => '<br>' . tep_info_image($pInfo->products_image, tep_get_products_name($pInfo->products_id, $languages_id), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '<br>' . $pInfo->products_image);
-                    $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_PRICE_INFO . ' <b>' . $currencies->format($pInfo->products_price) . '</b>');
-                    $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_QUANTITY_INFO . ' <b>' . $pInfo->products_quantity . '</b>');
-                    $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' <b>' . number_format($pInfo->average_rating, 2) . '%</b>');
+                    $contents[] = array('text' => '<div class="sidebar-text mt-3">' . TEXT_DATE_ADDED . '<span class="sidebar-title ml-2">' . tep_date_short($pInfo->products_date_added) . '</span></div>');
+                    if (tep_not_null($pInfo->products_last_modified)) $contents[] = array('text' => '<div class="sidebar-text mt-1">' . TEXT_LAST_MODIFIED . '<span class="sidebar-title ml-2">' . tep_date_short($pInfo->products_last_modified) . '</span></div>');
+                    if (date('Y-m-d') < $pInfo->products_date_available) $contents[] = array('text' => '<div class="sidebar-text mt-1">' . TEXT_DATE_AVAILABLE . '<span class="sidebar-title ml-2">' . tep_date_short($pInfo->products_date_available) . '</span></div>'); 
+                    $contents[] = array('align' => 'center', 'text' => '<div class="sidebar-img mt-3 well ml-4 mr-4 mb-1">' . tep_info_image($pInfo->products_image, tep_get_products_name($pInfo->products_id, $languages_id), SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</div><div class="sidebar-text mb-0 mt-0">' . $cInfo->categories_image . '</div><div class="sidebar-text mt-0 mb-3">(' . SMALL_IMAGE_WIDTH . 'x' . ((SMALL_IMAGE_HEIGHT == '') ? SMALL_IMAGE_WIDTH : SMALL_IMAGE_HEIGHT) . ')</div>');
+
+                    $contents[] = array('text' => '<div class="sidebar-text">' . TEXT_PRODUCTS_PRICE_INFO . '<span class="sidebar-title ml-2">' . $currencies->format($pInfo->products_price) . '</span></div>');
+                    $contents[] = array('text' => '<div class="sidebar-text mt-1">' . TEXT_PRODUCTS_QUANTITY_INFO . '<span class="sidebar-title ml-2">' . $pInfo->products_quantity . '</span></div>');
+                    $contents[] = array('text' => '<div class="sidebar-text mt-1">' . TEXT_PRODUCTS_AVERAGE_RATING . '<span class="sidebar-title ml-2">' . number_format($pInfo->average_rating, 2) . '%</span></div>');
                     //RCI include product sidebar product text
                     $returned_rci = $cre_RCI->get('categories', 'psidebarproducttext');
                     $contents[] = array('text' => $returned_rci);
                     // RCO start
                     if ($cre_RCO->get('categories', 'psidebarattributes') !== true) {
-                      $contents[] = array('text' => '<br>' . tep_image(DIR_WS_IMAGES . 'pixel_black.gif','','100%','3'));
-                      $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=copy_product_attributes') . '"><br>' . tep_image_button('button_copy_to.gif', TEXT_BUTTON_COPY_ATTRIBUTES) . '</a>');
+                      $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-success btn-sm mr-1 ml-1 mt-4 mb-2" onclick="window.location=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $pInfo->categories_id . '&pID=' . $pInfo->products_id . '&action=copy_product_attributes') . '\'">' . TEXT_BUTTON_COPY_ATTRIBUTES . '</button>');
                       if ($pID) {
-                        $contents[] = array('align' => 'center', 'text' => '<br>' . sprintf(TEXT_ATTRIBUTES_NAMES_HELPER, $pID) . '<font color=#FF0000><b>' . $pID . '</b></font>');
+                        $contents[] = array('align' => 'center', 'text' => '<div class="mt-0 mb-3"><button class="btn btn-success btn-sm mt-0" data-toggle="modal" data-target="#listAttributesModal">' . TEXT_LIST_ATTRIBUTES . '</button></div>');
                       } else {
-                        $contents[] = array('align' => 'center', 'text' => '<br>'. TEXT_SELECT_PRODUCT_TO_DISPLAY_ATTRIBUTES);
+                        $contents[] = array('text' => '<div class="row"><div class="col p-0 mt-1 ml-2 mr-2 mb-3"><div class="note note-danger m-0"><p class="mb-0 mt-0">' . TEXT_SELECT_PRODUCT_TO_DISPLAY_ATTRIBUTES . '</p></div></div></div>');     
                       }
                     }
                     // RCO eof
@@ -2538,18 +2367,128 @@ include(DIR_WS_INCLUDES . 'column_left.php');
             }
             ?>
           </div>
-        </div>
-      </div>   
-      <!-- end body_text //-->
-    </div>
-    <!-- end panel -->
-  </div>
-</div>
+
+        </div> <!-- end row -->
+      </div> <!-- end table-categories -->
+    </div> <!-- end dark -->
+    <?php if (isset($action) && $action == 'new_product') {
+      ?>
+      <div class="col-sm-9 col-md-10 m-b-10 mt-2 pl-0"> 
+        <a href="javascript:;" class="btn btn-primary m-r-5"><i class="fa fa-save"></i> Save</a>
+        <a href="javascript:;" class="btn btn-info m-r-5"><i class="fa fa-save"></i> Save and Stay</a>
+      </div>
+      </form>
+      <?php 
+    } 
+    ?>
+  </div> <!-- end col -->
+</div> <!-- end content -->
 <script>
 $(document).ready(function(){
- 
-});      
+  
+  bs_input_file();
+
+  $("#summernote").summernote({
+      disableResizeEditor: true
+  });
+  $('.note-popover').hide();
+});   
+
+
+/* show file value after file select */
+$('.custom-file-input').on('change',function(){
+  $(this).next('.form-control-file').addClass("selected").html($(this).val());
+})
+
+/* method 2 - change file input to text input after selection
+$('.custom-file-input').on('change',function(){
+    var fileName = $(this).val();
+    $(this).next('.form-control-file').hide();
+    $(this).toggleClass('form-control custom-file-input').attr('type','text').val(fileName);
+})
+*/
+
+$("#name-ctc-list li a").click(function(){
+  var id = $(this).attr('data-lang-id');
+  var lang = $(this).attr('data-lang-name');
+  var target = $("#products_name_" + id).val();
+  copy(target);
+  $('.notify-container-name').fadeIn().delay(1000).fadeOut();
+  //swal("Products Name", "Copied to Clipboard in " + lang + "!", "success")
+});
+
+$("#desc-ctc-list li a").click(function(){
+  var id = $(this).attr('data-lang-id');
+  var lang = $(this).attr('data-lang-name');  
+  var target = $("#products_description_" + id).val();
+  copy(target);
+  $('.notify-container-desc').fadeIn().delay(1000).fadeOut();
+//  swal("Products Description", "Copied to Clipboard in " + lang + "!", "success")
+});
+
+function setAttrText(sw) {
+  if (sw == 'link') {
+    $('#copy_attr').hide();
+  } else {
+    $('#copy_attr').show();
+  }
+
+}   
+
+function copy(text){
+  var inp =document.createElement('input');
+  document.body.appendChild(inp)
+  inp.value =text
+  inp.select();
+  document.execCommand('copy',false);
+  inp.remove();
+}
+
+function goToUrl(lang) {
+  var url = $('#products_url_' + lang).val();
+  if (url == '' || url == undefined) {
+    swal("Oh Crap!", "Product URL is Empty!", "error");
+    return false;
+  }
+  if (url.indexOf('http://') === -1) {
+    swal("Awe Geez!", "URL needs to begin with http:// or https://", "error");
+    return false;    
+  }
+  if (url.indexOf(".") === -1) {
+    swal("Awe C'mon!", "You got the http:// part but now you're missing the domain!", "error");
+    return false;     
+  }
+  window.open(url);
+}
+
+function bs_input_file() {
+  $(".input-file").before(
+    function() {
+      if ( ! $(this).prev().hasClass('input-ghost') ) {
+        var element = $("<input type='file' class='input-ghost' style='visibility:hidden; height:0'>");
+        element.attr("name",$(this).attr("name"));
+        element.change(function(){
+          element.next(element).find('input').val((element.val()).split('\\').pop());
+        });
+        $(this).find("button.btn-choose").click(function(){
+          element.click();
+        });
+        $(this).find("button.btn-reset").click(function(){
+          element.val(null);
+          $(this).parents(".input-file").find('input').val('');
+        });
+        $(this).find('input').css("cursor","pointer");
+        $(this).find('input').mousedown(function() {
+          $(this).parents('.input-file').prev().click();
+          return false;
+        });
+        return element;
+      }
+    }
+  );
+}
 </script>
 <?php 
 include(DIR_WS_INCLUDES . 'html_bottom.php');
 require(DIR_WS_INCLUDES . 'application_bottom.php');
+?>

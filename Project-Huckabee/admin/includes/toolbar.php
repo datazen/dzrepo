@@ -1,8 +1,26 @@
 <style>
-.toolbar { position:absolute; right:32px; top:25px; z-index:1000; border: 1px dashed green;}
+.toolbar { 
+  position:absolute; 
+  right:32px; 
+  top:25px; 
+  z-index:1000; 
+  border: 1px dashed green;
+}
+@media (max-width: 767px) {
+  .toolbar {
+    position: relative;
+    display:block;
+    right:0;
+    top:0;
+    margin: 0 5px 10px 5px;
+  }
+  .page-header {
+    margin: 0 0 10px;
+  }
+}
 </style>
-<div class="toolbar">
-  <span>This is a global toolbar</span> 
+<div class="toolbar text-right">
+  <span>This is a toolbar placeholder</span> 
   <div class="btn-group theme-switch">
     <button onclick="changeTheme('dark');" class="btn btn-black btn-xs">Dark</button>
     <button onclick="changeTheme('light');" class="btn btn-default btn-xs">Light</button>

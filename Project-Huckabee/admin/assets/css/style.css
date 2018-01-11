@@ -992,6 +992,18 @@ label {
   color:#a6a6a6;
 }
 
+.notify-container-desc,
+.notify-container-name {
+  position:absolute; 
+  z-index:2; 
+  padding:6px; 
+  background:#eff1f4;
+  border:1px solid #ccc; 
+  top:27px; 
+  left:5px;
+  display:none;
+}
+
 /* 2.6 Footer & footer elements */
 
 .footer {
@@ -2259,6 +2271,9 @@ legend {
     overflow: hidden;
     zoom: 1;
 }
+.media-body {
+    padding-left: 20px;
+}
 .media .media-object {
     width: 128px;
 }
@@ -2463,9 +2478,13 @@ legend {
   font-weight: 300 !important;
 }
 .sidebar-heading {
-  font-size: 14px !important;
+  font-size: 16px !important;
   font-weight: 400 !important;
   margin-top:14px;
+}
+.sidebar-heading-footer {
+  border-bottom: 1px solid #ccc;
+  margin-top: 12px;
 }
 .sidebar-title {
   font-size: 13px !important;
@@ -2476,6 +2495,16 @@ legend {
   font-size: 12px !important;
   font-weight: 300 !important;   
 }
+
+.sidebar-content-container {
+    margin-top: 20px;
+}
+@media (max-width: 575.99px){
+  .sidebar-content-container {
+     margin-top: 10px;
+  }
+}
+
 .sidebar-row {
   font-size: 12px !important;
   font-weight: 300 !important;     
@@ -2494,6 +2523,18 @@ legend {
 .note p {
   font-weight:400;
 }
+
+.main-heading {
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  margin-top:14px;
+}
+.main-heading-footer {
+  border-bottom: 1px solid #ccc;
+  margin-top: 12px;
+}
+
+.no-border { border:0; }
 
 /* 3.21 Component - Well */
 
@@ -7818,16 +7859,43 @@ body .bootstrap-datetimepicker-widget table td {
 	border-width: 1px;
 	border-style: solid;
 }
-/*
- * Pro Upsell 
- */
-.popover-header { 
-  margin-top:0 !important; 
-  background-color: #f8d7da !important;
-  color: #721c24 !important;
-  border: 1px solid #f5c6cb !important;
 
+/* DZ ADDED - WILL SORT LATER */
+.getpro {
+  cursor:pointer;
+}
+
+.custom-file {
+  overflow: hidden;
+}
+.custom-file-control {
+  white-space: nowrap;
+}
+.input-file {
+  margin-top:-15px !important;
 }
 .popover {
-  border: 1px solid #f5c6cb !important;
+  width:200px;
+  padding:10px;
+  text-align: center;
+  background-color: #000;
 } 
+.popover-body {
+  font-size: 0.8em;
+}
+.popover.bs-popover-top::after,
+.popover.bs-popover-top .arrow:after {
+  border-top-color: black;
+}
+.popover.bs-popover-left::after,
+.popover.bs-popover-left .arrow:after {
+  border-left-color: black;
+}
+.popover.bs-popover-bottom::after,
+.popover.bs-popover-bottom .arrow:after {
+  border-bottom-color: black;
+}
+.popover.bs-popover-right::after,
+.popover.bs-popover-right .arrow:after {
+  border-right-color: black;
+}

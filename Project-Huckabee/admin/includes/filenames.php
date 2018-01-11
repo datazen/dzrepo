@@ -248,4 +248,5 @@ define('FILENAME_SSS_REGISTER', 'sss_register.php');
 define('FILENAME_STATS_LOW_STOCK', 'stats_low_stock.php');
 // MFG Sales report
 define('FILENAME_STATS_MANUFACTURERS', 'stats_manufacturers_sales.php');
+define('FILENAME_PRODUCT_EDIT', 'product_edit.php');
 ?>

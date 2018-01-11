@@ -45,7 +45,9 @@
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <link href="assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
     
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     <!-- link href="assets/plugins/bootstrap4/css/bootstrap.min.css" rel="stylesheet" / -->
     <link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -55,6 +57,7 @@
     <link href="assets/css/style-responsive.css" rel="stylesheet" />
     <link href="assets/css/dark.css" rel="stylesheet" />
     <link href="assets/css/light.css" rel="stylesheet" />
+    <link href="assets/css/ribbon.css" rel="stylesheet" />
     <link href="assets/css/theme/<?php echo $_SESSION['theme']; ?>.css" rel="stylesheet" id="theme" />
     <!-- ================== END BASE CSS STYLE ================== -->
     
@@ -64,15 +67,21 @@
     <link href="assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
     <!-- link href="assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" / -->  
     <link href="assets/plugins/morris/morris.css" rel="stylesheet" />    
+    <link href="assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />    
+    <link href="assets/plugins/summernote/summernote.css" rel="stylesheet" />    
     <!-- ================== END PAGE LEVEL STYLE ================== -->    
 
     <!-- ================== BEGIN BASE JS ================== -->
     <script src="assets/plugins/jquery/jquery-1.9.1.min.js"></script>
     <script src="assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+
+<!-- script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
     <script src="assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
     <script src="assets/plugins/tether/js/tether.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <!-- script src="assets/plugins/bootstrap4/js/bootstrap.min.js"></script -->
     <!--[if lt IE 9]>
       <script src="assets/crossbrowserjs/html5shiv.js"></script>
@@ -86,6 +95,8 @@
     <!-- ================== BEGIN PAGE LEVEL JS ================== -->
     <script src="assets/plugins/morris/raphael.min.js"></script>
     <script src="assets/plugins/morris/morris.js"></script>    
+    <script src="assets/plugins/summernote/summernote.js"></script>    
+    <script src="assets/plugins/bootstrap-sweetalert/sweetalert.js"></script>    
     <!-- script src="assets/plugins/gritter/js/jquery.gritter.js"></script -->
     <script src="assets/plugins/flot/jquery.flot.min.js"></script>
     <script src="assets/plugins/flot/jquery.flot.time.min.js"></script>

@@ -107,10 +107,10 @@ define('TEXT_INFO_HEADING_DELETE_PRODUCT', 'Delete Product');
 define('TEXT_INFO_HEADING_MOVE_PRODUCT', 'Move Product');
 define('TEXT_INFO_HEADING_COPY_TO', 'Copy To');
 define('TEXT_INFO_HEADING_EDIT_PRODUCT', 'Edit Product : %s ');
-define('TEXT_DELETE_CATEGORY_INTRO', 'Are you sure you want to delete this category?');
-define('TEXT_DELETE_PRODUCT_INTRO', 'Are you sure you want to permanently delete this product?');
-define('TEXT_DELETE_WARNING_CHILDS', '<b>WARNING:</b> There are %s (child-)categories still linked to this category!');
-define('TEXT_DELETE_WARNING_PRODUCTS', '<b>WARNING:</b> There are %s products still linked to this category!');
+define('TEXT_DELETE_CATEGORY_INTRO', 'Are you sure you want to delete category <b>%s</b>?');
+define('TEXT_DELETE_PRODUCT_INTRO', 'Are you sure you want to delete product <b>%s</b>?');
+define('TEXT_DELETE_WARNING_CHILDS', 'There are %s child categories still linked to this category. Deleting this category will delete all child categories and products within.');
+define('TEXT_DELETE_WARNING_PRODUCTS', 'There are %s products still linked to this category. Deleting this category will delete all products within.');
 define('TEXT_MOVE_PRODUCTS_INTRO', 'Please select which category you wish <b>%s</b> to reside in');
 define('TEXT_MOVE_CATEGORIES_INTRO', 'Please select which category you wish <b>%s</b> to reside in');
 define('TEXT_MOVE', 'Move <b>%s</b> to:');
@@ -127,6 +127,7 @@ define('TEXT_PRODUCTS_NAME', 'Name:');
 define('TEXT_PRODUCTS_DESCRIPTION', 'Description:');
 define('TEXT_PRODUCTS_QUANTITY', 'Quantity:');
 define('TEXT_PRODUCTS_MODEL', 'Model:');
+define('TEXT_PRODUCTS_SKU', 'Sku:');
 define('TEXT_PRODUCTS_IMAGE', 'Image:');
 define('TEXT_PRODUCTS_URL', 'URL:');
 define('TEXT_PRODUCTS_URL_WITHOUT_HTTP', '<small>(without http://)</small>');
@@ -220,6 +221,7 @@ define('TABLE_HEADING_SORT_ORDER', 'Sort');
 define('IMAGE_UPDATE_SORT_ORDER', 'Update Sort Order');
 define('TEXT_GENERAL_OPTIONS', 'Options');
 
+define('TEXT_LIST_ATTRIBUTES', 'List Attributes');
 define('TEXT_ATTRIBUTES_NAMES_HELPER', '<a href="' . tep_href_link('quick_attributes_popup.php','look_it_up=%s&my_languages_id=' . $languages_id ) . '" onclick="NewWindow2(this.href,\'name2\',\'700\',\'400\',\'yes\');return false;">List Attributes for pID: </a>');
 define('TEXT_BUTTON_COPY_ATTRIBUTES', 'Copy Attributes');  
 define('TEXT_ATTRIBUTES_COPY_TO', 'Select a category to copy attributes to ');
@@ -263,4 +265,9 @@ define('TEXT_PRODUCTS_SALE', 'SalePrice: ');
 define('TEXT_PRODUCTS_SAVINGS', 'You Save: ');
 define('TEXT_PRODUCTS_PRICE_MSRP', 'Products MSRP:');
 define('TEXT_PRODUCTS_MSRP_INFO', 'MSRP Info:');
+
+// DZ added for new template
+define('TEXT_COPY_LANG_TO_CLIPBOARD', 'Copy %s to Clipboard');
+define('TEXT_PRODUCTS_BASE_PRICE', 'Base Price');
+define('TEXT_CHOOSE_FILE', 'Click to select');
 ?>

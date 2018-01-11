@@ -206,7 +206,6 @@
     } elseif (tep_not_null($value)) {
       $field .= ' value="' . tep_output_string($value) . '"';
     }
-    $field .= ' class="form-control" ';
     if (tep_not_null($parameters)) $field .= ' ' . $parameters;
 
     $field .= '>';
@@ -227,8 +226,8 @@
 
 ////
 // Output a form filefield
- function tep_draw_file_field($name, $size = '25', $required = false) {
-    $field = tep_draw_input_field($name, '', 'size=' . $size, $required, 'file');
+ function tep_draw_file_field($name, $size = '25', $required = false, $parameters = '') {
+    $field = tep_draw_input_field($name, '', 'size="' . $size . '" ' . $parameters, $required, 'file');
 
     return $field;
   }
@@ -301,7 +300,7 @@
 // Output a form textarea field
   function tep_draw_textarea_field($name, $wrap, $width, $height, $text = '', $parameters = '', $reinsert_value = true) {
     // the wrap is removed because it is not W3C standard and creates problem in IE
-    $field = '<textarea class="form-control" name="' . tep_output_string($name) . '" id="' . tep_output_string($name) . '" cols="' . tep_output_string($width) . '" rows="' . tep_output_string($height) . '"';
+    $field = '<textarea name="' . tep_output_string($name) . '" cols="' . tep_output_string($width) . '" rows="' . tep_output_string($height) . '"';
 
     if (tep_not_null($parameters)) $field .= ' ' . $parameters;
 
@@ -345,7 +344,7 @@
 ////
 // Output a form pull down menu
   function tep_draw_pull_down_menu($name, $values, $default = '', $parameters = '', $required = false) {
-    $field = '<select class="form-control" name="' . tep_output_string($name) . '"';
+    $field = '<select name="' . tep_output_string($name) . '"';
 
     if (tep_not_null($parameters)) $field .= ' ' . $parameters;
 

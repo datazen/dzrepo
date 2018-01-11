@@ -422,9 +422,33 @@ Website: http://www.seantheme.com/color-admin-v3.0/admin/html/
     .sidebar.sidebar-transparent + .sidebar-bg {
     	background-size: 100% 100%;
     }
-     .boxed-layout .top-menu {
+    .boxed-layout .top-menu {
 		top: 109px;
 	}
+
+    /* DZ added */
+    .rounded-left {
+        border-top-left-radius: 0 !important;
+        -webkit-border-top-left-radius: 0 !important;
+        -moz-border-top-left-radius: 0 !important;        
+        border-bottom-left-radius: 0 !important;
+        -webkit-border-bottom-left-radius: 0 !important;
+        -moz-border-bottom-left-radius: 0 !important;          
+    }
+
+    .rounded-right {
+        border-top-right-radius: 0 !important;
+        -webkit-border-top-right-radius: 0 !important;
+        -moz-border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        -webkit-border-bottom-right-radius: 0 !important;
+        -moz-border-bottom-right-radius: 0 !important;  
+    }
+
+    .content h1 {
+        font-size: 1.1rem;
+    }
+
 }
 
 @media(max-width: 480px) {
@@ -486,7 +510,33 @@ Website: http://www.seantheme.com/color-admin-v3.0/admin/html/
     }
 }
 
+/* DZ added */
+@media (max-width: 360px) {
+    .btn-save-stay {
+        display:none;
+    }
+}
 
+@media (max-width: 768px) {
+    .page-header { 
+        font-size: 1.2rem
+    }
+    .file-input {
+        width:70% !important;
+    }
+    .input-file {
+        padding-top:0 !important;
+    }
+    .meta-input {
+        width:87% !important;
+    }
+    .media-body {
+        padding-left: 5px !important;
+    }
+    .btn-bar {
+        display:initial !important;
+    }
+}
 
 
 /* -------------------------------

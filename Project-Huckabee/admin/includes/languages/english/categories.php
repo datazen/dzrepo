@@ -286,6 +286,7 @@ define('BUTTON_VIEW_IN_CATALOG', 'View in Catalog');
 
 define('LABEL_BASE_PRICE', 'Base Price:');
 define('LABEL_DATE_AVAILABLE', 'Available:');
+define('LABEL_DELETE_IMAGE', 'Delete Image:');
 define('LABEL_DESCRIPTION', 'Description:');
 define('LABEL_ENABLE', 'Enable:');
 define('LABEL_FEATURED_PRODUCTS', 'Featured:');

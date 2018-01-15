@@ -343,11 +343,11 @@ if (tep_not_null($action)) {
                      );
 
       foreach ($images as $image) {
-        if (isset($_POST[$image['delete']]) && $_POST[$image['delete']] == 'yes' && $products_old[$image['table']] != '') {
+        if (isset($_POST[$image['delete']]) && $_POST[$image['delete']] == 'on' && $products_old[$image['table']] != '') {
           unlink(DIR_FS_CATALOG_IMAGES . $products_old[$image['table']]);
           $sql_data_array[$image['table']] = '';
-        } elseif (isset($_POST[$image['unlink']]) && $_POST[$image['unlink']] == 'yes' && $products_old[$image['table']] != '') {
-          $sql_data_array[$image['table']] = '';
+     //  } elseif (isset($_POST[$image['unlink']]) && $_POST[$image['unlink']] == 'yes' && $products_old[$image['table']] != '') {
+     //     $sql_data_array[$image['table']] = '';
         } elseif (isset($_FILES[$image['table']]) && tep_not_null($_FILES[$image['table']]['name'])) {
           if (strtolower($_FILES[$image['table']]['name']) != 'none') {
             $uploadFile = DIR_FS_CATALOG_IMAGES . urldecode($_POST[$image['dir']]) . $_FILES[$image['table']]['name'];
@@ -356,6 +356,8 @@ if (tep_not_null($action)) {
           } elseif ($products_old[$image['table']] != '') {
             $sql_data_array[$image['table']] = '';
           }
+
+
         } elseif (isset($_POST[$image['table']]) && tep_not_null($_POST[$image['table']])) {
           if (strtolower($_POST[$image['table']]) != 'none') {
             if ($_POST[$image['table']] != $products_old[$image['table']]) $sql_data_array[$image['table']] = tep_db_prepare_input($_POST[$image['table']]);
@@ -740,16 +742,16 @@ $warning = false;
     <?php 
     if (isset($action) && $action == 'new_product') {
       ?>
-      <form id="new_product" name="new_product" method="post" enctype="multipart/form-data">
+      <form id="new_product" name="new_product" method="post" enctype="multipart/form-data" data-parsley-validate>
       <!-- begin button bar --> 
-      <div class="row">
-        <div class="col-9 m-b-10"> 
+      <div id="button-bar" class="row pt-2">
+        <div class="col-9 m-b-10 w-100"> 
           <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ((isset($cID) && $cID != '') ? '&cID=' . $cID : '') . ((isset($pID) && $pID != '') ? '&pID=' . $pID : '')); ?>" class="btn btn-link m-r-3 f-w-200 text-primary hidden-xs hidden-sm"><i class="fa fa-chevron-left"></i> <?php echo BUTTON_RETURN_TO_LIST; ?></a>
           <button type="submit" onclick="updateProduct('save');" class="btn btn-primary m-r-3"><i class="fa fa-save"></i> <?php echo BUTTON_SAVE; ?></button>
           <button type="submit" onclick="updateProduct('stay');" class="btn btn-info m-r-3 btn-save-stay"><i class="fa fa-save"></i> <?php echo BUTTON_SAVE_STAY; ?></button>
           <a href="<?php echo HTTP_SERVER . DIR_WS_CATALOG .'product_info.php?products_id=' . $pID; ?>" target="_blank" class="hidden-xs hidden-sm hidden-md btn btn-link m-r-5 f-w-200 text-primary"><i class="fa fa-laptop"></i> <?php echo BUTTON_VIEW_IN_CATALOG; ?></a>
         </div>
-        <div class="col-3">
+        <div class="col-3 m-b-10 p-r-10">
           <div class="btn-group pull-right dark"> <a aria-expanded="false" href="javascript:;" data-toggle="dropdown" class="btn btn-white dropdown-toggle"> <?php echo ucwords($_SESSION['language']); ?> <span class="caret"></span> </a>
             <ul class="dropdown-menu pull-right">
               <?php
@@ -766,6 +768,42 @@ $warning = false;
           </div>
         </div>
       </div>
+      <script>
+      $(function () {
+        var y = 100;
+        //var p = $("#stop").offset().top;
+        $(window).on('scroll', function () {
+          if (y <= $(window).scrollTop()) {
+            // if so, add the fixed class
+            $('#button-bar').addClass('button-bar-fixed');
+          } else {
+            // otherwise remove it
+            $('#button-bar').removeClass('button-bar-fixed');
+          }
+        })
+      });        
+      </script>
+      <style>
+      .button-bar-fixed {
+        position:fixed !important;
+        top:44px !important; 
+        left:269px !important;
+        z-index:999;
+        width:76%;
+      }
+      .button-bar-fixed .col-3,
+      .button-bar-fixed .col-9 {
+        background-color:#d9e0e7;
+        padding: 4px 0;
+      }
+      .required:after {
+        content: '*';
+        color:red;
+        position:absolute;
+        right:0;
+
+      }
+      </style>
       <!-- end button bar -->
       <?php 
     } 
@@ -1274,10 +1312,10 @@ $warning = false;
                         <div class="main-heading-footer"></div>
                       </div>             
 
-                      <div class="form-group row mb-3 m-t-20">
-                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo LABEL_NAME; ?></label>
+                      <div class="form-group row mb-3 m-t-20 p-relative">
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo LABEL_NAME; ?><span class="required"></span></label>
                         <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
-                          <?php echo tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? $products_name[$languages[$i]['id']] : tep_get_products_name($pInfo->products_id, $languages[$i]['id'])), 'id="products_name_' . $languages[$i]['id'] . '"class="form-control f-w-600 f-s-12 p-l-10 p-r-10"'); ?>
+                          <?php echo tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? $products_name[$languages[$i]['id']] : tep_get_products_name($pInfo->products_id, $languages[$i]['id'])), 'id="products_name_' . $languages[$i]['id'] . '"class="form-control f-w-600 f-s-12 p-l-10 p-r-10" required'); ?>
                         </div>
 
                         <div class="col-xs-1 p-l-0 p-r-0 p-relative">
@@ -1408,7 +1446,7 @@ $warning = false;
                         </div>
                       </div>
                     </div>
-                    <!-- SEO & META TAGS end-->                      
+                    <!-- SEO & META TAGS end--> 
                     <!-- PRODUCT INFO end -->
                     <?php
                   }
@@ -1440,7 +1478,7 @@ $warning = false;
                     <div class="media">
                       <div class="lc-border p-10">
                         <a class="media-left" style="min-width:<?php echo SMALL_IMAGE_WIDTH; ?>px;" href="javascript:;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $products_image, $products_image, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'class="media-object mt-2"'); ?></a>
-                        <div class="media-body mr-2 mb-0"><?php echo $products_image; if ($products_image != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs"><?php echo TEXT_DELETE; ?></span></a><?php } ?>
+                        <div class="media-body mr-2 mb-0"><?php echo $products_image; if ($products_image != 'no_image.png') { ?><label class="control-label ml-3 mr-2 main-text"><?php echo LABEL_DELETE_IMAGE; ?></label><input type="checkbox" name="delete" class="js-switch"><?php } ?>
                           <div class="fine-input-container mt-2 mb-3">
                             <input type="file" name="products_image" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" /><?php echo tep_draw_hidden_field('products_image_previous', $products_image); ?>
                           </div>
@@ -1457,7 +1495,7 @@ $warning = false;
                     <div class="media">
                       <div class="lc-border p-10">
                         <a class="media-left" style="min-width:<?php echo SMALL_IMAGE_WIDTH; ?>px;" href="javascript:;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $products_image_med, $products_image_med, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'class="media-object mt-2"'); ?></a>
-                        <div class="media-body mr-2 mb-0 p-l-20"><?php echo $products_image_med; if ($products_image_med != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs"><?php echo TEXT_DELETE; ?></span></a><?php } ?>
+                        <div class="media-body mr-2 mb-0"><?php echo $products_image_med; if ($products_image_med != 'no_image.png') { ?><label class="control-label ml-3 mr-2 main-text"><?php echo LABEL_DELETE_IMAGE; ?></label><input type="checkbox" name="delete_image_med" class="js-switch"><?php } ?>
                           <div class="fine-input-container mt-2 mb-3">
                             <input type="file" name="products_image_med" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" /><?php echo tep_draw_hidden_field('products_image_med_previous', $products_image_med); ?>
                           </div>
@@ -1474,7 +1512,7 @@ $warning = false;
                     <div class="media">
                       <div class="lc-border p-10">
                         <a class="media-left" style="min-width:<?php echo SMALL_IMAGE_WIDTH; ?>px;" href="javascript:;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $products_image_lrg, $products_image_lrg, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'class="media-object mt-2"'); ?></a>
-                        <div class="media-body mr-2 mb-0 p-l-20"><?php echo $products_image_lrg; if ($products_image_lrg != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs"><?php echo TEXT_DELETE; ?></span></a><?php } ?>
+                        <div class="media-body mr-2 mb-0"><?php echo $products_image_lrg; if ($products_image_lrg != 'no_image.png') { ?><label class="control-label ml-3 mr-2 main-text"><?php echo LABEL_DELETE_IMAGE; ?></label><input type="checkbox" name="delete_image_lrg" class="js-switch"><?php } ?>
                           <div class="fine-input-container mt-2 mb-3">
                             <input type="file" name="products_image_lrg" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" /><?php echo tep_draw_hidden_field('products_image_rg_previous', $products_image_lrg); ?>
                           </div>
@@ -1494,7 +1532,7 @@ $warning = false;
                     </div>
                   </div>
                 </div>               
-              </div>   
+              </div>                
               <!-- IMAGES end-->
 
               <!-- PRICING RULES start-->
@@ -2430,10 +2468,10 @@ $warning = false;
     </div> <!-- end dark -->
     <?php if (isset($action) && $action == 'new_product') {
       ?>
-      <div class="col-sm-9 col-md-10 m-b-10 mt-2 pl-0"> 
+      <!-- div class="col-sm-9 col-md-10 m-b-10 mt-2 pl-0"> 
         <button type="submit" onclick="updateProduct('save');" class="btn btn-primary m-r-3"><i class="fa fa-save"></i> <?php echo BUTTON_SAVE; ?></button>
         <button type="submit" onclick="updateProduct('stay');" class="btn btn-info m-r-3 btn-save-stay"><i class="fa fa-save"></i> <?php echo BUTTON_SAVE_STAY; ?></button>
-      </div>
+      </div -->
       </form>
       <?php 
     } 
@@ -2442,10 +2480,20 @@ $warning = false;
 </div> <!-- end content -->
 <script>
 $(document).ready(function(){
+
+  // instantiate checkbox switches
+  var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+  elems.forEach(function(html) {
+    var switchery = new Switchery(html, { size: 'small', 
+                                          color: '#ff4044',
+                                          secondaryColor: '#a8acb1' });
+  });
+
   // if product edit and taxable update net price
   var taxclassid = '<?php echo ((isset($pInfo) && $pInfo->products_tax_class_id > 0) ? $pInfo->products_tax_class_id : 0); ?>';
   var pedit = '<?php echo (isset($_GET['action']) && $_GET['action'] == 'new_product') ? 1 : 0; ?>'
   if (pedit == 1 && taxclassid > 0) updateGross();
+
 
 //CKEDITOR.skinName = 'moono-dark';
 
@@ -2453,7 +2501,7 @@ $(document).ready(function(){
  //   trigger: 'hover'
  // });
 
-// temp fix for upsell popver KNOWN ISSUE: bootstrap 4 beta.3
+// temp fix for upsell popover KNOWN ISSUE: bootstrap 4 beta.3
 var el = $('[data-toggle="popover"]');
   el.on('click', function(e){
     var el = $(this);
@@ -2470,6 +2518,21 @@ var el = $('[data-toggle="popover"]');
     $(document).off('click.popover');
   });  
 });   
+
+// sticky menu bar
+$(function () {
+  var y = 100;
+  //var p = $("#stop").offset().top;
+  $(window).on('scroll', function () {
+    if (y <= $(window).scrollTop()) {
+      // if so, add the fixed class
+      $('#button-bar').addClass('button-bar-fixed');
+    } else {
+      // otherwise remove it
+      $('#button-bar').removeClass('button-bar-fixed');
+    }
+  })
+});
 
 // copy to clipboard functions
 $("#name-ctc-list li a").click(function(){

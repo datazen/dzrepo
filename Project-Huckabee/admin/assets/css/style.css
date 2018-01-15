@@ -992,6 +992,9 @@ label {
   color:#a6a6a6;
 }
 
+.notify-container-meta-title,
+.notify-container-meta-keywords,
+.notify-container-meta-desc,
 .notify-container-desc,
 .notify-container-name {
   position:absolute; 
@@ -1046,7 +1049,7 @@ label {
 .form-control[disabled], 
 .form-control[readonly],
 fieldset[disabled] .form-control {
-    background: #e5e9ed;
+    background: #eeeeee;
     opacity: 0.6;
     filter: alpha(opacity=60);
 }
@@ -2466,7 +2469,7 @@ legend {
 }
 .th-row,
 .th-col {
-  font-size: 14px !important;
+  font-size: 16px !important;
   font-weight: 400 !important;      
 }
 .table-col,    
@@ -2481,6 +2484,7 @@ legend {
   font-size: 16px !important;
   font-weight: 400 !important;
   margin-top:14px;
+  color:#000;
 }
 .sidebar-heading-footer {
   border-bottom: 1px solid #ccc;
@@ -2493,7 +2497,12 @@ legend {
 }
 .sidebar-text {
   font-size: 12px !important;
-  font-weight: 300 !important;   
+  font-weight: 300 !important;
+}
+.sidebar-edit {
+  font-size: 12px !important;
+  font-weight: 600 !important;     
+  text-align: right;
 }
 
 .sidebar-content-container {
@@ -2502,6 +2511,9 @@ legend {
 @media (max-width: 575.99px){
   .sidebar-content-container {
      margin-top: 10px;
+  }
+  .sidebar-edit {
+    text-align: left;
   }
 }
 
@@ -2525,13 +2537,22 @@ legend {
 }
 
 .main-heading {
-  font-size: 18px !important;
+  font-size: 22px !important;
   font-weight: 400 !important;
   margin-top:14px;
+  color: #000;
 }
 .main-heading-footer {
   border-bottom: 1px solid #ccc;
   margin-top: 12px;
+}
+.main-text {
+    text-align:right;
+}
+@media (max-width: 768px) {
+    .main-text {
+        text-align: left;
+    }
 }
 
 .no-border { border:0; }
@@ -2965,6 +2986,12 @@ a.text-white:focus {
     color: #f0f3f4 !important; 
 }
 
+.text-green { color:#009900 !important; }
+a.text-green:hover,
+a.text-green:focus { 
+    color: #008a00 !important; 
+}
+
 .bg-white { background: #ffffff !important; }
 .bg-silver-lighter { background: #f4f6f7 !important; }
 .bg-silver { background: #f0f3f4 !important; }
@@ -3065,6 +3092,9 @@ a.text-white:focus {
 }
 .underline {
     border-bottom: 1px solid #e2e7eb !important;
+}
+.c-pointer {
+  cursor:pointer;
 }
 
 
@@ -7861,10 +7891,6 @@ body .bootstrap-datetimepicker-widget table td {
 }
 
 /* DZ ADDED - WILL SORT LATER */
-.getpro {
-  cursor:pointer;
-}
-
 .custom-file {
   overflow: hidden;
 }
@@ -7898,4 +7924,21 @@ body .bootstrap-datetimepicker-widget table td {
 .popover.bs-popover-right::after,
 .popover.bs-popover-right .arrow:after {
   border-right-color: black;
+}
+
+/* Upsell */
+.ribbon {
+  position:absolute !important;
+  right: 10px !important;
+  top: 0 !important;  
+  z-index:3 !important;
+}
+.ribbon-left {
+  position:absolute !important;
+  right: 0 !important;
+  top: 0 !important;  
+  z-index:3 !important;
+}
+.upsell-label {
+  opacity: 0.8 !important;
 }

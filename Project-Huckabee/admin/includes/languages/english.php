@@ -1062,4 +1062,16 @@ define('BOX_HEADING_EXPORTTOOLS', 'Export Tools');
 define('BOX_TOOLS_EMAILEXPORT','Export Customers Email');
 //Margin Reports
 define('BOX_REPORTS_MARGIN_REPORT', 'Margin Reports');
+
+// DZ added 01/14/18
+define('TEXT_ON', 'On');
+define('TEXT_OFF', 'Off');
+define('TEXT_YES', 'Yes');
+define('TEXT_NO', 'No');
+define('TEXT_ACTIVE', 'Active');
+define('TEXT_INACTIVE', 'Inactive');
+define('TEXT_RESET', 'Reset');
+define('TEXT_DELETE', 'Delete');
+define('TEXT_COPIED', 'Copied!');
+
 ?>

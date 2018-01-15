@@ -12,9 +12,9 @@ class Specials {
   public static function getSpecialPrice($products_id) {
     $sInfo = self::getSpecialsInfo($products_id);
 
-    $special_price = 0.00;
+    $special_price = '';
     if ($sInfo['status'] == 1) {
-      $special_price = ($sInfo['specials_new_products_price'] != '') ? $sInfo['specials_new_products_price'] : 0.00;
+      $special_price = ($sInfo['specials_new_products_price'] != '') ? number_format($sInfo['specials_new_products_price'], 2) : '';
     }
 
     // check expiration if set
@@ -24,11 +24,23 @@ class Specials {
 
       if($today >= $expire){
         // expired
-        $special_price = 0.00;
+        $special_price = '';
       }
     }
 
     return $special_price;
   }
+
+  public static function update($products_id, $special_price) {
+    $delete_query_raw = "DELETE FROM " . TABLE_SPECIALS . " WHERE products_id = '" . (int)$products_id . "'";
+    $delete_query = tep_db_query($delete_query_raw);
+
+    if ($special_price != 0) {
+      $specials_query_raw = "INSERT INTO " . TABLE_SPECIALS . " (products_id, specials_new_products_price, specials_date_added, status) VALUES ('" . (int)$products_id . "','" . $special_price . "','" . @date("Y-m-d H:i:s") . "','1')";
+      $specials_query = tep_db_query($specials_query_raw);
+    }
+
+    return true;    
+  }  
 }
 ?>

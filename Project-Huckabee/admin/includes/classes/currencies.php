@@ -70,5 +70,9 @@
     function display_price($products_price, $products_tax, $quantity = 1) {
       return $this->format(tep_add_tax($products_price, $products_tax) * $quantity);
     }
+
+    function get_symbol_left($code) {
+      return $this->currencies[$code]['symbol_left'];
+    }
   }
 ?>

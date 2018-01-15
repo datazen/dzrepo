@@ -34,6 +34,7 @@
   color: #fff;
 }     
 .dark .main-text,
+.dark .sidebar-edit,
 .dark .sidebar-text {
   color: #a8acb1;
 } 
@@ -139,11 +140,17 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
+.dark .notify-container-meta-title,
+.dark .notify-container-meta-keywords,
+.dark .notify-container-meta-desc,
 .dark .notify-container-desc,
 .dark .notify-container-name {
   background:#000; 
   border:1px solid #000;
 }
+.dark .notify-container-meta-title > span,
+.dark .notify-container-meta-keywords > span,
+.dark .notify-container-meta-desc > span,
 .dark .notify-container-desc > span,
 .dark .notify-container-name > span {
   color:#fff !important;

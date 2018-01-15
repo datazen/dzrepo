@@ -31,6 +31,9 @@
     border-bottom-left-radius: 0;
 }
 
+.light .notify-container-meta-title > span,
+.light .notify-container-meta-keywords > span,
+.light .notify-container-meta-desc > span,
 .light .notify-container-desc > span,
 .light .notify-container-name > span {
   color:#000 !important;

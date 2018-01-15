@@ -49,7 +49,7 @@ define('TEXT_PRODUCTS_IMAGE_REMOVE_SHORT', '<b>Remove</b> this Image from this P
 define('TEXT_PRODUCTS_IMAGE_DELETE_SHORT', '<b>Delete</b> this Image from the Server (Permanent!)?');
 define('TEXT_PRODUCTS_IMAGE_TH_NOTICE', '<b>SM = Small Images.</b> If a "SM" image is used<br>(Alone) NO Pop-up window link is created, the "SM"<br> will be placed directly under the products<br>description. If used in conjunction with an <br>"XL" image on the right, a Pop-up Window Link<br> is created and the "XL" image will be<br>shown in a Pop-up window.<br><br>');
 define('TEXT_PRODUCTS_IMAGE_XL_NOTICE', '<b>XL = Large Images.</b> Used for the Pop-up image<br><br><br>');
-define('TEXT_PRODUCTS_IMAGE_ADDITIONAL', 'Additional Images');
+define('TEXT_PRODUCTS_IMAGE_ADDITIONAL', 'Additional Images:');
 define('TEXT_PRODUCTS_IMAGE_SM_1', 'SM Image 1:');
 define('TEXT_PRODUCTS_IMAGE_XL_1', 'XL Image 1:');
 define('TEXT_PRODUCTS_IMAGE_SM_2', 'SM Image 2:');
@@ -119,7 +119,7 @@ define('TEXT_CATEGORIES_NAME', 'Category Name:');
 define('TEXT_CATEGORIES_IMAGE', 'Category Image:');
 define('TEXT_SORT_ORDER', 'Sort Order:');
 define('TEXT_PRODUCTS_STATUS', 'Status:');
-define('TEXT_PRODUCTS_DATE_AVAILABLE', 'Date Available:');
+define('TEXT_PRODUCTS_DATE_AVAILABLE', 'Date Avail:');
 define('TEXT_PRODUCT_AVAILABLE', 'In Stock');
 define('TEXT_PRODUCT_NOT_AVAILABLE', 'Out of Stock');
 define('TEXT_PRODUCTS_MANUFACTURER', 'Manufacturer:');
@@ -267,7 +267,61 @@ define('TEXT_PRODUCTS_PRICE_MSRP', 'Products MSRP:');
 define('TEXT_PRODUCTS_MSRP_INFO', 'MSRP Info:');
 
 // DZ added for new template
+/*
+ * PRODUCT ADD/EDIT
+ */
+define('HEADING_CATALOG', 'Catalog');
+define('HEADING_EXTRA_FIELDS', 'Extra Fields');
+define('HEADING_IMAGES', 'Images');
+define('HEADING_INVENTORY', 'Inventory');
+define('HEADING_META_TAGS', 'Meta Tags');
+define('HEADING_PRICING_RULES', 'Pricing Rules');
+define('HEADING_SUBPRODUCTS', 'Sub Products');
+define('HEADING_USER_ACCESS_SETTINGS', 'User Access Settings');
+
+define('BUTTON_SAVE', 'Save');
+define('BUTTON_SAVE_STAY', 'Save and Stay');
+define('BUTTON_RETURN_TO_LIST', 'Return to List');
+define('BUTTON_VIEW_IN_CATALOG', 'View in Catalog');
+
+define('LABEL_BASE_PRICE', 'Base Price:');
+define('LABEL_DATE_AVAILABLE', 'Available:');
+define('LABEL_DESCRIPTION', 'Description:');
+define('LABEL_ENABLE', 'Enable:');
+define('LABEL_FEATURED_PRODUCTS', 'Featured:');
+define('LABEL_GROUP_PRICE_OVERRIDES', 'Customer Group Pricing Overrides:');
+define('LABEL_ITEM_COST', 'Item Cost:');
+define('LABEL_LARGE_IMAGE', 'Large Image:');
+define('LABEL_LISTING_BLURB', 'Listing Blurb:');
+define('LABEL_MAIN_IMAGE', 'Main Image:');
+define('LABEL_META_DESCRIPTION', 'Meta Description:');
+define('LABEL_META_KEYWORDS', 'Meta Keywords:');
+define('LABEL_META_TITLE', 'Title Meta Tag:');
+define('LABEL_MODEL', 'Model:');
+define('LABEL_MSRP', 'MSRP:');
+define('LABEL_NAME', 'Name:');
+define('LABEL_MANUFACTURER','Manufacturer:');
+define('LABEL_PRICE_WITH_TAX', 'Price w/Tax:');
+define('LABEL_QTY_PRICE_BREAKS', 'Quantity Price Breaks:');
+define('LABEL_QUANTITY', 'Quantity:');
+define('LABEL_RESTRICT_ACCESS', 'Restrict Access:');
+define('LABEL_SKU', 'SKU:');
+define('LABEL_SORT_ORDER', 'Sort Order:');
+define('LABEL_SPECIAL_PRICE', 'Special Price:');
+define('LABEL_STATUS', 'Status:');
+define('LABEL_TAX_CLASS', 'Tax Class:');
+define('LABEL_THUMBNAIL_IMAGE', 'Thumbnail Image:');
+define('LABEL_VENDOR', 'Vendor:');
+define('LABEL_VENDOR_NOTE', 'Vendor Note:');
+define('LABEL_WEIGHT', 'Weight:');
+
+define('OPTION_SELECT_VENDOR', 'Select Vendor');
+
+define('TABLE_SUBPRODUCT_NAME', 'Sub Product Name');
+define('TABLE_SUBPRODUCT_MODEL', 'Model');
+define('TABLE_SUBPRODUCT_PRICE', 'Price');
+define('TABLE_SUBPRODUCT_ACTION', 'Action');
+
 define('TEXT_COPY_LANG_TO_CLIPBOARD', 'Copy %s to Clipboard');
-define('TEXT_PRODUCTS_BASE_PRICE', 'Base Price');
 define('TEXT_CHOOSE_FILE', 'Click to select');
 ?>

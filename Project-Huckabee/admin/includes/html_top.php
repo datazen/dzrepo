@@ -68,7 +68,6 @@
     <!-- link href="assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" / -->  
     <link href="assets/plugins/morris/morris.css" rel="stylesheet" />    
     <link href="assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />    
-    <link href="assets/plugins/summernote/summernote.css" rel="stylesheet" />    
     <!-- ================== END PAGE LEVEL STYLE ================== -->    
 
     <!-- ================== BEGIN BASE JS ================== -->
@@ -95,7 +94,7 @@
     <!-- ================== BEGIN PAGE LEVEL JS ================== -->
     <script src="assets/plugins/morris/raphael.min.js"></script>
     <script src="assets/plugins/morris/morris.js"></script>    
-    <script src="assets/plugins/summernote/summernote.js"></script>    
+    <script src="assets/plugins/ckeditor/ckeditor.js"></script>    
     <script src="assets/plugins/bootstrap-sweetalert/sweetalert.js"></script>    
     <!-- script src="assets/plugins/gritter/js/jquery.gritter.js"></script -->
     <script src="assets/plugins/flot/jquery.flot.min.js"></script>

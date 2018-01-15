@@ -17,6 +17,7 @@ require('includes/functions/categories_description.php');
 require(DIR_WS_CLASSES . 'file_select.php');
 require(DIR_WS_CLASSES . 'currencies.php');
 require(DIR_WS_CLASSES . 'Specials.class.php');
+require(DIR_WS_CLASSES . 'Featured.class.php');
 $currencies = new currencies();
 
 define('TEXT_PRO_UPSELL_POPOVER_BODY', 'Get Pro to unlock this feature and many more, plus get support and updates!');            
@@ -278,6 +279,10 @@ if (tep_not_null($action)) {
                                                                            'products_head_keywords_tag' => $description_old['products_head_keywords_tag']
                                                                           );
       }
+
+      $products_special_price_old = Specials::getSpecialPrice($products_id);
+
+
       unset($products_old_query);
       unset($products_description_old_query);
       unset($description_old);
@@ -295,12 +300,30 @@ if (tep_not_null($action)) {
       if ($products_price != $products_old['products_price']) $sql_data_array['products_price'] = $products_price;
       $products_weight = isset($_POST['products_weight']) ? tep_db_prepare_input($_POST['products_weight']) : 0;
       if ($products_weight != $products_old['products_weight']) $sql_data_array['products_weight'] = $products_weight;
+
       $products_status = isset($_POST['products_status']) ? tep_db_prepare_input($_POST['products_status']) : 0;
+      if ($products_status == 'on') $products_status = 1;
+      if ($products_status == 'off') $products_status = 0;
+
       if ($products_status != $products_old['products_status']) $sql_data_array['products_status'] = $products_status;
+      
       $products_tax_class_id = isset($_POST['products_tax_class_id']) ? tep_db_prepare_input($_POST['products_tax_class_id']) : 0;
       if ($products_tax_class_id != $products_old['products_tax_class_id']) $sql_data_array['products_tax_class_id'] = $products_tax_class_id;
       $manufacturers_id = isset($_POST['manufacturers_id']) ? tep_db_prepare_input($_POST['manufacturers_id']) : 0;
       if ($manufacturers_id != $products_old['manufacturers_id']) $sql_data_array['manufacturers_id'] = $manufacturers_id;
+
+      // update Specials
+      $products_special_price_old = Specials::getSpecialPrice($products_id);
+      $products_special_price = isset($_POST['products_special_price']) ? tep_db_prepare_input($_POST['products_special_price']) : 0.00;
+      if ($products_special_price != $products_special_price_old) Specials::update($products_id, $products_special_price);
+
+      // update Featured
+      $featured_old = Featured::isFeatured($products_id);
+      $featured = isset($_POST['featured']) ? tep_db_prepare_input($_POST['featured']) : 'off';
+      if ($featured == 'on') $featured = 1;
+      if ($featured == 'off') $featured = 0;     
+      if ($featured != $featured_old) Featured::update($products_id, $featured);      
+
 
       $images = array(array('table' => 'products_image', 'delete' => 'delete_image', 'unlink' => 'unlink_image', 'dir' => 'products_image_destination'),
                       array('table' => 'products_image_med', 'delete' => 'delete_image_med', 'unlink' => 'unlink_image_med', 'dir' => 'products_image_med_destination'),
@@ -318,6 +341,7 @@ if (tep_not_null($action)) {
                       array('table' => 'products_image_sm_6', 'delete' => 'delete_image_sm_6', 'unlink' => 'unlink_image_sm_6', 'dir' => 'products_image_sm_6_destination'),
                       array('table' => 'products_image_xl_6', 'delete' => 'delete_image_xl_6', 'unlink' => 'unlink_image_xl_6', 'dir' => 'products_image_xl_6_destination')
                      );
+
       foreach ($images as $image) {
         if (isset($_POST[$image['delete']]) && $_POST[$image['delete']] == 'yes' && $products_old[$image['table']] != '') {
           unlink(DIR_FS_CATALOG_IMAGES . $products_old[$image['table']]);
@@ -347,86 +371,95 @@ if (tep_not_null($action)) {
         tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = ' . (int)$products_id);
       }
 
-        // process the products description table data
-        $products_description_parent = array(); // save the name and description for later use in processing sub products
-        for ($i=0, $n=sizeof($languages); $i<$n; $i++) {
-          $language_id = $languages[$i]['id'];
-          $products_description_parent[$language_id] = array('products_name' => tep_db_prepare_input(tep_db_encoder($_POST['products_name'][$language_id])),
-                                                             'products_description' => tep_db_prepare_input(tep_db_encoder($_POST['products_description'][$language_id]))
-                                                             );
-          if (!isset($products_description_old[$language_id])) {
-            $_POST['products_url'][$language_id] = urldecode($_POST['products_url'][$language_id]);
-            if (substr($_POST['products_url'][$language_id], 0, 7) == 'http://') $_POST['products_url'][$language_id] = substr($_POST['products_url'][$language_id], 7);
-            $sql_data_array = array('products_name' => tep_db_prepare_input(tep_db_encoder($_POST['products_name'][$language_id])),
-                                    'products_description' => tep_db_prepare_input(tep_db_encoder($_POST['products_description'][$language_id])),
-                                    'products_url' => tep_db_prepare_input($_POST['products_url'][$language_id]),
-                                    'products_head_title_tag' => tep_db_prepare_input(tep_db_encoder($_POST['products_head_title_tag'][$language_id])),
-                                    'products_head_desc_tag' => tep_db_prepare_input(tep_db_encoder($_POST['products_head_desc_tag'][$language_id])),
-                                    'products_head_keywords_tag' => tep_db_prepare_input(tep_db_encoder($_POST['products_head_keywords_tag'][$language_id]))
-                                   );
-          } else {
-            $sql_data_array = array(); //declare the array and add to it anything changed
-            $products_name = tep_db_prepare_input(tep_db_encoder($_POST['products_name'][$language_id]));
-            if ($products_description_old[$language_id]['products_name'] != $products_name) {
-              $sql_data_array['products_name'] = tep_db_encoder($products_name);
-            }
-            $products_description = tep_db_prepare_input(tep_db_encoder($_POST['products_description'][$language_id]));
-            if ($products_description_old[$language_id]['products_description'] != $products_description) $sql_data_array['products_description'] = tep_db_encoder($products_description);
-            $_POST['products_url'][$language_id] = urldecode($_POST['products_url'][$language_id]);
-            if (substr($_POST['products_url'][$language_id], 0, 7) == 'http://') $_POST['products_url'][$language_id] = substr($_POST['products_url'][$language_id], 7);
-            $products_url = tep_db_prepare_input($_POST['products_url'][$language_id]);
-            if ($products_description_old[$language_id]['products_url'] != $products_url) $sql_data_array['products_url'] = $products_url;
-            $products_head_title_tag = tep_db_prepare_input(tep_db_encoder($_POST['products_head_title_tag'][$language_id]));
-            if ($products_description_old[$language_id]['products_head_title_tag'] != $products_head_title_tag) $sql_data_array['products_head_title_tag'] = $products_head_title_tag;
-            $products_head_desc_tag = tep_db_prepare_input(tep_db_encoder($_POST['products_head_desc_tag'][$language_id]));
-            if ($products_description_old[$language_id]['products_head_desc_tag'] != $products_head_desc_tag) $sql_data_array['products_head_desc_tag'] = $products_head_desc_tag;
-            $products_head_keywords_tag = tep_db_prepare_input(tep_db_encoder($_POST['products_head_keywords_tag'][$language_id]));
-            if ($products_description_old[$language_id]['products_head_keywords_tag'] != $products_head_keywords_tag) $sql_data_array['products_head_keywords_tag'] = $products_head_keywords_tag;
+      // process the products description table data
+      $products_description_parent = array(); // save the name and description for later use in processing sub products
+      for ($i=0, $n=sizeof($languages); $i<$n; $i++) {
+        $language_id = $languages[$i]['id'];
+        $products_description_parent[$language_id] = array('products_name' => tep_db_prepare_input(tep_db_encoder($_POST['products_name'][$language_id])),
+                                                           'products_description' => tep_db_prepare_input(tep_db_encoder($_POST['products_description'][$language_id]))
+                                                           );
+        if (!isset($products_description_old[$language_id])) {
+          $_POST['products_url'][$language_id] = urldecode($_POST['products_url'][$language_id]);
+          if (substr($_POST['products_url'][$language_id], 0, 7) == 'http://') $_POST['products_url'][$language_id] = substr($_POST['products_url'][$language_id], 7);
+          $sql_data_array = array('products_name' => tep_db_prepare_input(tep_db_encoder($_POST['products_name'][$language_id])),
+                                  'products_description' => tep_db_prepare_input(tep_db_encoder($_POST['products_description'][$language_id])),
+                                  'products_url' => tep_db_prepare_input($_POST['products_url'][$language_id]),
+                                  'products_head_title_tag' => tep_db_prepare_input(tep_db_encoder($_POST['products_head_title_tag'][$language_id])),
+                                  'products_head_desc_tag' => tep_db_prepare_input(tep_db_encoder($_POST['products_head_desc_tag'][$language_id])),
+                                  'products_head_keywords_tag' => tep_db_prepare_input(tep_db_encoder($_POST['products_head_keywords_tag'][$language_id]))
+                                 );
+        } else {
+          $sql_data_array = array(); //declare the array and add to it anything changed
+          $products_name = tep_db_prepare_input(tep_db_encoder($_POST['products_name'][$language_id]));
+          if ($products_description_old[$language_id]['products_name'] != $products_name) {
+            $sql_data_array['products_name'] = tep_db_encoder($products_name);
           }
-
-          // check to see if there is anything to actually update in the products table
-          if (count($sql_data_array) > 0 ) {
-            tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_id = ' . (int)$products_id . ' and language_id = ' . (int)$language_id);
-          }
+          $products_description = tep_db_prepare_input(tep_db_encoder($_POST['products_description'][$language_id]));
+          if ($products_description_old[$language_id]['products_description'] != $products_description) $sql_data_array['products_description'] = tep_db_encoder($products_description);
+          $_POST['products_url'][$language_id] = urldecode($_POST['products_url'][$language_id]);
+          if (substr($_POST['products_url'][$language_id], 0, 7) == 'http://') $_POST['products_url'][$language_id] = substr($_POST['products_url'][$language_id], 7);
+          $products_url = tep_db_prepare_input($_POST['products_url'][$language_id]);
+          if ($products_description_old[$language_id]['products_url'] != $products_url) $sql_data_array['products_url'] = $products_url;
+          $products_head_title_tag = tep_db_prepare_input(tep_db_encoder($_POST['products_head_title_tag'][$language_id]));
+          if ($products_description_old[$language_id]['products_head_title_tag'] != $products_head_title_tag) $sql_data_array['products_head_title_tag'] = $products_head_title_tag;
+          $products_head_desc_tag = tep_db_prepare_input(tep_db_encoder($_POST['products_head_desc_tag'][$language_id]));
+          if ($products_description_old[$language_id]['products_head_desc_tag'] != $products_head_desc_tag) $sql_data_array['products_head_desc_tag'] = $products_head_desc_tag;
+          $products_head_keywords_tag = tep_db_prepare_input(tep_db_encoder($_POST['products_head_keywords_tag'][$language_id]));
+          if ($products_description_old[$language_id]['products_head_keywords_tag'] != $products_head_keywords_tag) $sql_data_array['products_head_keywords_tag'] = $products_head_keywords_tag;
         }
 
-        /////////////////////////////////////////////////////////////////
-        // BOF: Eversun Added: Update Product Attributes and Sort Order
-        // Update the changes to the attributes if any changes were made
-        $rows = 0;
-        $options_query = tep_db_query("select po.products_options_id, pot.products_options_name from " . TABLE_PRODUCTS_OPTIONS . " po, " . TABLE_PRODUCTS_OPTIONS_TEXT . " pot where pot.language_id = '" . $languages_id . "' and po.products_options_id = pot.products_options_text_id order by po.products_options_sort_order, pot.products_options_name");
-        while ($options = tep_db_fetch_array($options_query)) {
-          $values_query = tep_db_query("select pov.products_options_values_id, pov.products_options_values_name from " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov, " . TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS . " p2p where pov.products_options_values_id = p2p.products_options_values_id and p2p.products_options_id = '" . $options['products_options_id'] . "' and pov.language_id = '" . $languages_id . "' order by pov.products_options_values_name");
-          while ($values = tep_db_fetch_array($values_query)) {
-            $rows ++;
-            $attributes_query = tep_db_query("select products_attributes_id, options_values_price, price_prefix, products_options_sort_order from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . $products_id . "' and options_id = '" . $options['products_options_id'] . "' and options_values_id = '" . $values['products_options_values_id'] . "'");
-            if (tep_db_num_rows($attributes_query) > 0) {
-              $attributes = tep_db_fetch_array($attributes_query);
-              if (isset($_POST['option'][$rows])) {
-                if ( ($_POST['prefix'][$rows] <> $attributes['price_prefix']) || ($_POST['price'][$rows] <> $attributes['options_values_price']) || ($_POST['products_options_sort_order'][$rows] <> $attributes['products_options_sort_order']) ) {
-                  tep_db_query("update " . TABLE_PRODUCTS_ATTRIBUTES . " set options_values_price = '" . $_POST['price'][$rows] . "', price_prefix = '" . $_POST['prefix'][$rows] . "', products_options_sort_order = '" . $_POST['products_options_sort_order'][$rows] . "'  where products_attributes_id = '" . $attributes['products_attributes_id'] . "'");
-                }
-              } else {
-                tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_attributes_id = '" . $attributes['products_attributes_id'] . "'");
+        // check to see if there is anything to actually update in the products table
+        if (count($sql_data_array) > 0 ) {
+          tep_db_perform(TABLE_PRODUCTS_DESCRIPTION, $sql_data_array, 'update', 'products_id = ' . (int)$products_id . ' and language_id = ' . (int)$language_id);
+        }
+      }
+
+      /////////////////////////////////////////////////////////////////
+      // BOF: Eversun Added: Update Product Attributes and Sort Order
+      // Update the changes to the attributes if any changes were made
+      $rows = 0;
+      $options_query = tep_db_query("select po.products_options_id, pot.products_options_name from " . TABLE_PRODUCTS_OPTIONS . " po, " . TABLE_PRODUCTS_OPTIONS_TEXT . " pot where pot.language_id = '" . $languages_id . "' and po.products_options_id = pot.products_options_text_id order by po.products_options_sort_order, pot.products_options_name");
+      while ($options = tep_db_fetch_array($options_query)) {
+        $values_query = tep_db_query("select pov.products_options_values_id, pov.products_options_values_name from " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov, " . TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS . " p2p where pov.products_options_values_id = p2p.products_options_values_id and p2p.products_options_id = '" . $options['products_options_id'] . "' and pov.language_id = '" . $languages_id . "' order by pov.products_options_values_name");
+        while ($values = tep_db_fetch_array($values_query)) {
+          $rows ++;
+          $attributes_query = tep_db_query("select products_attributes_id, options_values_price, price_prefix, products_options_sort_order from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . $products_id . "' and options_id = '" . $options['products_options_id'] . "' and options_values_id = '" . $values['products_options_values_id'] . "'");
+          if (tep_db_num_rows($attributes_query) > 0) {
+            $attributes = tep_db_fetch_array($attributes_query);
+            if (isset($_POST['option'][$rows])) {
+              if ( ($_POST['prefix'][$rows] <> $attributes['price_prefix']) || ($_POST['price'][$rows] <> $attributes['options_values_price']) || ($_POST['products_options_sort_order'][$rows] <> $attributes['products_options_sort_order']) ) {
+                tep_db_query("update " . TABLE_PRODUCTS_ATTRIBUTES . " set options_values_price = '" . $_POST['price'][$rows] . "', price_prefix = '" . $_POST['prefix'][$rows] . "', products_options_sort_order = '" . $_POST['products_options_sort_order'][$rows] . "'  where products_attributes_id = '" . $attributes['products_attributes_id'] . "'");
               }
-            } elseif (isset($_POST['option'][$rows])) {
-              tep_db_query("insert into " . TABLE_PRODUCTS_ATTRIBUTES . " values ('', '" . $products_id . "', '" . $options['products_options_id'] . "', '" . $values['products_options_values_id'] . "', '" . $_POST['price'][$rows] . "', '" . $_POST['prefix'][$rows] . "', '" . $_POST['products_options_sort_order'][$rows] . "')");
+            } else {
+              tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_attributes_id = '" . $attributes['products_attributes_id'] . "'");
             }
+          } elseif (isset($_POST['option'][$rows])) {
+            tep_db_query("insert into " . TABLE_PRODUCTS_ATTRIBUTES . " values ('', '" . $products_id . "', '" . $options['products_options_id'] . "', '" . $values['products_options_values_id'] . "', '" . $_POST['price'][$rows] . "', '" . $_POST['prefix'][$rows] . "', '" . $_POST['products_options_sort_order'][$rows] . "')");
           }
         }
-        // EOF: Eversun Added: Update Product Attributes and Sort Order
-        /////////////////////////////////////////////////////////////////////
+      }
+      // EOF: Eversun Added: Update Product Attributes and Sort Order
+      /////////////////////////////////////////////////////////////////////
 
       if (USE_CACHE == 'true') {
         tep_reset_cache_block('categories');
         tep_reset_cache_block('also_purchased');
       }
 
+      $mode = (isset($_POST['mode']) && $_POST['mode'] != '') ? $_POST['mode'] : 'save';
+      if ($mode == 'save') {
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products_old['products_id']));
+      } else {  // save & stay
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products_old['products_id'] . '&action=new_product'));
+      }
+
+      /*
       if (isset($_SESSION['is_std']) && $_SESSION['is_std'] === true) {
         tep_redirect(tep_href_link(FILENAME_GET_LOADED, 'page=product&cPath=' . $cPath . '&pID=' . $products_id));
       } else {
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products_old['products_id']));
       }
+      */
       break;
 
     case 'insert_product':
@@ -441,7 +474,11 @@ if (tep_not_null($action)) {
         $products_sku = tep_db_prepare_input(tep_db_encoder($_POST['products_sku']));
         $products_price = tep_db_prepare_input($_POST['products_price']);
         $products_weight = isset($_POST['products_weight']) ? tep_db_prepare_input($_POST['products_weight']) : 0;
+  
         $products_status = isset($_POST['products_status']) ? tep_db_prepare_input($_POST['products_status']) : 0;
+        if ($products_status == 'on') $products_status = 1;
+        if ($products_status == 'off') $products_status = 0;
+
         $products_tax_class_id = isset($_POST['products_tax_class_id']) ? tep_db_prepare_input($_POST['products_tax_class_id']) : 0;
         $manufacturers_id = isset($_POST['manufacturers_id']) ? tep_db_prepare_input($_POST['manufacturers_id']) : 0;
         $sql_data_array = array('products_date_available' => $products_date_available,
@@ -677,6 +714,19 @@ $msg = 'TEST';
 $error = false;
 $warning = false;
 ?>
+<script>
+  function updateProduct(mode) {
+    var action = '<?php echo str_replace('&amp;', '&', tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . (isset($pID) ? '&pID=' . $pID : '') . '&action=' . ((!empty($pID)) ? 'update_product' : 'insert_product'))); ?>';
+    // set the save mode in hidden form input
+    $('<input />').attr('type', 'hidden')
+        .attr('name', "mode")
+        .attr('value', mode)
+        .appendTo('#new_product');
+
+    $('#new_product').attr('action', action).submit();
+  }
+</script>
+
 <div id="content" class="content p-relative">         
   <h1 class="page-header"><i class="fa fa-laptop"></i> <?php echo HEADING_TITLE; ?></h1>
 
@@ -690,14 +740,14 @@ $warning = false;
     <?php 
     if (isset($action) && $action == 'new_product') {
       ?>
-      <form name="new_product" method="post" enctype="multipart/form-data" onSubmit="return OnSubmitForm();">
+      <form id="new_product" name="new_product" method="post" enctype="multipart/form-data">
       <!-- begin button bar --> 
       <div class="row">
         <div class="col-9 m-b-10"> 
-          <a href="javascript:;" class="btn btn-link m-r-3 f-w-200 text-primary hidden-xs hidden-sm"><i class="fa fa-chevron-left"></i> Return to List</a>
-          <a href="javascript:;" class="btn btn-primary m-r-3"><i class="fa fa-save"></i> Save</a>
-          <a href="javascript:;" class="btn btn-info m-r-3 btn-save-stay"><i class="fa fa-save"></i> Save and Stay</a>
-          <a href="javascript:;" class="hidden-xs hidden-sm hidden-md btn btn-link m-r-5 f-w-200 text-primary"><i class="fa fa-laptop"></i> View in Catalog</a>
+          <a href="<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ((isset($cID) && $cID != '') ? '&cID=' . $cID : '') . ((isset($pID) && $pID != '') ? '&pID=' . $pID : '')); ?>" class="btn btn-link m-r-3 f-w-200 text-primary hidden-xs hidden-sm"><i class="fa fa-chevron-left"></i> <?php echo BUTTON_RETURN_TO_LIST; ?></a>
+          <button type="submit" onclick="updateProduct('save');" class="btn btn-primary m-r-3"><i class="fa fa-save"></i> <?php echo BUTTON_SAVE; ?></button>
+          <button type="submit" onclick="updateProduct('stay');" class="btn btn-info m-r-3 btn-save-stay"><i class="fa fa-save"></i> <?php echo BUTTON_SAVE_STAY; ?></button>
+          <a href="<?php echo HTTP_SERVER . DIR_WS_CATALOG .'product_info.php?products_id=' . $pID; ?>" target="_blank" class="hidden-xs hidden-sm hidden-md btn btn-link m-r-5 f-w-200 text-primary"><i class="fa fa-laptop"></i> <?php echo BUTTON_VIEW_IN_CATALOG; ?></a>
         </div>
         <div class="col-3">
           <div class="btn-group pull-right dark"> <a aria-expanded="false" href="javascript:;" data-toggle="dropdown" class="btn btn-white dropdown-toggle"> <?php echo ucwords($_SESSION['language']); ?> <span class="caret"></span> </a>
@@ -1204,27 +1254,8 @@ $warning = false;
               // RCI start
               echo $cre_RCI->get('categories', 'pedittop');
               // RCI eof
-              if ( !empty($pID) ) {
-                $form_action_text = 'Update';
-                $form_action_action = 'update_product';
-                $form_action_button = tep_image_submit('button_quick_save.gif',IMAGE_UPDATE,'name="Operation" onClick="document.pressed=this.value" VALUE="'.$form_action_action.'"');
-              } else {
-                $form_action_text = 'Insert';
-                $form_action_action = 'insert_product';
-                $form_action_button = tep_image_submit('button_quick_save.gif',IMAGE_UPDATE,'name="Operation" onClick="document.pressed=this.value" VALUE="'.$form_action_action.'"');
-              }
               ?>
-              <script type="text/javascript">
-              function OnSubmitForm() {
-                if(trim(document.pressed) == '<?php echo $form_action_text;?>') {
-                  document.new_product.action ="<?php echo str_replace('&amp;', '&', tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . (isset($pID) ? '&pID=' . $pID : '') . '&action=' . $form_action_action)); ?>";
-                } else if(trim(document.pressed) == 'Preview') {
-                  document.new_product.action ="<?php echo str_replace('&amp;', '&', tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . (isset($pID) ? '&pID=' . $pID : '') . '&action=new_product_preview')); ?>";
-                }
-                return true;
-              }
 
-              </script>
               <!-- LEFT PANEL start -->
               <?php
               // RCO start fieldsetdescr
@@ -1244,13 +1275,13 @@ $warning = false;
                       </div>             
 
                       <div class="form-group row mb-3 m-t-20">
-                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo TEXT_PRODUCTS_NAME; ?></label>
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo LABEL_NAME; ?></label>
                         <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
                           <?php echo tep_draw_input_field('products_name[' . $languages[$i]['id'] . ']', (isset($products_name[$languages[$i]['id']]) ? $products_name[$languages[$i]['id']] : tep_get_products_name($pInfo->products_id, $languages[$i]['id'])), 'id="products_name_' . $languages[$i]['id'] . '"class="form-control f-w-600 f-s-12 p-l-10 p-r-10"'); ?>
                         </div>
 
                         <div class="col-xs-1 p-l-0 p-r-0 p-relative">
-                          <div class="notify-container-name rounded-left rounded-right"><span class="text-black">Copied!</span></div>
+                          <div class="notify-container-name rounded-left rounded-right"><span class="text-black"><?php echo TEXT_COPIED; ?></span></div>
                           <div id="name-ctc-options" class="btn-group btn-xs"> <a aria-expanded="false" href="javascript:;" data-toggle="dropdown" class="f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
                             <ul id="name-ctc-list" class="dropdown-menu pull-left">
                               <?php
@@ -1265,24 +1296,23 @@ $warning = false;
                         </div>
                       </div>
 
-                      <div class="form-group row mb-3">
-                        <label class="col-xs-4 col-md-3 col-lg-2 control-label pr-0 getpro main-text mt-1" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>Listing Blurb <span class="label label-theme bg-red ml-1">PRO</span></label>
-                        <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
+                      <div class="form-group row mb-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label pr-0 c-pointer main-text mt-1"><?php echo LABEL_LISTING_BLURB; ?></label>
+                        <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input c-pointer p-relative">
                           <textarea readonly class="form-control" rows="2"></textarea>
+                          <div class="ribbon-left upsell-label"><img src="assets/img/ribbon-pro.png"></div>
                         </div>
                         <div class="col-xs-1 p-l-0 p-r-0"> </div>
                       </div>
 
                       <div class="form-group row mb-3">
-                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo TEXT_PRODUCTS_DESCRIPTION; ?></label>
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo LABEL_DESCRIPTION; ?></label>
                         <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
-                          <div id="summernote">
-                            <?php echo tep_draw_textarea_field('products_description[' . $languages[$i]['id'] . ']', 'soft', '70', '15', (isset($products_description[$languages[$i]['id']]) ? $products_description[$languages[$i]['id']] : tep_get_products_description($pInfo->products_id, $languages[$i]['id'])), 'class="form-control" id="products_description_' . $languages[$i]['id'] . '"'); ?>
-                          </div>
+                          <?php echo tep_draw_textarea_field('products_description[' . $languages[$i]['id'] . ']', 'soft', '70', '15', (isset($products_description[$languages[$i]['id']]) ? $products_description[$languages[$i]['id']] : tep_get_products_description($pInfo->products_id, $languages[$i]['id'])), 'class="ckeditor" id="products_description_' . $languages[$i]['id'] . '"'); ?>
                         </div>
                         <div class="col-xs-1 p-l-0 p-r-0">
-                          <div class="notify-container-desc rounded-left rounded-right"><span class="text-black">Copied!</span></div>                            
-                          <div id="desc-ctc-options" class="btn-group btn-xs"> <a aria-expanded="false" href="javascript:;" style="color:#666" data-toggle="dropdown" class="f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
+                          <div class="notify-container-desc rounded-left rounded-right"><span class="text-black"><?php echo TEXT_COPIED; ?></span></div>                            
+                          <div id="desc-ctc-options" class="btn-group btn-xs"> <a aria-expanded="false" href="javascript:;" data-toggle="dropdown" class="f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
                             <ul id="desc-ctc-list" class="dropdown-menu pull-left">
                               <?php
                               for ($j=0; $j<sizeof($languages); $j++) {
@@ -1307,54 +1337,72 @@ $warning = false;
 
                     <!-- SEO & META TAGS start-->
                     <div class="ml-2 mr-2">
-                      <div class="main-heading m-t-30"><span><?php echo TEXT_PRODUCT_METTA_INFO; ?></span>
+                      <div class="main-heading m-t-30"><span><?php echo HEADING_META_TAGS; ?></span>
                         <div class="main-heading-footer"></div>
                       </div>  
 
                       <div class="form-group row mb-3 mt-3">
-                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo TEXT_EDIT_CATEGORIES_TITLE_TAG; ?></label>
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo LABEL_META_TITLE; ?></label>
                         <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
                           <?php
-                          echo tep_draw_textarea_field('products_head_title_tag[' . $languages[$i]['id'] . ']', 'soft', '15', '2', (isset($products_head_title_tag[$languages[$i]['id']]) ? $products_head_title_tag[$languages[$i]['id']] : tep_get_products_head_title_tag($pInfo->products_id, $languages[$i]['id'])),'class="form-control"');
+                          echo tep_draw_textarea_field('products_head_title_tag[' . $languages[$i]['id'] . ']', 'soft', '15', '2', (isset($products_head_title_tag[$languages[$i]['id']]) ? $products_head_title_tag[$languages[$i]['id']] : tep_get_products_head_title_tag($pInfo->products_id, $languages[$i]['id'])),'class="form-control" id="products_head_title_tag_' . $languages[$i]['id'] . '"');
                           ?>                      
                         </div>
-                        <div class="col-xs-1 p-l-0 p-r-0">
-                          <div class="btn-group btn-xs "> <a aria-expanded="false" href="javascript:;" style="color:#666" data-toggle="dropdown" class=" f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
-                            <ul class="dropdown-menu pull-left">
-                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-1" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy English to Clipboard</a></li>
-                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-2" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy Hindi to Clipboard</a></li>
+                        <div class="col-xs-1 p-l-0 p-r-0 p-relative">
+                          <div class="notify-container-meta-title rounded-left rounded-right"><span class="text-black"><?php echo TEXT_COPIED; ?></span></div>                            
+                          <div id="meta-title-ctc-options" class="btn-group btn-xs "> <a aria-expanded="false" href="javascript:;" data-toggle="dropdown" class=" f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
+                            <ul id="meta-title-ctc-list" class="dropdown-menu pull-left">
+                              <?php
+                              for ($j=0; $j<sizeof($languages); $j++) {
+                                ?>
+                                <li><a data-lang-name="<?php echo ucwords($languages[$j]['name']); ?>" data-lang-id="<?php echo $languages[$j]['id']; ?>" aria-expanded="false" href="javscript:;"><i class="fa fa-clipboard mr-1" aria-hidden="true"></i><?php echo sprintf(TEXT_COPY_LANG_TO_CLIPBOARD, $languages[$i]['name']);?></a></li>
+                                <?php
+                              }
+                              ?> 
                             </ul>
                           </div>
                         </div>
                       </div>
                       <div class="form-group row mb-3">
-                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1">Meta Keywords</label>
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1"><?php echo LABEL_META_KEYWORDS;?></label>
                         <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
                           <?php
-                          echo tep_draw_textarea_field('products_head_keywords_tag[' . $languages[$i]['id'] . ']', 'soft', '35', '5', (isset($products_head_keywords_tag[$languages[$i]['id']]) ? $products_head_keywords_tag[$languages[$i]['id']] : tep_get_products_head_keywords_tag($pInfo->products_id, $languages[$i]['id'])),'class="form-control"');
+                          echo tep_draw_textarea_field('products_head_keywords_tag[' . $languages[$i]['id'] . ']', 'soft', '35', '5', (isset($products_head_keywords_tag[$languages[$i]['id']]) ? $products_head_keywords_tag[$languages[$i]['id']] : tep_get_products_head_keywords_tag($pInfo->products_id, $languages[$i]['id'])),'class="form-control" id="products_head_keywords_tag_' . $languages[$i]['id'] . '"');
                           ?>                                         
                         </div>
-                        <div class="col-xs-1 p-l-0 p-r-0">
-                          <div class="btn-group btn-xs "> <a aria-expanded="false" href="javascript:;" style="color:#666" data-toggle="dropdown" class=" f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
+                        <div class="col-xs-1 p-l-0 p-r-0 p-relative">
+                          <div id="meta-keywords-ctc-options" class="notify-container-meta-keywords rounded-left rounded-right"><span class="text-black"><?php echo TEXT_COPIED; ?></span></div>                            
+                          <div id="meta-keywords-ctc-list" class="btn-group btn-xs "> <a aria-expanded="false" href="javascript:;" data-toggle="dropdown" class=" f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
                             <ul class="dropdown-menu pull-left">
-                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-1" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy English to Clipboard</a></li>
-                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-2" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy Hindi to Clipboard</a></li>
+                              <?php
+                              for ($j=0; $j<sizeof($languages); $j++) {
+                                ?>
+                                <li><a data-lang-name="<?php echo ucwords($languages[$j]['name']); ?>" data-lang-id="<?php echo $languages[$j]['id']; ?>" aria-expanded="false" href="javscript:;"><i class="fa fa-clipboard mr-1" aria-hidden="true"></i><?php echo sprintf(TEXT_COPY_LANG_TO_CLIPBOARD, $languages[$i]['name']);?></a></li>
+                                <?php
+                              }
+                              ?> 
                             </ul>
                           </div>
                         </div>
                       </div>
                       <div class="form-group row mb-3">
-                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1">Meta Description</label>
+                        <label class="col-xs-4 col-md-3 col-lg-2 control-label main-text mt-1 pl-0"><?php echo LABEL_META_DESCRIPTION; ?></label>
                         <div class="col-xs-7 col-md-8 col-lg-9 p-r-0 meta-input">
                           <?php
-                          echo tep_draw_textarea_field('products_head_desc_tag[' . $languages[$i]['id'] . ']', 'soft', '35', '5', (isset($products_head_desc_tag[$languages[$i]['id']]) ? $products_head_desc_tag[$languages[$i]['id']] : tep_get_products_head_desc_tag($pInfo->products_id, $languages[$i]['id'])),'class="form-control"');
+                          echo tep_draw_textarea_field('products_head_desc_tag[' . $languages[$i]['id'] . ']', 'soft', '35', '5', (isset($products_head_desc_tag[$languages[$i]['id']]) ? $products_head_desc_tag[$languages[$i]['id']] : tep_get_products_head_desc_tag($pInfo->products_id, $languages[$i]['id'])),'class="form-control" id="products_head_desc_tag_' . $languages[$i]['id'] . '"');
                           ?>  
                         </div>
-                        <div class="col-xs-1 p-l-0 p-r-0">
-                          <div class="btn-group btn-xs"> <a aria-expanded="false" href="javascript:;" style="color:#666" data-toggle="dropdown" class=" f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
+                        <div class="col-xs-1 p-l-0 p-r-0 p-relative">
+                          <div id="meta-desc-ctc-options" class="notify-container-meta-desc rounded-left rounded-right"><span class="text-black"><?php echo TEXT_COPIED; ?></span></div>                                                     
+                          <div id="meta-desc-ctc-list" class="btn-group btn-xs"> <a aria-expanded="false" href="javascript:;" data-toggle="dropdown" class=" f-w-100 text-right btn btn-xs btn-white dropdown-toggle width-full"> <span class="caret"></span> </a>
                             <ul class="dropdown-menu pull-left">
-                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-1" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy English to Clipboard</a></li>
-                              <li class=""><a aria-expanded="false" href="#nav-pills-tab-2" data-toggle="tab"><i class="fa fa-clipboard" aria-hidden="true"></i> Copy Hindi to Clipboard</a></li>
+                              <?php
+                              for ($j=0; $j<sizeof($languages); $j++) {
+                                ?>
+                                <li><a data-lang-name="<?php echo ucwords($languages[$j]['name']); ?>" data-lang-id="<?php echo $languages[$j]['id']; ?>" aria-expanded="false" href="javscript:;"><i class="fa fa-clipboard mr-1" aria-hidden="true"></i><?php echo sprintf(TEXT_COPY_LANG_TO_CLIPBOARD, $languages[$i]['name']);?></a></li>
+                                <?php
+                              }
+                              ?> 
                             </ul>
                           </div>
                         </div>
@@ -1382,23 +1430,19 @@ $warning = false;
                   if ($pInfo->products_image_lrg != '') $products_image_lrg = $pInfo->products_image_lrg;
                 }
                 ?>                         
-                <div class="main-heading m-t-30"><span>Images</span>
+                <div class="main-heading m-t-30"><span></span><?php echo HEADING_IMAGES; ?></span>
                   <div class="main-heading-footer"></div>
                 </div>                  
 
                 <div class="form-group row mt-3 mb-3">
-                  <label class="col-md-2 control-label main-text mt-1">Main Image</label>
+                  <label class="col-md-2 control-label main-text mt-2 p-0"><?php echo LABEL_MAIN_IMAGE; ?></label>
                   <div class="col-md-10">
                     <div class="media">
                       <div class="lc-border p-10">
                         <a class="media-left" style="min-width:<?php echo SMALL_IMAGE_WIDTH; ?>px;" href="javascript:;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $products_image, $products_image, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'class="media-object mt-2"'); ?></a>
-                        <div class="media-body mr-2 mb-0"><?php echo $products_image; if ($products_image != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs">Delete</span></a><?php } ?>
-                          <div class="input-group input-file p-r-30 p-t-20">
-                            <input type="text" name="products_image" class="form-control file-input" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" />
-                            <span class="input-group-btn hidden-xs">
-                              <!-- button class="btn btn-default btn-choose" type="button">Choose</button -->
-                              <button class="btn btn-default btn-reset" type="button">Reset</button>
-                            </span>
+                        <div class="media-body mr-2 mb-0"><?php echo $products_image; if ($products_image != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs"><?php echo TEXT_DELETE; ?></span></a><?php } ?>
+                          <div class="fine-input-container mt-2 mb-3">
+                            <input type="file" name="products_image" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" /><?php echo tep_draw_hidden_field('products_image_previous', $products_image); ?>
                           </div>
                           <div class="mt-2"><select name="products_image_destination" class="form-control w-50" id="dirPath" ><?php echo $file_dir; ?></select></div>
                         </div>
@@ -1408,18 +1452,14 @@ $warning = false;
                 </div>
 
                 <div class="form-group row mt-3 mb-3">
-                  <label class="col-md-2 control-label main-text mt-1">Thumbnail Image</label>
+                  <label class="col-md-2 control-label main-text mt-2 p-0"><?php echo LABEL_THUMBNAIL_IMAGE; ?></label>
                   <div class="col-md-10">
                     <div class="media">
                       <div class="lc-border p-10">
                         <a class="media-left" style="min-width:<?php echo SMALL_IMAGE_WIDTH; ?>px;" href="javascript:;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $products_image_med, $products_image_med, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'class="media-object mt-2"'); ?></a>
-                        <div class="media-body mr-2 mb-0 p-l-20"><?php echo $products_image_med; if ($products_image_med != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs">Delete</span></a><?php } ?>
-                          <div class="input-group input-file p-r-30 p-t-20">                            
-                            <input type="text" name="products_image_med" class="form-control file-input" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" /><?php echo tep_draw_hidden_field('products_image_med_previous', $products_image_med); ?>
-                            <span class="input-group-btn hidden-xs">
-                              <!-- button class="btn btn-default btn-choose" type="button">Choose</button -->
-                              <button class="btn btn-default btn-reset" type="button">Reset</button>
-                            </span>
+                        <div class="media-body mr-2 mb-0 p-l-20"><?php echo $products_image_med; if ($products_image_med != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs"><?php echo TEXT_DELETE; ?></span></a><?php } ?>
+                          <div class="fine-input-container mt-2 mb-3">
+                            <input type="file" name="products_image_med" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" /><?php echo tep_draw_hidden_field('products_image_med_previous', $products_image_med); ?>
                           </div>
                           <div class="mt-2"><select name="products_image_med_destination" class="form-control w-50" id="dirPath" ><?php echo $file_dir; ?></select></div>
                         </div>
@@ -1429,18 +1469,14 @@ $warning = false;
                 </div>
 
                 <div class="form-group row mt-3 mb-3">
-                  <label class="col-md-2 col-xs-12 control-label main-text mt-1">Large Image</label>
-                  <div class="col-md-10 col-xs-12">
+                  <label class="col-md-2 control-label main-text mt-2 p-0"><?php echo LABEL_LARGE_IMAGE; ?></label>
+                  <div class="col-md-10">
                     <div class="media">
                       <div class="lc-border p-10">
                         <a class="media-left" style="min-width:<?php echo SMALL_IMAGE_WIDTH; ?>px;" href="javascript:;"><?php echo tep_image(HTTP_SERVER . DIR_WS_CATALOG_IMAGES . $products_image_lrg, $products_image_lrg, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'class="media-object mt-2"'); ?></a>
-                        <div class="media-body mr-2 mb-0 p-l-20"><?php echo $products_image_lrg; if ($products_image_lrg != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs">Delete</span></a><?php } ?>
-                          <div class="input-group input-file p-r-30 p-t-20">
-                            <input type="text" name="products_image_lrg" class="form-control file-input" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" />
-                            <span class="input-group-btn hidden-xs">
-                              <!-- button class="btn btn-default btn-choose" type="button">Choose</button -->
-                              <button class="btn btn-default btn-reset" type="button">Reset</button>
-                            </span>
+                        <div class="media-body mr-2 mb-0 p-l-20"><?php echo $products_image_lrg; if ($products_image_lrg != 'no_image.png') { ?><a class="ml-2 btn btn-default btn-xs mb-1" href="#"><i class="fa fa-trash-o"></i> <span class="hidden-xs"><?php echo TEXT_DELETE; ?></span></a><?php } ?>
+                          <div class="fine-input-container mt-2 mb-3">
+                            <input type="file" name="products_image_lrg" placeholder="<?php echo TEXT_CHOOSE_FILE; ?>" /><?php echo tep_draw_hidden_field('products_image_rg_previous', $products_image_lrg); ?>
                           </div>
                           <div class="mt-2"><select name="products_image_lrg_destination" class="form-control w-50" id="dirPath" ><?php echo $file_dir; ?></select></div>
                         </div>
@@ -1450,9 +1486,12 @@ $warning = false;
                 </div>                
 
                 <div class="form-group row mb-3">
-                  <label class="col-md-3 control-label pr-0 getpro main-text mt-1" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>Additional Images <span class="label label-theme bg-red ml-1">PRO</span></label>                    
-                  <div class="col-md-9">
-                    <div class="col-md-2"> <i class="fa fa-plus-square-o fa-3x disabled"></i></div>
+                  <label class="col-md-2 control-label main-text mt-2 p-0" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'><?php echo TEXT_PRODUCTS_IMAGE_ADDITIONAL; ?></label>                    
+                  <div class="col-md-10" >
+                    <div class="col-2 c-pointer" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'> 
+                      <i class="fa fa-plus-square-o fa-3x disabled"></i>
+                      <span class="upsell-label label label-theme bg-red ml-1" style="vertical-align:110%;">PRO</span>
+                    </div>
                   </div>
                 </div>               
               </div>   
@@ -1460,24 +1499,26 @@ $warning = false;
 
               <!-- PRICING RULES start-->
               <div class="ml-2 mr-2">
-                <div class="main-heading m-t-30"><span>Pricing Rules</span>
+                <div class="main-heading m-t-30"><span><?php echo HEADING_PRICING_RULES; ?></span>
                   <div class="main-heading-footer"></div>
                 </div>  
                 <table class="table mt-2">
                   <tbody>
                     <tr class="table-row">
                       <td class="table-col dark text-left p-r-5 p-l-5 table-th-valign-middle no-border">
-                        <div class="pull-left m-r-10 getpro main-text f-s-12 f-w-600" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>Quantity Price Breaks <span class="label label-theme m-l-5 bg-red">PRO</span></div>
-                        <div class="col-sm-6 p-l-10 getpro" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>
-                          <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> On" data-off="<i class='fa fa-times'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                        <div class="pull-left m-r-10 c-pointer main-text f-s-12 f-w-600" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'><?php echo LABEL_QTY_PRICE_BREAKS; ?></div>
+                        <div class="col-sm-6 p-l-10 c-pointer" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'>
+                          <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> <?php echo TEXT_ON; ?>" data-off="<i class='fa fa-times'></i> <?php echo TEXT_OFF; ?>" data-onstyle="success-toggle" data-offstyle="danger disabled" type="checkbox" data-size="mini" >
+                          <span class="upsell-label label label-theme m-l-5 bg-red">PRO</span>
                         </div>
                       </td>
                     </tr>
                     <tr class="table-row">
                       <td class="table-col dark text-left p-r-5 p-l-5 table-th-valign-middle no-border">
-                        <div class="pull-left m-r-10 getpro main-text f-s-12 f-w-600" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>Customer Group Pricing Overrides <span class="label label-theme m-l-5 bg-orange">B2B</span></div>
-                        <div class="col-sm-6 p-l-10 getpro" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>
-                          <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> On" data-off="<i class='fa fa-times'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                        <div class="pull-left m-r-10 c-pointer main-text f-s-12 f-w-600" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'><?php echo LABEL_GROUP_PRICE_OVERRIDES; ?></div>
+                        <div class="col-sm-6 p-l-10 c-pointer" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>
+                          <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> <?php echo TEXT_ON; ?>" data-off="<i class='fa fa-times'></i> <?php echo TEXT_OFF; ?>" data-onstyle="success-toggle" data-offstyle="danger disabled" type="checkbox" data-size="mini" >
+                          <span class="upsell-label label label-theme m-l-5 bg-orange">B2B</span>
                         </div>
                       </td>
                     </tr>
@@ -1488,21 +1529,22 @@ $warning = false;
 
               <!-- SUB PRODUCTS start-->
               <div class="ml-2 mr-2">
-                <div class="main-heading m-t-30"><span class="mr-0">Sub Products</span>
-                  <span class="getpro main-text f-s-12 f-w-600 mr-1" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'><span class="label label-theme m-l-5 bg-red" style="vertical-align:20%;">PRO</span></span>
-                  <span class="getpro" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'> 
-                    <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> On" data-off="<i class='fa fa-times'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                <div class="main-heading m-t-30"><span class="mr-2"><?php echo HEADING_SUBPRODUCTS; ?></span>
+                  <span class="c-pointer" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'> 
+                    <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> <?php echo TEXT_ON; ?>" data-off="<i class='fa fa-times'></i> <?php echo TEXT_OFF; ?>" data-onstyle="success-toggle" data-offstyle="danger disabled" type="checkbox" data-size="mini" >
                   </span>
+                  <span class="upsell-label c-pointer main-text f-s-12 f-w-600 mr-1" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_PRO_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_PRO_UPSELL_GET_PRO_URL; ?>" target="_blank" class="btn btn-danger btn-sm m-r-5 m-t-10"><?php echo TEXT_PRO_UPSELL_GET_PRO; ?></a></div>'><span class="label label-theme m-l-5 bg-red" style="vertical-align:30%;">PRO</span></span>
+
                   <div class="main-heading-footer"></div>
                 </div> 
                 <table class="table">
                   <thead>
                     <tr class="th-row">
                       <th class="th-col text-center"><i class="fa fa-camera"></i></th>
-                      <th class="th-col text-left">Sub Product Name</th>
-                      <th class="th-col text-left hidden-xs">Model</th>
-                      <th class="th-col text-right">Price</th>
-                      <th class="th-col text-right hidden-xs">Action</th>
+                      <th class="th-col text-left"><?php echo TABLE_SUBPRODUCT_NAME; ?></th>
+                      <th class="th-col text-left hidden-xs"><?php echo TABLE_SUBPRODUCT_MODEL; ?></th>
+                      <th class="th-col text-right"><?php echo TABLE_SUBPRODUCT_PRICE; ?></th>
+                      <th class="th-col text-right hidden-xs"><?php echo TABLE_SUBPRODUCT_ACTION; ?></th>
                     </tr>
                   </thead>
                 </table>
@@ -1511,16 +1553,17 @@ $warning = false;
 
               <!-- USER ACCESS SETTINGS start-->
               <div class="ml-2 mr-2">              
-                <div class="main-heading m-t-30"><span>User Access Settings</span>
+                <div class="main-heading m-t-30"><span><?php echo HEADING_USER_ACCESS_SETTINGS; ?></span>
                   <div class="main-heading-footer"></div>
                 </div>  
                 <table class="table mt-2">
                   <tbody>
                     <tr class="table-row">
                       <td class="table-col dark text-left p-r-5 p-l-5 table-th-valign-middle no-border">
-                        <div class="pull-left m-r-10 getpro main-text f-s-12 f-w-600" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>Restrict Access <span class="label label-theme m-l-5 bg-orange">B2B</span></div>
-                        <div class="col-sm-6 p-l-10 getpro" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>
-                          <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> On" data-off="<i class='fa fa-times'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                        <div class="pull-left m-r-10 c-pointer main-text f-s-12 f-w-600" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'><?php echo LABEL_RESTRICT_ACCESS; ?></div>
+                        <div class="col-sm-6 p-l-10 c-pointer" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content='<div class="text-white"><?php echo TEXT_B2B_UPSELL_POPOVER_BODY; ?></div><div class="text-center w-100"><a href="<?php echo TEXT_B2B_UPSELL_GET_B2B_URL; ?>" target="_blank" class="btn btn-warning btn-sm m-r-5 m-t-10"><?php echo TEXT_B2B_UPSELL_GET_B2B; ?></a></div>'>
+                          <input disabled data-width="60" data-toggle="toggle" data-on="<i class='fa fa-check'></i> <?php echo TEXT_ON; ?>" data-off="<i class='fa fa-times'></i> <?php echo TEXT_OFF; ?>" data-onstyle="success-toggle" data-offstyle="danger disabled" type="checkbox" data-size="mini" >
+                          <span class="upsell-label c-pointer label label-theme m-l-5 bg-orange">B2B</span>
                         </div>
                       </td>
                     </tr>
@@ -1867,7 +1910,7 @@ $warning = false;
                     }
                     $col_selected = ($selected) ? ' selected' : '';
                     ?>
-                      <td class="table-col dark text-left<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])) . '"><i class="fa fa-folder fa-lg text-warning mr-2"></i></a><b>' . $categories['categories_name'] . '</b>'; ?></td>
+                      <td class="table-col dark text-left<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])) . '"><i class="fa fa-folder fa-lg text-warning mr-2"></i></a>' . $categories['categories_name']; ?></td>
                       <td class="table-col dark text-left<?php echo $col_selected; ?> d-none d-lg-table-cell col-blank">&nbsp;</td>
                       <td class="table-col dark text-right<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $categories['categories_id'] . '&action=edit_category') . '"><i class="fa fa-edit fa-lg text-success"></i></a>'; ?>
                         <?php
@@ -1943,8 +1986,8 @@ $warning = false;
                         $pcol_selected = ($pselected) ? ' selected' : '';
 
                         ?>
-                          <td class="table-col dark text-left<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '"><i class="fa fa-search fa-lg text-info mr-2"></i></a>' . $products['products_name']; ?></td>
-                          <td class="table-col dark text-center<?php echo $col_selected; ?>">
+                          <td class="table-col dark text-left<?php echo $pcol_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '"><i class="fa fa-search fa-lg text-info mr-2"></i></a>' . $products['products_name']; ?></td>
+                          <td class="table-col dark text-center<?php echo $pcol_selected; ?>">
                           <?php
                             if ($products['products_status'] == '1') {
                               echo '<i class="fa fa-lg fa-check-circle text-success mr-2"></i><a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' . $products['products_id'] . '&cPath=' . $cPath) . '"><i class="fa fa-lg fa-times-circle text-secondary"></i></a>';
@@ -1953,7 +1996,7 @@ $warning = false;
                             }
                             ?>
                           </td>
-                          <td class="table-col dark text-right<?php echo $col_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product') . '"><i class="fa fa-edit fa-lg text-success"></i></a>'; ?>
+                          <td class="table-col dark text-right<?php echo $pcol_selected; ?>"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product') . '"><i class="fa fa-edit fa-lg text-success"></i></a>'; ?>
                           <?php
                           if ($pselected) {
                             echo '<i class="fa fa-long-arrow-right fa-lg text-success" style="margin-left:1px;"></i>';
@@ -2013,7 +2056,7 @@ $warning = false;
           </div>
 
           <div class="col-md-4 col-xl-3 dark panel-right rounded-right">           
-            <?php
+            <?php          
             $heading = array();
             $contents = array();
             switch ($action) {
@@ -2146,148 +2189,159 @@ $warning = false;
                 $contents[] = array('align' => 'center', 'text' => '<br><a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cID) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>' . tep_image_submit('button_copy.gif', 'Copy Attribtues'));
                 break;
               case 'new_product':
-                  $heading[] = array('text' => 'Pricing and Availability');
-                  $contents[] = array('text' => '
-                    <div class="sidebar-content-container">
 
-                      <div class="form-group row">
-                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_BASE_PRICE . '</label>
-                        <div class="col-sm-7">
-                          <div class="input-group"> <span class="input-group-addon text-white bg-blue-lighter p-5">$</span>' .
-                            tep_draw_input_field('products_price_gross', number_format($pInfo->products_price, 2), 'class="form-control f-w-600 f-s-14 p-l-5 p-r-5 text-primary"') . '
-                          </div>
-                        </div>
-                      </div>                     
+                $heading[] = array('text' => 'Pricing and Availability');
+                $contents[] = array('text' => '
+                  <div class="sidebar-content-container">
 
-                      <div class="form-group row mt-3">
-                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">Special Price</label>
-                        <div class="col-sm-7">
-                          <div class="input-group"> <span class="input-group-addon text-white bg-red-lighter p-5 ">$</span>' . 
-                            tep_draw_input_field('products_special_price', number_format(Specials::getSpecialPrice($pInfo->products_id), 2), 'class="form-control f-s-14 p-l-5 p-r-5 text-danger"') . '
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
-                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0 getpro mb-1">MSRP<span class="label label-theme ml-2 bg-red">PRO</span></label>
-                        <div class="col-sm-7">
-                          <div class="input-group "> <span class="input-group-addon text-white bg-silver-darker p-5">$</span>
-                            <input disabled class="form-control f-s-14 p-l-5 p-r-5" type="text" value=""> 
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group row mt-3">
-                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_DATE_AVAILABLE . '</label>
-                        <div class="col-sm-7">
-                          <input name="products_date_available" value="' . tep_date_short($pInfo->products_date_available) . '" type="text" class="form-control" id="datepicker-autoClose" placeholder="MM/DD/YYYY" />
-                        </div>
-                      </div>
-
-                      <div class="form-group row mt-3">
-                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_STATUS . '</label>
-                        <div class="col-sm-7">
-                          <input name="products_status" ' . (($in_status) ? 'checked' : '') . ' data-toggle="toggle" data-on="<i class=\'fa fa-check\'></i> Active" data-off="<i class=\'fa fa-times\'></i> Inactive" data-onstyle="success" data-offstyle="danger" type="checkbox" data-size="small">
-                        </div>
-                      </div>
-
-                      <div class="form-group row mt-3">
-                        <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">Featured</label>
-                        <div class="col-sm-7">
-                          <input checked data-toggle="toggle" data-on="<i class=\'fa fa-star\'></i> Yes" data-off="<i class=\'fa fa-star-o\'></i> No" data-onstyle="success" data-offstyle="danger" type="checkbox" data-size="small">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="sidebar-heading mt-3">    
-                      <span>Inventory</span>  
-                    </div><div class="sidebar-heading-footer w-100"></div>
-
-                    <div class="form-group row mt-3">
-                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_MODEL . '</label>
-                      <div class="col-sm-7">' . tep_draw_input_field('products_model', $pInfo->products_model, 'class="form-control"') . '</div>
-                    </div>
-
-                    <div class="form-group row mt-3">
-                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_SKU . '</label>
-                      <div class="col-sm-7">' . tep_draw_input_field('products_sku', $pInfo->products_sku, 'class="form-control"') . '
-                      </div>
-                    </div>
-                    <div class="form-group row mt-3">
-                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_MANUFACTURER . '</label>
-                      <div class="col-sm-7">' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, $pInfo->manufacturers_id, 'class="form-control"') . '</div>
-                    </div>
-
-                    <div class="form-group row mt-3">
-                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_TAX_CLASS . '</label>
-                      <div class="col-sm-7">' . tep_draw_pull_down_menu('products_tax_class_id', $tax_class_array, $pInfo->products_tax_class_id, 'class="form-control"') . '</div>
-                    </div>
-
-                    <div class="form-group row mt-3">
-                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_WEIGHT . '</label>
-                      <div class="col-sm-7 input-group">' . tep_draw_input_field('products_weight', $pInfo->products_weight, 'class="form-control"') . '</div>
-                    </div>
-
-                    <div class="form-group row mt-3">
-                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0">' . TEXT_PRODUCTS_QUANTITY . '</label>
-                      <div class="col-sm-7">' . tep_draw_input_field('products_quantity', $pInfo->products_quantity, 'class="form-control"') . '</div>
-                    </div>
-
-                    <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
-                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0 text-muted getpro mb-1">Item Cost<span class="label label-theme ml-2 bg-red">PRO</span></label>
+                    <div class="form-group row">
+                      <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_BASE_PRICE . '</label>
                       <div class="col-sm-7">
-                        <input disabled class="form-control" type="text">
+                        <div class="input-group"> <span class="input-group-addon text-white bg-blue-lighter p-5">' . $currencies->get_symbol_left(DEFAULT_CURRENCY) . '</span>' .
+                          tep_draw_input_field('products_price', (isset($pInfo) ? number_format($pInfo->products_price, 2) : ''), 'id="products_price" class="form-control f-w-600 f-s-14 p-l-5 p-r-5 text-primary" onkeyup="updateGross()"') . '
+                        </div>
+                      </div>
+                    </div>' . ((isset($pInfo) && $pInfo->products_tax_class_id > 0) ? '
+                    <div class="price-with-tax form-group row mt-3">
+                      <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_PRICE_WITH_TAX . '</label>
+                      <div class="col-sm-7">
+                        <div class="input-group"> <span class="input-group-addon text-white bg-success p-5">' . $currencies->get_symbol_left(DEFAULT_CURRENCY) . '</span>' .
+                          tep_draw_input_field('products_price_gross', null, 'id="products_price_gross" class="form-control f-w-600 f-s-14 p-l-5 p-r-5 text-green" onkeyup="updateNet()"') . '
+                        </div>
+                      </div>
+                    </div>' : '') .'                                           
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_SPECIAL_PRICE . '</label>
+                      <div class="col-sm-7">
+                        <div class="input-group"> <span class="input-group-addon text-white bg-red-lighter p-5 ">' . $currencies->get_symbol_left(DEFAULT_CURRENCY) . '</span>' . 
+                          tep_draw_input_field('products_special_price', (isset($pInfo) ? Specials::getSpecialPrice($pInfo->products_id) : ''), 'class="form-control f-s-14 p-l-5 p-r-5 text-danger"') . '
+                        </div>
                       </div>
                     </div>
 
                     <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
-                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0 text-muted getpro mb-1">Vendor<span class="label label-theme ml-2 bg-red">PRO</span></label>
-                      <div class="col-sm-7">
-                        <select disabled class="form-control">
-                          <option>Select Vendor</option>
-                          <option>Gadgets 2000</option>
-                          <option>Amazon</option>
-                          <option>ebay</option>
-                        </select>
+                      <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0 c-pointer mb-1">' . LABEL_MSRP . '</label>
+                      <div class="col-sm-7 p-relative">
+                        <div class="input-group "> <span class="input-group-addon text-white bg-silver-darker p-5">' . $currencies->get_symbol_left(DEFAULT_CURRENCY) . '</span>
+                          <input disabled class="form-control f-s-14 p-l-5 p-r-5" type="text" value=""> 
+                        </div>
+                        <div class="ribbon"><img src="assets/img/ribbon-pro.png"></div>
                       </div>
                     </div>
 
-                    <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
-                      <label class="col-sm-5 sidebar-text mt-2 col-form-label pl-3 pr-0 text-muted getpro mb-1">Vendor Note<span class="label label-theme ml-2 bg-red">PRO</span></label>
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_DATE_AVAILABLE . '</label>
                       <div class="col-sm-7">
-                        <textarea disabled class="form-control" id="vendornote" name="vendornote" rows="3"></textarea>
+                        <input name="products_date_available" value="' . (isset($pInfo) ? tep_date_short($pInfo->products_date_available) : '') . '" type="text" class="form-control" id="datepicker-autoClose" placeholder="MM/DD/YYYY" />
                       </div>
                     </div>
 
-                    <div class="sidebar-heading mt-3">    
-                      <span>Catalog</span>  
-                    </div><div class="sidebar-heading-footer w-100"></div>
-
-                    <div class="form-group row mt-3" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
-                      <label class="col-sm-5 sidebar-text col-form-label pl-3 pr-0 getpro mb-1">Sort Order<span class="label label-theme ml-2 bg-red">PRO</span></label></label>
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_STATUS . '</label>
                       <div class="col-sm-7">
-                        <input disabled class="form-control" type="text">
-                      </div>
-                    </div>      
-
-                    <div class="sidebar-heading mt-3">    
-                      <span>Extra Fields</span>  
-                    </div><div class="sidebar-heading-footer w-100"></div>                                  
-
-                    <div class="form-group row mt-3 mb-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
-                      <label class="col-xs-5 sidebar-text col-form-label pl-3 pr-0 text-muted getpro mb-1">Enable<span class="label label-theme ml-2 bg-red">PRO</span></label>
-                      <div class="col-xs-7">
-                        <input disabled data-width="60" data-toggle="toggle" data-on="<i class=\'fa fa-check\'></i> On" data-off="<i class=\'fa fa-times\'></i> Off" data-onstyle="success-toggle" data-offstyle="danger" type="checkbox" data-size="mini" >
+                        <input name="products_status" ' . (($in_status) ? 'checked' : '') . ' data-toggle="toggle" data-on="<i class=\'fa fa-check\'></i> ' . TEXT_ACTIVE . '" data-off="<i class=\'fa fa-times\'></i> ' . TEXT_INACTIVE . '" data-onstyle="success" data-offstyle="danger" type="checkbox" data-size="small">
                       </div>
                     </div>
 
-                    ');
-                     
-                  break;
+                    <div class="form-group row mt-3">
+                      <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_FEATURED_PRODUCTS . '</label>
+                      <div class="col-sm-7">
+                        <input name="featured" ' . (isset($pInfo) ? ((Featured::isFeatured($pInfo->products_id)) ? 'checked' : '') : '') . ' data-toggle="toggle" data-on="<i class=\'fa fa-star\'></i> ' . TEXT_YES . '" data-off="<i class=\'fa fa-star-o\'></i> ' . TEXT_NO . '" data-onstyle="success" data-offstyle="danger" type="checkbox" data-size="small">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="sidebar-heading mt-3">    
+                    <span>' . HEADING_INVENTORY . '</span>  
+                  </div><div class="sidebar-heading-footer w-100"></div>
+
+                  <div class="form-group row mt-3">
+                    <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_MODEL . '</label>
+                    <div class="col-sm-7">' . tep_draw_input_field('products_model', (isset($pInfo) ? $pInfo->products_model : ''), 'class="form-control"') . '</div>
+                  </div>
+
+                  <div class="form-group row mt-3">
+                    <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_SKU . '</label>
+                    <div class="col-sm-7">' . tep_draw_input_field('products_sku', (isset($pInfo) ? $pInfo->products_sku : ''), 'class="form-control"') . '
+                    </div>
+                  </div>
+                  <div class="form-group row mt-3">
+                    <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_MANUFACTURER . '</label>
+                    <div class="col-sm-7">' . tep_draw_pull_down_menu('manufacturers_id', $manufacturers_array, (isset($pInfo) ? $pInfo->manufacturers_id : 0), 'class="form-control"') . '</div>
+                  </div>
+
+                  <div class="form-group row mt-3">
+                    <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_TAX_CLASS . '</label>
+                    <div class="col-sm-7">' . tep_draw_pull_down_menu('products_tax_class_id', $tax_class_array, (isset($pInfo) ? $pInfo->products_tax_class_id : 0), 'id="products_tax_class_id" class="form-control" onchange="updateGross()"') . '</div>
+                  </div>
+
+                  <div class="form-group row mt-3">
+                    <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_WEIGHT . '</label>
+                    <div class="col-sm-7 input-group">' . tep_draw_input_field('products_weight', (isset($pInfo) ? $pInfo->products_weight : 0), 'class="form-control"') . '</div>
+                  </div>
+
+                  <div class="form-group row mt-3">
+                    <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0">' . LABEL_QUANTITY . '</label>
+                    <div class="col-sm-7">' . tep_draw_input_field('products_quantity', (isset($pInfo) ? $pInfo->products_quantity : ''), 'class="form-control"') . '</div>
+                  </div>
+
+                  <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                    <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0 text-muted c-pointer mb-1">' . LABEL_ITEM_COST . '</label>
+                    <div class="col-sm-7 p-relative">
+                      <input disabled class="form-control" type="text">
+                      <div class="ribbon"><img src="assets/img/ribbon-pro.png"></div>                       
+                    </div>
+                  </div>
+
+                  <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                    <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0 text-muted c-pointer mb-1">' . LABEL_VENDOR . '</label>
+                    <div class="col-sm-7 p-relative">
+                      <select disabled class="form-control">
+                        <option>' . OPTION_SELECT_VENDOR . '</option>
+                      </select>
+                      <div class="ribbon"><img src="assets/img/ribbon-pro.png"></div>                        
+                    </div>
+                  </div>
+
+                  <div class="form-group row mt-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                    <label class="col-sm-5 control-label sidebar-edit mt-2 pl-3 pr-0 text-muted c-pointer mb-1">' . LABEL_VENDOR_NOTE . '</label>
+                    <div class="col-sm-7 p-relative">
+                      <textarea disabled class="form-control" id="vendornote" name="vendornote" rows="3"></textarea>
+                      <div class="ribbon"><img src="assets/img/ribbon-pro.png"></div>
+                    </div>
+                  </div>
+
+                  <div class="sidebar-heading mt-3">    
+                    <span>' . HEADING_CATALOG . '</span>  
+                  </div><div class="sidebar-heading-footer w-100"></div>
+
+                  <div class="form-group row mt-3" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                    <label class="col-sm-5 control-label sidebar-edit pl-3 pr-0 c-pointer text-muted mt-2">' . LABEL_SORT_ORDER . '</label>
+                    <div class="col-sm-7 p-relative">
+                      <input disabled class="form-control" type="text">
+                      <div class="ribbon"><img src="assets/img/ribbon-pro.png"></div>
+                    </div>
+                  </div>      
+
+                  <div class="sidebar-heading mt-3">    
+                    <span>' . HEADING_EXTRA_FIELDS . '</span>  
+                  </div><div class="sidebar-heading-footer w-100"></div>                                  
+
+                  <div class="form-group row mt-3 mb-3" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<div class=\'text-white\'>' . TEXT_PRO_UPSELL_POPOVER_BODY . '</div><div class=\'text-center w-100\'><a href=\''. TEXT_PRO_UPSELL_GET_PRO_URL . '\' target=\'_blank\' class=\'btn btn-danger btn-sm m-r-5 m-t-10\'>' . TEXT_PRO_UPSELL_GET_PRO . '</a></div>">
+                    <label class="col-xs-5 control-label sidebar-edit pl-3 pr-0 text-muted c-pointer mb-1">' . LABEL_ENABLE . '</label>
+                    <div class="col-xs-7">
+                      <input disabled data-width="60" data-toggle="toggle" data-on="<i class=\'fa fa-check\'></i> ' . TEXT_ON . '" data-off="<i class=\'fa fa-times\'></i> ' . TEXT_OFF . '" data-onstyle="success-toggle" data-offstyle="danger disabled" type="checkbox" data-size="mini" >
+                      <span class="upsell-label c-pointer label label-theme ml-2 bg-red">PRO</span>                        
+                    </div>
+                  </div>
+
+                  ');
+                   
+                break;
               default:
                 if ($rows > 0) {
                   if (isset($cInfo) && is_object($cInfo)) { // category info box contents
-                    $heading[] = array('text' => $cInfo->categories_name);
+                    $heading[] = array('text' => '<div class="text-truncate">' . $cInfo->categories_name . '</div>');
                     // RCO start
                     if ($cre_RCO->get('categories', 'csidebarbuttons') !== true) {
                       $contents[] = array('align' => 'center', 'text' => '<div class="mt-2 mb-2">
@@ -2309,14 +2363,17 @@ $warning = false;
                         } else {
                           $contents[] = array('align' => 'center', 'text' => '<div class="sidebar-text">' . TEXT_ATTRIBUTES_COPY_TO . '</div>');
                         }
-                      }
+                      } else {
+                        $contents[] = array('text' => '<div class="mb-3"></div>');
+                      }  
                     }
+
                     // RCO eof
                     // RCI include category sidebar bottom text
                     $returned_rci = $cre_RCI->get('categories', 'csidebarbottom');
                     $contents[] = array('text' => $returned_rci);
                   } elseif (isset($pInfo) && is_object($pInfo)) { // product info box contents
-                    $heading[] = array('text' => tep_get_products_name($pInfo->products_id, $languages_id));
+                    $heading[] = array('text' => '<div class="text-truncate">' . tep_get_products_name($pInfo->products_id, $languages_id) . '</div>');
                     // RCO start
                     if ($cre_RCO->get('categories', 'psidebarbuttons') !== true) {
                       $contents[] = array('align' => 'center', 'text' => '<div class="mt-2 mb-2">
@@ -2374,8 +2431,8 @@ $warning = false;
     <?php if (isset($action) && $action == 'new_product') {
       ?>
       <div class="col-sm-9 col-md-10 m-b-10 mt-2 pl-0"> 
-        <a href="javascript:;" class="btn btn-primary m-r-5"><i class="fa fa-save"></i> Save</a>
-        <a href="javascript:;" class="btn btn-info m-r-5"><i class="fa fa-save"></i> Save and Stay</a>
+        <button type="submit" onclick="updateProduct('save');" class="btn btn-primary m-r-3"><i class="fa fa-save"></i> <?php echo BUTTON_SAVE; ?></button>
+        <button type="submit" onclick="updateProduct('stay');" class="btn btn-info m-r-3 btn-save-stay"><i class="fa fa-save"></i> <?php echo BUTTON_SAVE_STAY; ?></button>
       </div>
       </form>
       <?php 
@@ -2385,29 +2442,36 @@ $warning = false;
 </div> <!-- end content -->
 <script>
 $(document).ready(function(){
-  
-  bs_input_file();
+  // if product edit and taxable update net price
+  var taxclassid = '<?php echo ((isset($pInfo) && $pInfo->products_tax_class_id > 0) ? $pInfo->products_tax_class_id : 0); ?>';
+  var pedit = '<?php echo (isset($_GET['action']) && $_GET['action'] == 'new_product') ? 1 : 0; ?>'
+  if (pedit == 1 && taxclassid > 0) updateGross();
 
-  $("#summernote").summernote({
-      disableResizeEditor: true
-  });
-  $('.note-popover').hide();
+//CKEDITOR.skinName = 'moono-dark';
+
+ // $('[data-toggle="popover"]').popover({
+ //   trigger: 'hover'
+ // });
+
+// temp fix for upsell popver KNOWN ISSUE: bootstrap 4 beta.3
+var el = $('[data-toggle="popover"]');
+  el.on('click', function(e){
+    var el = $(this);
+    setTimeout(function(){
+      el.popover('show');
+    }, 200); // Must occur after document click event below.
+  })
+  .on('shown.bs.popover', function(){
+    $(document).on('click.popover', function() {
+      el.popover('hide'); // Hides all 
+    });
+  })
+  .on('hide.bs.popover', function(){
+    $(document).off('click.popover');
+  });  
 });   
 
-
-/* show file value after file select */
-$('.custom-file-input').on('change',function(){
-  $(this).next('.form-control-file').addClass("selected").html($(this).val());
-})
-
-/* method 2 - change file input to text input after selection
-$('.custom-file-input').on('change',function(){
-    var fileName = $(this).val();
-    $(this).next('.form-control-file').hide();
-    $(this).toggleClass('form-control custom-file-input').attr('type','text').val(fileName);
-})
-*/
-
+// copy to clipboard functions
 $("#name-ctc-list li a").click(function(){
   var id = $(this).attr('data-lang-id');
   var lang = $(this).attr('data-lang-name');
@@ -2426,14 +2490,29 @@ $("#desc-ctc-list li a").click(function(){
 //  swal("Products Description", "Copied to Clipboard in " + lang + "!", "success")
 });
 
-function setAttrText(sw) {
-  if (sw == 'link') {
-    $('#copy_attr').hide();
-  } else {
-    $('#copy_attr').show();
-  }
+$("#meta-title-ctc-list li a").click(function(){
+  var id = $(this).attr('data-lang-id');
+  var lang = $(this).attr('data-lang-name');  
+  var target = $("#products_head_title_tag_" + id).val();
+  copy(target);
+  $('.notify-container-meta-title').fadeIn().delay(1000).fadeOut();
+});
 
-}   
+$("#meta-keywords-ctc-list li a").click(function(){
+  var id = $(this).attr('data-lang-id');
+  var lang = $(this).attr('data-lang-name');  
+  var target = $("#products_head_keywords_tag_" + id).val();
+  copy(target);
+  $('.notify-container-meta-keywords').fadeIn().delay(1000).fadeOut();
+});
+
+$("#meta-desc-ctc-list li a").click(function(){
+  var id = $(this).attr('data-lang-id');
+  var lang = $(this).attr('data-lang-name');  
+  var target = $("#products_head_desc_tag_" + id).val();
+  copy(target);
+  $('.notify-container-meta-desc').fadeIn().delay(1000).fadeOut();
+});
 
 function copy(text){
   var inp =document.createElement('input');
@@ -2442,6 +2521,14 @@ function copy(text){
   inp.select();
   document.execCommand('copy',false);
   inp.remove();
+}
+
+function setAttrText(sw) {
+  if (sw == 'link') {
+    $('#copy_attr').hide();
+  } else {
+    $('#copy_attr').show();
+  }
 }
 
 function goToUrl(lang) {
@@ -2461,32 +2548,64 @@ function goToUrl(lang) {
   window.open(url);
 }
 
-function bs_input_file() {
-  $(".input-file").before(
-    function() {
-      if ( ! $(this).prev().hasClass('input-ghost') ) {
-        var element = $("<input type='file' class='input-ghost' style='visibility:hidden; height:0'>");
-        element.attr("name",$(this).attr("name"));
-        element.change(function(){
-          element.next(element).find('input').val((element.val()).split('\\').pop());
-        });
-        $(this).find("button.btn-choose").click(function(){
-          element.click();
-        });
-        $(this).find("button.btn-reset").click(function(){
-          element.val(null);
-          $(this).parents(".input-file").find('input').val('');
-        });
-        $(this).find('input').css("cursor","pointer");
-        $(this).find('input').mousedown(function() {
-          $(this).parents('.input-file').prev().click();
-          return false;
-        });
-        return element;
+var tax_rates = new Array();
+<?php
+    for ($i=0, $n=sizeof($tax_class_array); $i<$n; $i++) {
+      if ($tax_class_array[$i]['id'] > 0) {
+        echo 'tax_rates["' . $tax_class_array[$i]['id'] . '"] = ' . tep_get_tax_rate_value($tax_class_array[$i]['id']) . ';' . "\n";
       }
     }
-  );
+?>
+
+function updateNet() {
+  var taxRate = getTaxRate();
+  var netValue = $('#products_price_gross').val();
+
+  if (taxRate > 0) {
+    netValue = netValue / ((taxRate / 100) + 1);
+  }
+
+  $('#products_price').val(doRound(netValue, 2).toFixed(2));
 }
+
+function updateGross() {
+  var taxRate = getTaxRate();
+  var grossValue = $('#products_price').val();
+
+  if (taxRate > 0) {
+    $('.price-with-tax').show();
+    grossValue = grossValue * ((taxRate / 100) + 1);
+  } else {
+    $('.price-with-tax').hide();
+  }
+
+  $('#products_price_gross').val(doRound(grossValue, 2).toFixed(2));
+}
+
+function doRound(x, places) {
+  return Math.round(x * Math.pow(10, places)) / Math.pow(10, places);
+}
+
+function getTaxRate() {
+  var tax_rates = new Array();
+  <?php
+      for ($i=0, $n=sizeof($tax_class_array); $i<$n; $i++) {
+        if ($tax_class_array[$i]['id'] > 0) {
+          echo 'tax_rates["' . $tax_class_array[$i]['id'] . '"] = ' . tep_get_tax_rate_value($tax_class_array[$i]['id']) . ';' . "\n";
+        }
+      }
+  ?>
+
+  var selected_value = $('#products_tax_class_id').val();
+  var parameterVal = document.forms["new_product"].products_tax_class_id[selected_value].value;
+
+  if ( (parameterVal > 0) && (tax_rates[parameterVal] > 0) ) {
+    return tax_rates[parameterVal];
+  } else {
+    return 0;
+  }
+}
+
 </script>
 <?php 
 include(DIR_WS_INCLUDES . 'html_bottom.php');

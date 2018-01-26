@@ -27,7 +27,7 @@
     var $table_row_parameters = '';
     var $table_data_parameters = '';
 
-// class constructor
+    // class constructor
     function tableBoxMessagestack($contents, $direct_output = false) {
       $tableBox1_string = '<table class="table" border="' . tep_output_string($this->table_border) . '" width="' . tep_output_string($this->table_width) . '" cellspacing="' . tep_output_string($this->table_cellspacing) . '" cellpadding="' . tep_output_string($this->table_cellpadding) . '"';
       if (tep_not_null($this->table_parameters)) $tableBox1_string .= ' ' . $this->table_parameters;
@@ -82,9 +82,8 @@
 
 
   class messageStack extends tableBoxMessagestack {
-//Lango Added for template mod: EOF
 
-// class constructor
+    // class constructor
     function messageStack() {
 
       $this->messages = array();
@@ -96,18 +95,11 @@
       }
     }
 
-// class methods
+    // class methods
     function add($class, $message, $type = 'error') {
-      if ($type == 'error') {
-        $this->messages[] = array('params' => 'class="messageStackError alert alert-danger fade in"', 'class' => $class, 'text' => tep_image(DIR_WS_ICONS . 'error.gif', ICON_ERROR) . '&nbsp;' . $message);
-      } elseif ($type == 'warning') {
-        $this->messages[] = array('params' => 'class="messageStackWarning alert alert-warning fade in"', 'class' => $class, 'text' => tep_image(DIR_WS_ICONS . 'warning.gif', ICON_WARNING) . '&nbsp;' . $message);
-      } elseif ($type == 'success') {
-        $this->messages[] = array('params' => 'class="messageStackSuccess alert alert-success fade in"', 'class' => $class, 'text' => tep_image(DIR_WS_ICONS . 'success.gif', ICON_SUCCESS) . '&nbsp;' . $message);
-      } else {
-        $this->messages[] = array('params' => 'class="messageStackError alert alert-danger fade in"', 'class' => $class, 'text' => $message);
-      }
+      $this->messages[] = array('type' => $type, 'class' => $class, 'text' => $message);
     }
+
 
     function add_session($class, $message, $type = 'error') {
 
@@ -123,17 +115,58 @@
     }
 
     function output($class) {
-      $this->table_data_parameters = 'class="messageBox table"';
+   //   $this->table_data_parameters = 'class="messageBox table"';
 
-      $output = array();
+      $output = array();   
+      $list_error = '';   
+      $list_warning = '';   
+      $list_success = '';   
       for ($i=0, $n=sizeof($this->messages); $i<$n; $i++) {
         if ($this->messages[$i]['class'] == $class) {
-          $output[] = $this->messages[$i];
+          switch($this->messages[$i]['type']) {
+            case 'error':
+              $output['error'][$i] = $this->messages[$i]['text'];
+              break;
+            case 'warning':
+              $output['warning'][$i] = $this->messages[$i]['text'];
+              break;
+            case 'success':
+              $output['success'][$i] = $this->messages[$i]['text'];
+              break;
+            default:
+              $output['error'][$i] = $this->messages[$i]['text'];           
+          }          
+
         }
       }
-//Lango Added for template mod: BOF
-      return $this->tableBoxMessagestack($output);
-//Lango Added for template mod: EOF
+
+      if ($output['error']) {
+        $list_error .= '<div id="alert-error" class="row fade-error mb-2"><div class="col p-0 mt-0 mb-2"><div class="note note-danger m-0"><h4 class="m-0">' . TEXT_ERROR . '</h4><ul class="list-unstyled mt-2 mb-0">';
+        foreach($output['error'] as $text) {
+          $list_error .= '<li>' . $text . '</li>';
+        }
+        $list_error .= '</ul></div></div></div>';
+      }
+
+      if ($output['warning']) {
+        $list_warning .= '<div id="alert-warning" class="row fade-error mb-2"><div class="col p-0 mt-0 mb-2"><div class="note note-warning m-0"><h4 class="m-0">' . TEXT_WARNING . '</h4><ul class="list-unstyled mt-2 mb-0">';
+        foreach($output['warning'] as $text) {
+          $list_warning .= '<li>' . $text . '</li>';
+        }
+        $list_warning .= '</ul></div></div></div>';
+      }  
+
+      if ($output['success']) {
+        $list_success .= '<div id="alert-success" class="row fade-error mb-2"><div class="col p-0 mt-0 mb-2"><div class="note note-success m-0"><h4 class="m-0">' . TEXT_SUCCESS . '</h4><ul class="list-unstyled mt-2 mb-0">';
+        foreach($output['success'] as $text) {
+          $list_success .= '<li>' . $text . '</li>';
+        }
+        $list_success .= '</ul></div></div></div>';
+      }
+
+      return ($list_error . $list_warning . $list_success);      
+
+//      return $this->tableBoxMessagestack($output);
     }
 
     function size($class) {

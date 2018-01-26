@@ -278,8 +278,8 @@ table_image_border_bottom();
 
 
 
-                <?php/* echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?>
-                <?php echo tep_template_image_submit('button_update_cart.gif', IMAGE_BUTTON_UPDATE_CART);*/ ?>
+                <?php /* echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?>
+                <?php echo tep_template_image_submit('button_update_cart.gif', IMAGE_BUTTON_UPDATE_CART); */ ?>
 <?php
 if (RETURN_CART == 'L'){
    $back = sizeof($navigation->path)-2;

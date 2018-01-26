@@ -28,6 +28,7 @@ define('TEXT_LOGOUT','Logout');
 define('TEXT_CHECK_UPDATES','Check for Updates');
 define('TEXT_ERROR','Error');
 define('TEXT_WARNING','Warning');
+define('TEXT_SUCCESS','Success');
 define('TEXT_INFO','Info');
 define('TEXT_VISIT_CATALOG', 'Visit Catalog');
 define('TEXT_RETURN_TO_ADMIN', 'Return to Admin');
@@ -1064,6 +1065,7 @@ define('BOX_TOOLS_EMAILEXPORT','Export Customers Email');
 define('BOX_REPORTS_MARGIN_REPORT', 'Margin Reports');
 
 // DZ added 01/14/18
+define('TEXT_GO', 'Go');
 define('TEXT_ON', 'On');
 define('TEXT_OFF', 'Off');
 define('TEXT_YES', 'Yes');

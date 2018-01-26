@@ -142,3 +142,20 @@ body {
 .show > .btn-success.dropdown-toggle:focus {
   box-shadow: none;
 }
+
+/* toolbar buttons */
+.btn-inverse:hover, 
+.btn-inverse:focus, 
+.btn-inverse:active, 
+.btn-inverse.active, 
+.open > .dropdown-toggle.btn-inverse,
+.open > .dropdown-toggle.btn-inverse:hover,
+.open > .dropdown-toggle.btn-inverse:focus {
+    background: #2a72b5;
+    border-color: #2a72b5;
+    box-shadow: none;    
+}
+.btn-group .btn.btn-inverse:not(.active) + .btn.btn-inverse,
+.input-group-btn .btn.btn-inverse:not(.active) + .btn.btn-inverse {
+    border-left-color: #2a72b5;
+}

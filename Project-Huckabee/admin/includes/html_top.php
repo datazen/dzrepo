@@ -57,24 +57,27 @@
     <link href="assets/css/style-responsive.css" rel="stylesheet" />
     <link href="assets/css/dark.css" rel="stylesheet" />
     <link href="assets/css/light.css" rel="stylesheet" />
-    <link href="assets/css/ribbon.css" rel="stylesheet" />
     <link href="assets/css/theme/<?php echo $_SESSION['theme']; ?>.css" rel="stylesheet" id="theme" />
     <!-- ================== END BASE CSS STYLE ================== -->
     
     <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
     <link href="assets/plugins/jquery-jvectormap/jquery-jvectormap.css" rel="stylesheet" />
-    <link href="assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
-    <link href="assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
+    <!-- link href="assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" / -->
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" />
     <!-- link href="assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" / -->  
     <link href="assets/plugins/morris/morris.css" rel="stylesheet" />    
     <link href="assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />    
     <link href="assets/plugins/switchery/switchery.css" rel="stylesheet" />    
+    <link href="assets/plugins/jstree/dist/themes/default/style.css" rel="stylesheet" />    
     <!-- ================== END PAGE LEVEL STYLE ================== -->    
 
     <!-- ================== BEGIN BASE JS ================== -->
     <script src="assets/plugins/jquery/jquery-1.9.1.min.js"></script>
     <script src="assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
-
+    <script src="assets/plugins/pace/pace.min.js"></script>
 
 <!-- script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -98,7 +101,9 @@
     <script src="assets/plugins/ckeditor/ckeditor.js"></script>    
     <script src="assets/plugins/bootstrap-sweetalert/sweetalert.js"></script>    
     <script src="assets/plugins/parsley/dist/parsley.js"></script>    
+    <script src="assets/plugins/jstree/dist/jstree.js"></script>    
     <script src="assets/plugins/switchery/switchery.js"></script>    
+    <script src="assets/plugins/bootstrap-filestyle/bootstrap-filestyle.js"></script>    
     <!-- script src="assets/plugins/gritter/js/jquery.gritter.js"></script -->
     <script src="assets/plugins/flot/jquery.flot.min.js"></script>
     <script src="assets/plugins/flot/jquery.flot.time.min.js"></script>
@@ -107,7 +112,9 @@
     <script src="assets/plugins/sparkline/jquery.sparkline.js"></script>
     <script src="assets/plugins/jquery-jvectormap/jquery-jvectormap.min.js"></script>
     <script src="assets/plugins/jquery-jvectormap/jquery-jvectormap-world-merc-en.js"></script>
-    <script src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
+    <!-- script src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script -->
     <script src="assets/plugins/bootstrap-calendar/js/bootstrap_calendar.min.js"></script>   
     <!--script src="assets/js/dashboard.js"></script -->
     <script src="assets/js/dashboard-v2.js"></script>
@@ -116,41 +123,6 @@
 
   </head>
   <body>
-    <style>
-input.parsley-success,
-select.parsley-success,
-textarea.parsley-success {
-  color: #468847;
-  background-color: #DFF0D8;
-  border: 1px solid #D6E9C6;
-}
-
-input.parsley-error,
-select.parsley-error,
-textarea.parsley-error {
-  color: #B94A48;
-  background-color: #F2DEDE;
-  border: 1px solid #EED3D7;
-}
-
-.parsley-errors-list {
-  margin: 2px 0 3px;
-  padding: 0;
-  list-style-type: none;
-  font-size: 0.9em;
-  line-height: 0.9em;
-  opacity: 0;
-
-  transition: all .3s ease-in;
-  -o-transition: all .3s ease-in;
-  -moz-transition: all .3s ease-in;
-  -webkit-transition: all .3s ease-in;
-}
-
-.parsley-errors-list.filled {
-  opacity: 1;
-}    
-    </style>
     <!-- begin #page-loader -->
     <div id="page-loader" class="fade in"><span class="spinner"></span></div>
     <!-- end #page-loader -->

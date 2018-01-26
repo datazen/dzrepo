@@ -136,11 +136,28 @@ $email_address = (isset($_GET['email_address'])) ? $_GET['email_address'] : '';
         </div>
       </div>
       <!-- end brand -->
+<script>
+function showLoader() {
+  $('btn').attr('disabled', 'disabled');
+  $('.btn-text').hide();
+  $('.spinner').show();
+
+}
+</script>      
+<style>
+.btn {
+  min-height:50px;
+}
+.spinner {
+  display:none;
+  position:absolute; width:30px; height:30px; margin-top:-15px; margin-left:-15px;
+}
+</style>
       <div class="login-content">
         <div class="login-content-heading mb-1">Administrator Login</div>
         <?php 
         if ($error) echo '<div class="row errmsg"><div class="col p-0 mb-3 mt-1 ml-2 mr-2"><div class="note note-danger m-0"><h4 class="m-0">' . TEXT_ERROR . '</h4><p class="mb-0 mt-2">' . TEXT_LOGIN_ERROR . '</p></div></div></div>';     
-        echo tep_draw_form('login', FILENAME_LOGIN, 'action=process', 'post', 'class="mb-0"', 'SSL') . tep_draw_hidden_field("action","process"); 
+        echo tep_draw_form('login', FILENAME_LOGIN, 'action=process', 'post', 'class="mb-0" onsubmit="showLoader();"', 'SSL') . tep_draw_hidden_field("action","process"); 
         ?>
         <div class="form-group m-b-20 pt-1">
           <input name="email_address" id="email_address" type="text" class="form-control input-lg" placeholder="Email Address" />
@@ -151,8 +168,8 @@ $email_address = (isset($_GET['email_address'])) ? $_GET['email_address'] : '';
         <div class="checkbox m-b-20">
              
         </div>
-        <div class="login-buttons">
-          <button type="submit" class="btn btn-success btn-block btn-lg">Login</button>
+        <div class="login-buttons p-relative">
+          <button type="submit" class="btn btn-success btn-block btn-lg"><span class="btn-text">Login</span><span class="spinner"></span><span class="sr-only">Loading...</span></button>
         </div>
         <div class="m-t-20 clearfix">
           <?php echo '<a class="login-password-forgotten mr-1" href="' . tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL') . '">' . HEADING_TITLE_FORGOTTEN . '</a>';?>

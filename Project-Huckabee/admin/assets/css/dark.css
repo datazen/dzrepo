@@ -50,8 +50,8 @@
 .dark select:focus,
 .dark input,
 .dark input:focus {
-  background-color: #000;
-  color: #fff;
+  background-color: #39424a;
+  color: #fff !important;
 }
 .dark .btn.btn-default {
   color: #fff;

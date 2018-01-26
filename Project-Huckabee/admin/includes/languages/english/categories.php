@@ -64,7 +64,6 @@ define('TEXT_PRODUCTS_IMAGE_SM_6', 'SM Image 6:');
 define('TEXT_PRODUCTS_IMAGE_XL_6', 'XL Image 6:');
 define('HEADING_TITLE', 'Categories / Products');
 define('HEADING_TITLE_SEARCH', 'Search:');
-define('HEADING_TITLE_GOTO', 'Go To:');
 define('TABLE_HEADING_ID', 'ID');
 define('TABLE_HEADING_CATEGORIES_PRODUCTS', 'Categories / Products');
 define('TABLE_HEADING_ACTION', 'Action');
@@ -111,8 +110,7 @@ define('TEXT_DELETE_CATEGORY_INTRO', 'Are you sure you want to delete category <
 define('TEXT_DELETE_PRODUCT_INTRO', 'Are you sure you want to delete product <b>%s</b>?');
 define('TEXT_DELETE_WARNING_CHILDS', 'There are %s child categories still linked to this category. Deleting this category will delete all child categories and products within.');
 define('TEXT_DELETE_WARNING_PRODUCTS', 'There are %s products still linked to this category. Deleting this category will delete all products within.');
-define('TEXT_MOVE_PRODUCTS_INTRO', 'Please select which category you wish <b>%s</b> to reside in');
-define('TEXT_MOVE_CATEGORIES_INTRO', 'Please select which category you wish <b>%s</b> to reside in');
+
 define('TEXT_MOVE', 'Move <b>%s</b> to:');
 define('TEXT_NEW_CATEGORY_INTRO', 'Please fill out the following information for the new category');
 define('TEXT_CATEGORIES_NAME', 'Category Name:');
@@ -141,8 +139,6 @@ define('TEXT_HOW_TO_COPY', 'Copy Method :');
 define('TEXT_COPY_AS_LINK', 'Link product');
 define('TEXT_COPY_AS_DUPLICATE', 'Duplicate product');
 define('ERROR_CANNOT_LINK_TO_SAME_CATEGORY', 'Error: Can not link products in the same category.');
-define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', 'Error: Catalog images directory is not writeable: ' . DIR_FS_CATALOG_IMAGES);
-define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', 'Error: Catalog images directory does not exist: ' . DIR_FS_CATALOG_IMAGES);
 define('ERROR_CANNOT_MOVE_CATEGORY_TO_PARENT', 'Error: Category cannot be moved into child category.');
 define('TEXT_PRODUCT_METTA_INFO', 'Meta Tags');
 define('TEXT_PRODUCTS_PAGE_TITLE', 'Page Title:');
@@ -268,13 +264,25 @@ define('TEXT_PRODUCTS_MSRP_INFO', 'MSRP Info:');
 
 // DZ added for new template
 /*
+ * CATEGORY ADD/EDIT
+ */
+define('LABEL_IMAGE', 'Image:');
+define('LABEL_PAGE_HEADING', 'Page Heading:');
+
+/*
  * PRODUCT ADD/EDIT
  */
 define('HEADING_CATALOG', 'Catalog');
+define('HEADING_COPY_ATTRIBUTES', 'Copy Attributes');
+
+define('HEADING_COPY_TO', 'Copy To');
+define('HEADING_DELETE_PRODUCT', 'Delete Product');
 define('HEADING_EXTRA_FIELDS', 'Extra Fields');
 define('HEADING_IMAGES', 'Images');
 define('HEADING_INVENTORY', 'Inventory');
 define('HEADING_META_TAGS', 'Meta Tags');
+define('HEADING_MOVE_CATEGORY', 'Move Category');
+define('HEADING_MOVE_PRODUCT', 'Move Product');
 define('HEADING_PRICING_RULES', 'Pricing Rules');
 define('HEADING_SUBPRODUCTS', 'Sub Products');
 define('HEADING_USER_ACCESS_SETTINGS', 'User Access Settings');
@@ -285,11 +293,15 @@ define('BUTTON_RETURN_TO_LIST', 'Return to List');
 define('BUTTON_VIEW_IN_CATALOG', 'View in Catalog');
 
 define('LABEL_BASE_PRICE', 'Base Price:');
+define('LABEL_COPY_TO_INTRO', 'Copy this product to:');
+
+define('LABEL_CURRENT_CATEGORY', 'Current Category:');
 define('LABEL_DATE_AVAILABLE', 'Available:');
-define('LABEL_DELETE_IMAGE', 'Delete Image:');
+define('LABEL_DELETE', 'Delete:');
 define('LABEL_DESCRIPTION', 'Description:');
 define('LABEL_ENABLE', 'Enable:');
 define('LABEL_FEATURED_PRODUCTS', 'Featured:');
+define('LABEL_GOTO', 'Go To:');
 define('LABEL_GROUP_PRICE_OVERRIDES', 'Customer Group Pricing Overrides:');
 define('LABEL_ITEM_COST', 'Item Cost:');
 define('LABEL_LARGE_IMAGE', 'Large Image:');
@@ -299,6 +311,7 @@ define('LABEL_META_DESCRIPTION', 'Meta Description:');
 define('LABEL_META_KEYWORDS', 'Meta Keywords:');
 define('LABEL_META_TITLE', 'Title Meta Tag:');
 define('LABEL_MODEL', 'Model:');
+define('LABEL_MOVE_INTRO', 'Select the category for <b>%s</b> to reside in:');
 define('LABEL_MSRP', 'MSRP:');
 define('LABEL_NAME', 'Name:');
 define('LABEL_MANUFACTURER','Manufacturer:');
@@ -312,6 +325,8 @@ define('LABEL_SPECIAL_PRICE', 'Special Price:');
 define('LABEL_STATUS', 'Status:');
 define('LABEL_TAX_CLASS', 'Tax Class:');
 define('LABEL_THUMBNAIL_IMAGE', 'Thumbnail Image:');
+define('LABEL_UNLINK', 'Unlink:');
+define('LABEL_URL', 'URL:');
 define('LABEL_VENDOR', 'Vendor:');
 define('LABEL_VENDOR_NOTE', 'Vendor Note:');
 define('LABEL_WEIGHT', 'Weight:');
@@ -325,4 +340,30 @@ define('TABLE_SUBPRODUCT_ACTION', 'Action');
 
 define('TEXT_COPY_LANG_TO_CLIPBOARD', 'Copy %s to Clipboard');
 define('TEXT_CHOOSE_FILE', 'Click to select');
+
+define('WARNING_ITEM_INACTIVE_TITLE', 'Item is inactive');
+define('WARNING_ITEM_INACTIVE_TEXT', 'This item will not appear on the catalog because it is marked inactive.');
+define('WARNING_ITEM_OUT_OF_STOCK_TITLE', 'Item is out of stock');
+define('WARNING_ITEM_OUT_OF_STOCK_TEXT', 'This item may not appear on the catalog as it\'s quantity on hand is at or below 0.');
+
+/*
+ * COPY ATTRIBUTES MODAL 
+ */
+define('HEADING_COPY_PRODUCT_ATTRIBUTES', 'Copy Product Attributes');
+
+define('TEXT_OTHERWISE', 'Otherwise ...');
+define('LABEL_COPY_PRODUCT_ATTRIBUTES_FROM', 'Copying attributes from (source):');
+define('LABEL_COPY_PRODUCT_ATTRIBUTES_TO', 'Copying attributes to (target):');
+define('LABEL_DELETE_ALL_ATTRIBUTES', 'Clear ALL attributes and downloads from target before copying?');
+define('LABEL_SKIP_DUPLICATE_ATTRIBUTES', '-OR- Skip duplicate attributes?');
+define('LABEL_OVERWRITE_DUPLICATE_ATTRIBUTES', '-OR- Overwrite duplicate attributes?');
+define('LABEL_INCLUDE_DOWNLOAD_ATTRIBUTES', 'Include download attributes?');
+define('LABEL_COPY_ALL_PRODUCTS_TO_CATEGORY', 'Copying attributes to ALL products within category:');
+
+define('ERROR_CATALOG_IMAGE_DIRECTORY_NOT_WRITEABLE', 'The catalog images directory is not writeable: <b>' . DIR_FS_CATALOG_IMAGES . '</b>');
+define('ERROR_CATALOG_IMAGE_DIRECTORY_DOES_NOT_EXIST', 'The catalog images directory does not exist: <b>' . DIR_FS_CATALOG_IMAGES . '</b>');
+define('WARNING_CANNOT_COPY_TO_SAME_PRODUCT', 'Did not copy from <b>%s</b> to <b>%s</b> becuase it is the same product.');
+define('WARNING_NO_ATTRIBUTES_FOUND', 'No attributes were found for <b>%s</b> therefore no copy was made.');
+define('WARNING_TARGET_DOES_NOT_EXIST', 'Target product <b>%s<b> was not found therefore no copy was made.');
+define('SUCCESS_ATTRIBUTES_COPIED', 'Product attributes for <b>%s</b> successfully copied to <b>%s</b>.');
 ?>

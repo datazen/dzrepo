@@ -1473,8 +1473,7 @@ CREATE TABLE products_options_values (
   products_options_values_id int(11) NOT NULL DEFAULT '0',
   language_id int(11) NOT NULL DEFAULT '1',
   products_options_values_name varchar(64) NOT NULL DEFAULT '',
-  options_values_price decimal(15,4) NOT NULL DEFAULT '0.0000',
-  PRIMARY KEY (products_options_values_id,language_id)
+  options_values_price decimal(15,4) NOT NULL DEFAULT '0.0000'
 ) ENGINE=MyISAM DEFAULT COLLATE=latin1_swedish_ci;
 
 

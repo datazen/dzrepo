@@ -29,7 +29,6 @@ if (isset($_GET['action']) && $_GET['action']) {
         tep_redirect(tep_href_link(FILENAME_ADMIN_ACCOUNT, 'action=edit_process'));
       }
       break;    
-
     case 'save_account':
       // verify password is hardened password
       if (isset($_POST['admin_password']) && $_POST['admin_password'] != null) {
@@ -72,7 +71,7 @@ include(DIR_WS_INCLUDES . 'header.php');
 include(DIR_WS_INCLUDES . 'column_left.php');
 ?>
 <div id="content" class="content p-relative">         
-  <h1 class="page-header"><i class="fa fa-laptop"></i> <?php echo HEADING_TITLE; ?></h1>
+  <h1 class="page-header"><i class="fa fa-user"></i> <?php echo HEADING_TITLE; ?></h1>
 
   <?php if (file_exists(DIR_WS_INCLUDES . 'toolbar.php')) include(DIR_WS_INCLUDES . 'toolbar.php'); ?>
   
@@ -82,11 +81,11 @@ include(DIR_WS_INCLUDES . 'column_left.php');
       <!-- body_text //--> 
       <?php 
       if (isset($_GET['action']) && $_GET['action'] == 'edit_process') { 
-        echo tep_draw_form('account', FILENAME_ADMIN_ACCOUNT, 'action=save_account', 'post', 'enctype="multipart/form-data"', 'SSL'); 
+        echo tep_draw_form('account', FILENAME_ADMIN_ACCOUNT, 'action=save_account', 'post', 'enctype="multipart/form-data" data-parsley-validate', 'SSL'); 
       } else if (isset($_GET['action']) && $_GET['action'] == 'check_account') { 
-        echo tep_draw_form('account', FILENAME_ADMIN_ACCOUNT, 'action=check_password', 'post', 'enctype="multipart/form-data"', 'SSL'); 
+        echo tep_draw_form('account', FILENAME_ADMIN_ACCOUNT, 'action=check_password', 'post', 'enctype="multipart/form-data" data-parsley-validate', 'SSL'); 
       } else { 
-        echo tep_draw_form('account', FILENAME_ADMIN_ACCOUNT, 'action=check_account', 'post', 'enctype="multipart/form-data"', 'SSL'); 
+        echo tep_draw_form('account', FILENAME_ADMIN_ACCOUNT, 'action=check_account', 'post', 'enctype="multipart/form-data" data-parsley-validate', 'SSL'); 
       } 
       ?>
       <div id="update-account" class="update-account">
@@ -97,7 +96,6 @@ include(DIR_WS_INCLUDES . 'column_left.php');
             $myAccount = tep_db_fetch_array($my_account_query);
             ?>
             <table class="table mt-2 w-100">
-
               <tbody>              
               <?php
               if ( (isset($_GET['action']) && $_GET['action'] == 'edit_process') && (isset($_SESSION['confirm_account'])) ) {
@@ -187,9 +185,9 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 break; 
               case 'check_account':
                 $heading[] = array('text' => TEXT_INFO_HEADING_CONFIRM_PASSWORD);
-                $contents[] = array('text' => '<div class="form-label mb-2 mt-2>' . TEXT_INFO_INTRO_CONFIRM_PASSWORD . '</div>');
+                $contents[] = array('text' => '<div class="form-label mb-2 mt-2">' . TEXT_INFO_INTRO_CONFIRM_PASSWORD . '</div>');
                 if ( isset($_GET['error']) ) $contents[] = array('text' => '<div class="row"><div class="col p-0 mt-2 ml-2 mr-2 mb-2"><div class="note note-danger m-0"><h4 class="m-0">' . TEXT_ERROR . '</h4><p class="mb-0 mt-2">' . TEXT_INFO_INTRO_CONFIRM_PASSWORD_ERROR . '</p></div></div></div>');
-                $contents[] = array('text' => '<div class="mt-2 mb-2">' . tep_draw_password_field('password_confirmation') . tep_draw_hidden_field('id_info', $myAccount['admin_id']) . '</div>');             
+                $contents[] = array('text' => '<div class="mt-2 mb-2">' . tep_draw_password_field('password_confirmation', null, false, 'class="form-control" maxlength="40" autocomplete="off" required') . tep_draw_hidden_field('id_info', $myAccount['admin_id']) . '</div>');             
                 $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-default btn-sm mr-2" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_ACCOUNT) . '\'">' . IMAGE_BACK . '</button><button class="btn btn-success btn-sm mt-3 mb-3" type="submit">' . IMAGE_CONFIRM . '</button>');
                 break; 
               default:

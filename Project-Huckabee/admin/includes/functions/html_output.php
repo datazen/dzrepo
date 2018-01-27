@@ -217,7 +217,7 @@
 
 ////
 // Output a form password field
-  function tep_draw_password_field($name, $value = '', $required = false, $parameters = 'maxlength="40" autocomplete="off"') {
+  function tep_draw_password_field($name, $value = '', $required = false, $parameters = '') {
     $field = tep_draw_input_field($name, '', $parameters, $required, 'password', false);
 
     return $field;

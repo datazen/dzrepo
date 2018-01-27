@@ -988,8 +988,17 @@ label {
   color:#a6a6a6;
 }
 .table-file-permissions .col-boxes {
-  background-color: #ffc107;
-  color:#a6a6a6;
+  background-color: #fff2e3;
+  color:#94794a;
+}
+.info-define-type-menu {
+    background-color:#fff2e3;
+    color:#94794a;
+}
+.info-define-type-file {
+    background-color:#fff;
+    color:#888c8f;
+    border: 1px solid #888c8f;
 }
 
 .notify-container-head-title,
@@ -7938,7 +7947,7 @@ body .bootstrap-datetimepicker-widget table td {
 
 .required:after {
   content: '*';
-  color:red;
+  color:#ff5b57;
   margin-left:4px;
 }
 

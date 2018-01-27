@@ -399,28 +399,28 @@ include(DIR_WS_INCLUDES . 'column_left.php');
             switch ($_GET['action']) {
               case 'new_member':
                 $heading[] = array('text' => TEXT_INFO_HEADING_NEW);
-                $contents[] = array('form' => tep_draw_form('newmember', FILENAME_ADMIN_MEMBERS, 'action=member_new&mID=' . $_GET['mID'] . setPage(), 'post', 'class="member-form" id="newmember" role="form"'));
+                $contents[] = array('form' => tep_draw_form('newmember', FILENAME_ADMIN_MEMBERS, 'action=member_new&mID=' . $_GET['mID'] . setPage(), 'post', 'id="newmember" role="form" data-parsley-validate'));
                 if ( isset($_GET['error']) ) $contents[] = array('text' => '<div class="row"><div class="col p-0 mt-3 ml-2 mr-2"><div class="note note-danger m-0"><h4 class="m-0">' . TEXT_ERROR . '</h4><p class="mb-0 mt-2">' . TEXT_INFO_EMAIL_USED . '</p></div></div></div>');     
-                $contents[] = array('text' => '<div class="form-label mt-3">' . TEXT_INFO_FIRSTNAME . '</div><div>' . tep_draw_input_field('admin_firstname', null, 'class="form-control"') . '</div>');
-                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_LASTNAME . '</div><div>' . tep_draw_input_field('admin_lastname', null, 'class="form-control"') . '</div>');
-                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_EMAIL . '</div><div>' . tep_draw_input_field('admin_email_address', null, 'class="form-control"') . '</div>');
+                $contents[] = array('text' => '<div class="form-label mt-3">' . TEXT_INFO_FIRSTNAME . '<span class="required"></span></div><div>' . tep_draw_input_field('admin_firstname', null, 'class="form-control" required') . '</div>');
+                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_LASTNAME . '<span class="required"></span></div><div>' . tep_draw_input_field('admin_lastname', null, 'class="form-control" required') . '</div>');
+                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_EMAIL . '<span class="required"></span></div><div>' . tep_draw_input_field('admin_email_address', null, 'class="form-control type="email" required') . '</div>');
                 $groups_array = array(array('id' => '0', 'text' => TEXT_NONE));
                 $groups_query = tep_db_query("select admin_groups_id, admin_groups_name from " . TABLE_ADMIN_GROUPS);
                 while ($groups = tep_db_fetch_array($groups_query)) {
                   $groups_array[] = array('id' => $groups['admin_groups_id'],
                                           'text' => $groups['admin_groups_name']);
                 }
-                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_GROUP . '</div><div>' . tep_draw_pull_down_menu('admin_groups_id', $groups_array, '0', 'class="form-control"') . '</div>');
+                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_GROUP . '<span class="required"></span></div><div>' . tep_draw_pull_down_menu('admin_groups_id', $groups_array, '1', 'class="form-control" required') . '</div>');
                 $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-default btn-sm mt-3 mb-3 mr-1" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'mID=' . $mInfo->admin_id . setPage()) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-success btn-sm mt-3 mb-3" type="submit">' . IMAGE_SAVE . '</button>');
                 break;
               case 'edit_member':
                 $heading[] = array('text' => TEXT_INFO_HEADING_EDIT);
-                $contents[] = array('form' => tep_draw_form('editmember', FILENAME_ADMIN_MEMBERS, 'action=member_edit&&mID=' . $_GET['mID'] . setPage(), 'post', 'class="member-form" id="editmember" role="form"'));
+                $contents[] = array('form' => tep_draw_form('editmember', FILENAME_ADMIN_MEMBERS, 'action=member_edit&&mID=' . $_GET['mID'] . setPage(), 'post', 'id="editmember" role="form" data-parsley-validate'));
                 if ( isset($_GET['error']) ) $contents[] = array('text' => '<div class="row"><div class="col p-0 mt-3 ml-2 mr-2"><div class="note note-danger m-0"><h4 class="m-0">' . TEXT_ERROR . '</h4><p class="mb-0 mt-2">' . TEXT_INFO_EMAIL_USED . '</p></div></div></div>');     
                 $contents[] = array('text' => tep_draw_hidden_field('admin_id', $mInfo->admin_id));
-                $contents[] = array('text' => '<div class="form-label mt-3">' . TEXT_INFO_FIRSTNAME . '</div><div>' . tep_draw_input_field('admin_firstname', $mInfo->admin_firstname) . '</div>');
-                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_LASTNAME . '</div><div>' . tep_draw_input_field('admin_lastname', $mInfo->admin_lastname) . '</div>');
-                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_EMAIL . '</div><div>' . tep_draw_input_field('admin_email_address', $mInfo->admin_email_address) . '</div>');
+                $contents[] = array('text' => '<div class="form-label mt-3">' . TEXT_INFO_FIRSTNAME . '<span class="required"></span></div><div>' . tep_draw_input_field('admin_firstname', $mInfo->admin_firstname, 'class="form-control" required') . '</div>');
+                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_LASTNAME . '<span class="required"></span></div><div>' . tep_draw_input_field('admin_lastname', $mInfo->admin_lastname, 'class="form-control" required') . '</div>');
+                $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_EMAIL . '<span class="required"></span></div><div>' . tep_draw_input_field('admin_email_address', $mInfo->admin_email_address, 'class="form-control" type="email" required') . '</div>');
                 if ($mInfo->admin_id == $_SESSION['login_id'] || $mInfo->admin_email_address == STORE_OWNER_EMAIL_ADDRESS) {
                   $isStoreAdmin = true;
                   $contents[] = array('text' => tep_draw_hidden_field('admin_groups_id', $mInfo->admin_groups_id));
@@ -432,7 +432,7 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                     $groups_array[] = array('id' => $groups['admin_groups_id'],
                                             'text' => $groups['admin_groups_name']);
                   }
-                  $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_GROUP . '</div><div>' . tep_draw_pull_down_menu('admin_groups_id', $groups_array, $mInfo->admin_groups_id) . '</div>');
+                  $contents[] = array('text' => '<div class="form-label mt-2">' . TEXT_INFO_GROUP . '</div><div>' . tep_draw_pull_down_menu('admin_groups_id', $groups_array, $mInfo->admin_groups_id, 'class="form-control" required') . '</div>');
                 }
                 $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-default btn-sm mt-3 mb-3 mr-1" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'mID=' . $_GET['mID'] . setPage()) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-success btn-sm mt-3 mb-3" type="submit">' . IMAGE_UPDATE . '</button>');
                 break;
@@ -450,20 +450,20 @@ include(DIR_WS_INCLUDES . 'column_left.php');
                 break;
               case 'new_group':
                 $heading[] = array('text' => TEXT_INFO_HEADING_GROUPS);
-                $contents[] = array('form' => tep_draw_form('newgroup', FILENAME_ADMIN_MEMBERS, 'action=group_new&gID=' . $gInfo->admin_groups_id, 'post', 'id="newgroup" role="form"'));
+                $contents[] = array('form' => tep_draw_form('newgroup', FILENAME_ADMIN_MEMBERS, 'action=group_new&gID=' . $gInfo->admin_groups_id, 'post', 'id="newgroup" role="form" data-parsley-validate'));
                 if (isset($_GET['gName']) && $_GET['gName'] == 'false') {
                   $contents[] = array('text' => '<div class="alert bg-danger text-white mt-3 mb-2"><i class="fa fa-warning text-white fa-lg"></i><span class="ml-1">' . TEXT_INFO_GROUPS_NAME_FALSE . '</span></div>');
                 } elseif (isset($_GET['gName']) && $_GET['gName'] == 'used') {
                   $contents[] = array('text' => '<div class="alert bg-danger text-white mt-3 mb-2"><i class="fa fa-warning text-white fa-lg"></i><span class="ml-1">' . TEXT_INFO_GROUPS_NAME_USED . '</span></div>');
                 }
                 $contents[] = array('text' => tep_draw_hidden_field('set_groups_id', substr($add_groups_prepare, 4)) );
-                $contents[] = array('text' => '<div class="form-label mt-2 mb-2">' . TEXT_INFO_GROUPS_NAME . '</div>');
-                $contents[] = array('text' => '<div>' . tep_draw_input_field('admin_groups_name') . '</div>');
+                $contents[] = array('text' => '<div class="form-label mt-2 mb-2">' . TEXT_INFO_GROUPS_NAME . '<span class="required"></span></div>');
+                $contents[] = array('text' => '<div>' . tep_draw_input_field('admin_groups_name', null, 'class="form-control" required') . '</div>');
                 $contents[] = array('align' => 'center', 'text' => '<button class="btn btn-default btn-sm mt-3 mb-3 mr-1" type="button" onclick="window.location=\'' . tep_href_link(FILENAME_ADMIN_MEMBERS, 'gID=' . $gInfo->admin_groups_id) . '\'">' . IMAGE_CANCEL . '</button><button class="btn btn-success btn-sm mt-3 mb-3" type="submit">' . IMAGE_SAVE . '</button>');
                 break;
               case 'edit_group':
                 $heading[] = array('text' => TEXT_INFO_HEADING_EDIT_GROUP);            
-                $contents[] = array('form' => tep_draw_form('editgroup', FILENAME_ADMIN_MEMBERS, 'action=group_edit&gID=' . $_GET['gID'], 'post', 'class="group-form" id="editgroup" role="form"'));
+                $contents[] = array('form' => tep_draw_form('editgroup', FILENAME_ADMIN_MEMBERS, 'action=group_edit&gID=' . $_GET['gID'], 'post', 'class="group-form" id="editgroup" role="form" data-parsley-validate'));
                 if (isset($_GET['gName']) && $_GET['gName'] == 'false') {
                   $contents[] = array('text' => '<div class="alert bg-danger text-white mt-3 mb-2"><i class="fa fa-warning text-white fa-lg"></i><span class="ml-1">' . TEXT_INFO_GROUPS_NAME_FALSE . '</span></div>');
                 } elseif (isset($_GET['gName']) && $_GET['gName'] == 'used') {
@@ -543,44 +543,6 @@ include(DIR_WS_INCLUDES . 'column_left.php');
     <!-- end panel -->
   </div>
 </div>
-<script>
-$(document).ready(function(){
-  $('.member-form').on('submit',function(event){
-    // block form submit event
-    event.preventDefault();
-    // check form input
-    var errors = '';
-    var isValidEmail = false;
-    var emailExists = false;
-    var firstname = $(".member-form input[name=admin_firstname]").val();
-    var lastname = $(".member-form input[name=admin_lastname]").val();
-    var email = $(".member-form input[name=admin_email_address]").val();
-    var gID = $(".member-form select[name=admin_groups_id]").val();
-    var skipGroupCheck = '<?php echo ($isStoreAdmin); ?>';
-    if (firstname.length < 1) errors += '<?php echo JS_ALERT_FIRSTNAME; ?>';
-    if (lastname.length < 1) errors += '<?php echo JS_ALERT_LASTNAME; ?>';
-    if (email.length < 1) errors += '<?php echo JS_ALERT_EMAIL; ?>';
-    if ((gID == 0 || gID == null) && !skipGroupCheck) errors += '<?php echo JS_ALERT_GROUP_LEVEL; ?>';
-    
-    if (email.length > 1) {
-      isValidEmail = isEmail(email);
-      if (!isValidEmail) errors += '<?php echo JS_ALERT_EMAIL_FORMAT; ?>';
-    }   
-
-    if (errors != '') {
-      alert('<?php echo JS_ALERT_INTRO; ?>' + errors);
-      return false;
-    }  
-
-    event.currentTarget.submit();  
-  });  
-});   
-
-function isEmail(email) {
-  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-  return regex.test(email);
-}     
-</script>
 <?php 
 include(DIR_WS_INCLUDES . 'html_bottom.php');
 require(DIR_WS_INCLUDES . 'application_bottom.php'); 

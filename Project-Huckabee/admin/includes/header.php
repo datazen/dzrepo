@@ -10,7 +10,7 @@
 
   Released under the GNU General Public License
 */
-  /*
+
 $languages = tep_get_languages();
 $languages_array = array();
 $languages_selected = DEFAULT_LANGUAGE;
@@ -27,14 +27,9 @@ $myAccount = tep_db_fetch_array($my_account_query);
 $store_admin_name = $myAccount['admin_firstname'] . ' ' . $myAccount['admin_lastname'];
 // RCI top
 echo $cre_RCI->get('header', 'top');
-*/
+
 ?>
-
-<?php 
-//  require(DIR_WS_INCLUDES . 'warnings.php'); 
-  ?>
 <style>
-
 .navbar-brand-open {
     width:220px; 
     background-color:#1a2229 !important;
@@ -72,90 +67,67 @@ echo $cre_RCI->get('header', 'top');
     <!-- end mobile sidebar expand / collapse button -->
     
     <!-- begin header navigation right -->
-    <ul class="nav navbar-nav navbar-right">
-      <li>
-        <form class="navbar-form full-width">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Enter keyword" />
-            <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-          </div>
-        </form>
-      </li>
-      <li class="dropdown">
-        <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle f-s-14">
-          <i class="fa fa-bell-o"></i>
-          <span class="label">5</span>
-        </a>
-        <ul class="dropdown-menu media-list pull-right animated fadeInDown">
-                        <li class="dropdown-header">Notifications (5)</li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="media-left"><i class="fa fa-bug media-object bg-red"></i></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">Server Error Reports</h6>
-                                    <div class="text-muted f-s-11">3 minutes ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="media-left"><img src="assets/img/user-1.jpg" class="media-object" alt="" /></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">John Smith</h6>
-                                    <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
-                                    <div class="text-muted f-s-11">25 minutes ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="media-left"><img src="assets/img/user-2.jpg" class="media-object" alt="" /></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">Olivia</h6>
-                                    <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
-                                    <div class="text-muted f-s-11">35 minutes ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="media-left"><i class="fa fa-plus media-object bg-green"></i></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading"> New User Registered</h6>
-                                    <div class="text-muted f-s-11">1 hour ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="media-left"><i class="fa fa-envelope media-object bg-blue"></i></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading"> New Email From John</h6>
-                                    <div class="text-muted f-s-11">2 hour ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="dropdown-footer text-center">
-                            <a href="javascript:;">View more</a>
-                        </li>
-        </ul>
-      </li>
-      <li class="dropdown navbar-user">
-        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-          <img src="assets/img/user-13.jpg" alt="" /> 
-          <span class="hidden-xs">Adam Schwartz</span> <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu animated fadeInLeft">
-          <li class="arrow"></li>
-          <li><a href="javascript:;">Edit Profile</a></li>
-          <li><a href="javascript:;"><span class="badge badge-danger pull-right">2</span> Inbox</a></li>
-          <li><a href="javascript:;">Calendar</a></li>
-          <li><a href="javascript:;">Setting</a></li>
-          <li class="divider"></li>
-          <li><a href="<?php echo tep_href_link(FILENAME_LOGOFF, '', 'SSL'); ?>">Log Out</a></li>
-        </ul>
-      </li>
-    </ul>
+    <div class="w-100">    
+      <ul class="nav navbar-nav navbar-right">
+        <!--li>
+          <form class="navbar-form full-width">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Enter keyword" />
+              <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+            </div>
+          </form>
+        </li -->
+
+        <li class="dropdown open mt-1">
+          <a class="dropdown-toggle f-s-14" data-toggle="dropdown" href="javascript:;" aria-expanded="true">
+            <i class="fa fa-bell-o"></i>
+            <span class="label"><?php echo $messageStack->size('header');?></span>
+          </a>
+          <ul class="dropdown-menu media-list pull-right animated fadeInDown">
+            <li class="dropdown-header">Notifications (<?php echo $messageStack->size('header'); ?>)</li>
+            <li class="media">
+              <div class="media-body">
+              <!-- warnings //-->
+              <?php
+                if ($messageStack->size('header') > 0) {
+                  echo $messageStack->output('header');
+                }
+                if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {
+                ?>
+                <table border="0" width="100%" cellspacing="0" cellpadding="2" class="table">
+                  <tr class="headerError"> <td class="headerError"><?php echo htmlspecialchars(urldecode($_GET['error_message'])); ?></td> </tr>
+                </table>
+                <?php
+                }
+
+                if (isset($_GET['info_message']) && tep_not_null($_GET['info_message'])) {
+                ?>
+                <table border="0" width="100%" cellspacing="0" cellpadding="2" class="table">
+                  <tr class="headerInfo"> <td class="headerInfo"><?php echo htmlspecialchars($_GET['info_message']); ?></td> </tr>
+                </table>
+                <?php
+                }
+                ?>
+              <!-- warning_eof //-->
+              </div>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown navbar-user">
+          <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+            <img src="assets/img/user.png" alt="" /> 
+            <span class="hidden-xs"><?php echo $store_admin_name;?></span> <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu animated fadeInLeft">
+            <li class="arrow"></li>
+            <li><a href="<?php echo tep_href_link(FILENAME_ADMIN_ACCOUNT,'','SSL');?>">Edit Profile</a></li>
+            <li class="divider"></li>
+            <li><a href="<?php echo tep_href_link(FILENAME_LOGOFF, '', 'SSL'); ?>">Log Out</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
     <!-- end header navigation right -->
   </div>
   <!-- end container-fluid -->
@@ -172,11 +144,6 @@ $(document).ready(function() {
 });
 </script>
 <?php
-  if ($messageStack->size('search') > 0) {
-      echo '<div class="content"><div class="panel-body">';
-      echo $messageStack->output('search');
-      echo '</div></div>';
-  }
 // RCI bottom
 echo $cre_RCI->get('header', 'bottom');
 ?>

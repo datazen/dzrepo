@@ -26,7 +26,7 @@ $heading[] = array('text'  => BOX_HEADING_ADMINISTRATOR,
                                  tep_admin_files_boxes(FILENAME_ADMIN_MEMBERS, BOX_ADMINISTRATOR_MEMBERS, 'NONSSL','selected_box=administrator&section=admin_members','2') .
                                  tep_admin_files_boxes(FILENAME_ADMIN_MEMBERS, BOX_ADMINISTRATOR_GROUPS,'NONSSL','gID=groups&selected_box=administrator&section=admin_groups','2') .
                                  tep_admin_files_boxes(FILENAME_ADMIN_ACCOUNT, BOX_ADMINISTRATOR_ACCOUNT_UPDATE, 'NONSSL','selected_box=administrator&section=update_account','2') .
-                                 tep_admin_files_boxes(FILENAME_ADMIN_FILES, BOX_ADMINISTRATOR_BOXES, 'NONSSL','selected_box=administrator&section=menu_file_access','2') .
+                                 tep_admin_files_boxes(FILENAME_ADMIN_FILES, BOX_ADMINISTRATOR_BOXES, 'NONSSL','cID=1&selected_box=administrator&section=menu_file_access','2') .
                                  $returned_rci_bottom);
 
   $box = new box;

@@ -174,3 +174,20 @@
 .dark .popover {
   background-color: #000;
 } 
+
+/* parsley form validation */
+.dark .parsley-required {
+  color:#ff9999;
+}
+.dark .parsley-success,
+.dark .parsley-error {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* admin members menu/file access */
+.dark .info-define-type-file {
+    background-color:#22272c;
+    color:#ccc;
+    border: 1px solid #ccc;
+}

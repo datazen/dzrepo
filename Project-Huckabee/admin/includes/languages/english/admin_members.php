@@ -92,7 +92,7 @@ define('TEXT_INFO_EDIT_GROUP_INTRO', 'Unique Group Name: ');
 define('TEXT_INFO_HEADING_DEFINE', '%s Group');
 define('TEXT_INFO_DEFINE_INTRO_1', 'You can not change permissions for <b>%s</b> group.');
 define('TEXT_INFO_DEFINE_INTRO', '<div class="fw-400 mt-3 text-ltgray">Change permission for this group by selecting or unselecting boxes and files provided. Click <b>Update</b> to save the changes.</div>');
-define('TEXT_INFO_DEFINE_TYPE', '<div class="mt-4"><div class="bg-warning text-dark p-4 text-center"><b>Yellow denotes Menu Access.</b></div><div class="bg-dark text-light mt-2 mb-2 p-4 text-center">Gray denotes File Access.</div></div>');
+define('TEXT_INFO_DEFINE_TYPE', '<div class="mt-4"><div class="info-define-type-menu p-4 text-center f-w-600">Denotes Menu Access.</div><div class="info-define-type-file mt-2 mb-2 p-4 text-center">Denotes File Access.</div></div>');
 
 define('TEXT_INFO_HEADING_EDIT_GROUP', 'Edit Group');
 define('IMAGE_FILE_PERMISSIONS', 'Menu/File Access');

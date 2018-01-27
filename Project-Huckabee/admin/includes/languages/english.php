@@ -1076,4 +1076,14 @@ define('TEXT_RESET', 'Reset');
 define('TEXT_DELETE', 'Delete');
 define('TEXT_COPIED', 'Copied!');
 
+define('TEXT_PRO_UPSELL_POPOVER_BODY', 'Get Pro to unlock this feature and many more, plus get support and updates!');            
+define('TEXT_PRO_UPSELL_GET_PRO', 'Get Pro');
+define('TEXT_PRO_UPSELL_GET_PRO_URL', 'http://www.loadedcommerce.com');
+define('TEXT_PRO_UPSELL_RIBBON_TEXT', 'Get Pro');
+
+define('TEXT_B2B_UPSELL_POPOVER_BODY', 'Get B2B to unlock this feature and many more, plus get support and updates!');            
+define('TEXT_B2B_UPSELL_GET_B2B', 'Get B2B');
+define('TEXT_B2B_UPSELL_GET_B2B_URL', 'http://www.loadedcommerce.com');
+define('TEXT_B2B_UPSELL_RIBBON_TEXT', 'Get B2B');
+
 ?>

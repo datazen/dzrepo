@@ -1,1 +1,0 @@
-{$firstname|default:'Firstname'}, Happy Birthday!

@@ -1,1 +1,0 @@
-Please rate our Service on Trustpilot
